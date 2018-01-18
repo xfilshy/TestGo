@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HoverImageView">
+        <attr name="r_borderWidth" format="reference|dimension"></attr>
+        <attr name="r_borderRadius" format="reference|dimension"></attr>
+        <attr name="r_borderColor" format="reference|color"></attr>
+        <attr name="r_hoverColor" format="reference|color"></attr>
+    </declare-styleable>
+
+</resources>
