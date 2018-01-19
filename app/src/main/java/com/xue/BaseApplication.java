@@ -1,7 +1,9 @@
 package com.xue;
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
@@ -26,9 +28,19 @@ public class BaseApplication extends Application {
     private String imei;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+//        MultiDex.install(this);
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        Log.e("xue", "getUserId() == " + getUserId());
+        Log.e("xue", "getUserToken() == " + getUserToken());
+
         NIMClient.init(this, new LoginInfo(getUserId(), getUserToken()), NimSDKOptionConfig.getSDKOptions(this));
 
         if (NIMUtil.isMainProcess(this)) {

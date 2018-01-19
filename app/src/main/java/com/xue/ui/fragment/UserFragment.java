@@ -1,6 +1,5 @@
 package com.xue.ui.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,7 +12,7 @@ import com.xue.R;
  * Created by xfilshy on 2018/1/17.
  */
 
-public class UserFragment extends Fragment {
+public class UserFragment extends BaseFragment {
 
     @Nullable
     @Override

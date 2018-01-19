@@ -2,6 +2,7 @@ package com.xue.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import com.elianshang.tools.UITool;
 import com.xue.R;
 import com.xue.bean.UserMinor;
 import com.xue.imagecache.ImageCacheMannager;
+import com.xue.ui.activity.AVChatActivity;
 
 import java.util.List;
 
@@ -60,6 +62,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         private TextView motto;
 
+        private UserMinor mUserMinor;
+
         public ViewHolder(ViewGroup itemView) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_home_list, itemView, false));
             findView();
@@ -72,12 +76,24 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
             UITool.zoomViewByWidth(160, 160, photo);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if (mUserMinor != null) {
+                        AVChatActivity.launchVideoCall(view.getContext(), mUserMinor.getId());
+                    }
+                }
+            });
         }
 
         protected void fill(UserMinor userMinor) {
+            this.mUserMinor = userMinor;
             name.setText("路伟");
             ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo);
             motto.setText("就是赚钱");
         }
+
+
     }
 }

@@ -13,15 +13,31 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    /**
+     * java版本
+     * */
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/drawable-xhdpi'] } }
+
+//    dexOptions {
+//        javaMaxHeapSize "4g"
+//    }
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/main/res/drawable-xhdpi', 'src/main/res/drawable-xxhdpi']
+        }
+    }
 }
 
 dependencies {
@@ -32,4 +48,6 @@ dependencies {
     api project(':threadpoollib')
     api project(':toolslib')
     api project(':support_lib')
+    implementation 'com.android.support:support-v4:27.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }

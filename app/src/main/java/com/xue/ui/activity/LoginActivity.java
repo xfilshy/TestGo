@@ -2,10 +2,12 @@ package com.xue.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
+import com.elianshang.tools.WeakReferenceHandler;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
@@ -16,7 +18,7 @@ import com.xue.R;
 /**
  * Created by xfilshy on 2018/1/17.
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements RequestCallback<LoginInfo> {
 
     public static void launch(BaseActivity activity) {
         if (activity == null) {
@@ -26,6 +28,18 @@ public class LoginActivity extends BaseActivity {
         Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);
     }
+
+    private WeakReferenceHandler<LoginActivity> handler = new WeakReferenceHandler<LoginActivity>(this) {
+        @Override
+        public void HandleMessage(LoginActivity loginActivity, Message msg) {
+            super.HandleMessage(loginActivity, msg);
+            if (msg.what == 1) {
+                setResult(RESULT_OK);
+                MainActivity.launch(loginActivity);
+                finish();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,25 +61,22 @@ public class LoginActivity extends BaseActivity {
 
     public void doLogin(String account, String token) {
         LoginInfo info = new LoginInfo(account, token);
-        RequestCallback<LoginInfo> callback = new RequestCallback<LoginInfo>() {
-            @Override
-            public void onSuccess(LoginInfo loginInfo) {
-                Log.e("xue", "授权成功");
-                setResult(RESULT_OK);
-                finish();
-            }
+        NIMClient.getService(AuthService.class).login(info).setCallback(this);
+    }
 
-            @Override
-            public void onFailed(int i) {
-                Log.e("xue", "授权失败");
-            }
+    @Override
+    public void onSuccess(LoginInfo loginInfo) {
+        Log.e("xue", "授权成功");
+        handler.sendEmptyMessage(1);
+    }
 
-            @Override
-            public void onException(Throwable throwable) {
-                Log.e("xue", "授权异常");
-            }
-            // 可以在此保存LoginInfo到本地，下次启动APP做自动登录用
-        };
-        NIMClient.getService(AuthService.class).login(info).setCallback(callback);
+    @Override
+    public void onFailed(int i) {
+        Log.e("xue", "授权失败");
+    }
+
+    @Override
+    public void onException(Throwable throwable) {
+        Log.e("xue", "授权异常");
     }
 }

@@ -7,4 +7,17 @@ package com.xue.bean;
 public class UserMinor {
 
     UserBase userBase;
+
+    public UserMinor(String id) {
+        userBase = new UserBase();
+        userBase.setId(id);
+    }
+
+    public UserBase getUserBase() {
+        return userBase;
+    }
+
+    public String getId() {
+        return userBase.getId();
+    }
 }

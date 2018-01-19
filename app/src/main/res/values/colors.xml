@@ -33,4 +33,6 @@
     <color name="pink_deep">#FFCAD4</color>
     <color name="brown">#FFFAE7</color>
     <color name="blue">#5894E6</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
