@@ -6,9 +6,41 @@ package com.xue.ui.activity;
 
 public interface AVChatControllerCallback {
 
-    void calling();
+    void preview();
+
+    void call();
+
+    void callSuccess();
+
+    void callReject();
+
+    void callBusy();
 
     void callIn();
 
     void accept();
+
+    void acceptSuccess();
+
+    void firstFrame();
+
+    void userJoined();
+
+    void userLeave();
+
+    void hangup();
+
+    void hangupSuccess();
+
+    void switchVideo2Audio();
+
+    void switchVideo2AudioAgree();
+
+    void switchVideo2AudioReject();
+
+    void switchAudio2Video();
+
+    void switchAudio2VideoAgree();
+
+    void switchAudio2VideoReject();
 }

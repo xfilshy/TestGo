@@ -1,9 +1,12 @@
 package com.xue.ui.activity;
 
 import android.content.Context;
+import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.elianshang.tools.WeakReferenceHandler;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
@@ -19,13 +22,27 @@ import com.netease.nimlib.sdk.avchat.model.AVChatNotifyOption;
 import com.netease.nimlib.sdk.avchat.model.AVChatOnlineAckEvent;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturer;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
+import com.xue.BaseApplication;
 import com.xue.netease.AVChatConfigs;
+import com.xue.netease.AVChatControlCommand;
+import com.xue.netease.AVChatSoundPlayer;
 import com.xue.netease.SimpleAVChatStateObserver;
 
 /**
  * Created by xfilshy on 2018/1/18.
  */
 public class AVChatController implements View.OnClickListener {
+
+    private final int actionHangUp = 1;
+
+    private WeakReferenceHandler<AVChatController> mHandler = new WeakReferenceHandler<AVChatController>(this) {
+        @Override
+        public void HandleMessage(AVChatController avChatController, Message msg) {
+            if (msg.what == actionHangUp) {
+                avChatController.hangUp();
+            }
+        }
+    };
 
     private AVChatData mAVChatData;
 
@@ -34,6 +51,24 @@ public class AVChatController implements View.OnClickListener {
     private AVChatConfigs mAVChatConfigs;
 
     private AVChatControllerCallback mCallback;
+
+    private AVChatControllerVideoModeCallback mVideoModeCallback;
+
+    private boolean needRestoreLocalVideo = false;
+
+    private boolean needRestoreLocalAudio = false;
+
+    /**
+     * 0 本地预览
+     * 1 大小视窗，优先预览对方
+     * 2 优先预览，优先预览自己
+     */
+    private int videoMode = 0;
+
+    /**
+     * 默认视频聊天模式
+     */
+    private int defaultVideoMode = 1;
 
     public AVChatController(Context context, AVChatData avChatData) {
         registerObserves(true);
@@ -45,38 +80,136 @@ public class AVChatController implements View.OnClickListener {
         this.mCallback = callback;
     }
 
-    public void call() {
+    public void setVideoModeCallback(AVChatControllerVideoModeCallback callback) {
+        this.mVideoModeCallback = callback;
+    }
+
+    public AVChatData getAVChatData() {
+        return mAVChatData;
+    }
+
+    public int getVideoMode() {
+        return videoMode;
+    }
+
+    //恢复视频和语音发送
+    public void resumeVideo() {
+        if (needRestoreLocalVideo) {
+            AVChatManager.getInstance().muteLocalVideo(false);
+            needRestoreLocalVideo = false;
+        }
+
+        if (needRestoreLocalAudio) {
+            AVChatManager.getInstance().muteLocalAudio(false);
+            needRestoreLocalAudio = false;
+        }
+
+    }
+
+    //关闭视频和语音发送.
+    public void pauseVideo() {
+        if (!AVChatManager.getInstance().isLocalVideoMuted()) {
+            AVChatManager.getInstance().muteLocalVideo(true);
+            needRestoreLocalVideo = true;
+        }
+
+        if (!AVChatManager.getInstance().isLocalAudioMuted()) {
+            AVChatManager.getInstance().muteLocalAudio(true);
+            needRestoreLocalAudio = true;
+        }
+    }
+
+    public void preview() {
         initAVCharManager();
+        if (mCallback != null) {
+            mCallback.preview();
+        }
+    }
+
+    public void call() {
+        AVChatSoundPlayer.instance().play(AVChatSoundPlayer.RingerTypeEnum.CONNECTING);
         AVChatManager.getInstance().call2(mAVChatData.getAccount(), mAVChatData.getChatType(), getAVChatNotifyOption(), mCallCallback);
         if (mCallback != null) {
-            mCallback.calling();
+            mCallback.call();
+        }
+    }
+
+    public void callIn() {
+        AVChatSoundPlayer.instance().play(AVChatSoundPlayer.RingerTypeEnum.RING);
+        if (mCallback != null) {
+            mCallback.callIn();
         }
     }
 
     public void accept() {
-        initAVCharManager();
         AVChatManager.getInstance().accept2(mAVChatData.getChatId(), mAcceptCallback);
         if (mCallback != null) {
-            mCallback.callIn();
+            mCallback.accept();
         }
     }
 
     public void hangUp() {
         AVChatManager.getInstance().hangUp2(mAVChatData.getChatId(), mHangUpCallback);
         destroy();
+        if (mCallback != null) {
+            mCallback.hangup();
+        }
+    }
+
+    public void switchVideo2Audio() {
+        Log.e("xue", "发起了切换请求");
+        AVChatManager.getInstance().sendControlCommand(mAVChatData.getChatId(), AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO, new AVChatCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e("xue", "切换请求 成功送达");
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Log.e("xue", "切换请求 成功失败");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e("xue", "切换请求 成功异常");
+            }
+        });
+    }
+
+    public void switchAudio2Video() {
+        Log.e("xue", "发起了切换请求");
+        AVChatManager.getInstance().sendControlCommand(mAVChatData.getChatId(), AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO, new AVChatCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e("xue", "切换请求 成功送达");
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Log.e("xue", "切换请求 成功失败");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e("xue", "切换请求 成功异常");
+            }
+        });
     }
 
     private void initAVCharManager() {
         AVChatManager.getInstance().enableRtc();
         AVChatManager.getInstance().setChannelProfile(AVChatChannelProfile.CHANNEL_PROFILE_DEFAULT);
         AVChatManager.getInstance().setParameters(mAVChatConfigs.getAvChatParameters());
+        AVChatManager.getInstance().setVideoQualityStrategy(true);
+        if (mAVChatVideoCapturer == null) {
+            mAVChatVideoCapturer = AVChatVideoCapturerFactory.createCameraCapturer();
+            AVChatManager.getInstance().setupVideoCapturer(mAVChatVideoCapturer);
+        }
+
         if (mAVChatData.getChatType() == AVChatType.VIDEO) {
             AVChatManager.getInstance().enableVideo();
-            if (mAVChatVideoCapturer == null) {
-                mAVChatVideoCapturer = AVChatVideoCapturerFactory.createCameraCapturer();
-                AVChatManager.getInstance().setupVideoCapturer(mAVChatVideoCapturer);
-            }
-            AVChatManager.getInstance().setVideoQualityStrategy(true);
             AVChatManager.getInstance().startVideoPreview();
             //开启预处理
 //            AVChatManager.getInstance().setParameter(AVChatParameters.KEY_VIDEO_FRAME_FILTER, true);
@@ -84,6 +217,7 @@ public class AVChatController implements View.OnClickListener {
     }
 
     private void destroy() {
+        AVChatSoundPlayer.instance().stop();
         if (mAVChatData.getChatType() == AVChatType.VIDEO) {
             AVChatManager.getInstance().stopVideoPreview();
             AVChatManager.getInstance().disableVideo();
@@ -127,7 +261,7 @@ public class AVChatController implements View.OnClickListener {
             Log.e("xue", "拨打通了");
             mAVChatData = avChatData;
             if (mCallback != null) {
-                mCallback.calling();
+                mCallback.callSuccess();
             }
         }
 
@@ -150,9 +284,8 @@ public class AVChatController implements View.OnClickListener {
         @Override
         public void onSuccess(Void aVoid) {
             Log.e("xue", "接听成功");
-
             if (mCallback != null) {
-                mCallback.calling();
+                mCallback.acceptSuccess();
             }
         }
 
@@ -175,6 +308,9 @@ public class AVChatController implements View.OnClickListener {
         @Override
         public void onSuccess(Void aVoid) {
             Log.e("xue", "挂断成功");
+            if (mCallback != null) {
+                mCallback.hangupSuccess();
+            }
         }
 
         @Override
@@ -194,9 +330,49 @@ public class AVChatController implements View.OnClickListener {
     private AVChatStateObserver mAVChatStateObserver = new SimpleAVChatStateObserver() {
 
         @Override
+        public void onDeviceEvent(int i, String s) {
+            super.onDeviceEvent(i, s);
+            Log.e("xue", "onDeviceEvent == " + i + "  " + s);
+        }
+
+        @Override
+        public void onFirstVideoFrameAvailable(String s) {
+            super.onFirstVideoFrameAvailable(s);
+            Log.e("xue", "onFirstVideoFrameRendered == " + s);
+        }
+
+        @Override
         public void onFirstVideoFrameRendered(String s) {
             super.onFirstVideoFrameRendered(s);
-            Log.e("xue", "onFirstVideoFrameRendered  == " + s);
+            Log.e("xue", "onFirstVideoFrameRendered == " + s);
+            if (TextUtils.equals(BaseApplication.get().getUserId(), s)) {
+                if (mCallback != null) {
+                    mCallback.firstFrame();
+                }
+            }
+        }
+
+        @Override
+        public void onUserJoined(String s) {
+            super.onUserJoined(s);
+            AVChatSoundPlayer.instance().stop();
+            Log.e("xue", "onUserJoined == " + s);
+            if (mCallback != null) {
+                mCallback.userJoined();
+            }
+            videoMode = defaultVideoMode;
+            if (mVideoModeCallback != null) {
+                mVideoModeCallback.change(videoMode);
+            }
+        }
+
+        @Override
+        public void onUserLeave(String s, int i) {
+            super.onUserLeave(s, i);
+            Log.e("xue", "onUserLeave == " + s);
+            if (mCallback != null) {
+                mCallback.userLeave();
+            }
         }
     };
 
@@ -208,7 +384,7 @@ public class AVChatController implements View.OnClickListener {
         @Override
         public void onEvent(AVChatCommonEvent avChatCommonEvent) {
             if (avChatCommonEvent.getEvent() == AVChatEventType.PEER_HANG_UP) {
-
+                hangUp();
             }
         }
     };
@@ -221,11 +397,21 @@ public class AVChatController implements View.OnClickListener {
         @Override
         public void onEvent(AVChatCalleeAckEvent avChatCalleeAckEvent) {
             if (avChatCalleeAckEvent.getEvent() == AVChatEventType.CALLEE_ACK_AGREE) {//同意接通
-
+                if (mCallback != null) {
+                    mCallback.acceptSuccess();
+                }
             } else if (avChatCalleeAckEvent.getEvent() == AVChatEventType.CALLEE_ACK_REJECT) {//拒绝接听
-
+                AVChatSoundPlayer.instance().play(AVChatSoundPlayer.RingerTypeEnum.PEER_REJECT);
+                if (mCallback != null) {
+                    mCallback.callReject();
+                }
+                mHandler.sendEmptyMessageDelayed(actionHangUp, 4200);
             } else if (avChatCalleeAckEvent.getEvent() == AVChatEventType.CALLEE_ACK_BUSY) {//接通忙
-
+                AVChatSoundPlayer.instance().play(AVChatSoundPlayer.RingerTypeEnum.PEER_BUSY);
+                if (mCallback != null) {
+                    mCallback.callBusy();
+                }
+                mHandler.sendEmptyMessageDelayed(actionHangUp, 3200);
             }
         }
     };
@@ -237,7 +423,44 @@ public class AVChatController implements View.OnClickListener {
 
         @Override
         public void onEvent(AVChatControlEvent avChatControlEvent) {
+            byte command = avChatControlEvent.getControlCommand();
+            Log.e("xue", "command  == " + command);
 
+            if (command == AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO) {
+                Log.e("xue", "接到 切换请求");
+                if (mCallback != null) {
+                    mCallback.switchVideo2Audio();
+                }
+            } else if (command == AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_AGREE) {
+                Log.e("xue", "接到 切换同意请求");
+
+                if (mCallback != null) {
+                    mCallback.switchVideo2AudioAgree();
+                }
+            } else if (command == AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_REJECT) {
+                Log.e("xue", "接到 切换拒绝请求");
+
+                if (mCallback != null) {
+                    mCallback.switchVideo2AudioReject();
+                }
+            } else if (command == AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO) {
+                Log.e("xue", "接到 切换请求");
+                if (mCallback != null) {
+                    mCallback.switchAudio2Video();
+                }
+            } else if (command == AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_AGREE) {
+                Log.e("xue", "接到 切换同意请求");
+
+                if (mCallback != null) {
+                    mCallback.switchAudio2VideoAgree();
+                }
+            } else if (command == AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_REJECT) {
+                Log.e("xue", "接到 切换拒绝请求");
+
+                if (mCallback != null) {
+                    mCallback.switchAudio2VideoReject();
+                }
+            }
         }
     };
 
@@ -248,7 +471,6 @@ public class AVChatController implements View.OnClickListener {
 
         @Override
         public void onEvent(AVChatOnlineAckEvent avChatOnlineAckEvent) {
-
         }
     };
 }

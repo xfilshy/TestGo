@@ -1,9 +1,5 @@
 apply plugin: 'com.android.application'
 
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
@@ -24,30 +20,64 @@ android {
     }
 
     buildTypes {
+        /**
+         * 调试模式
+         * */
+        debug {
+
+            /**
+             * 打印Log
+             * */
+//            buildConfigField "boolean", "LOG_DEBUG", "true"
+
+            debuggable true
+
+            /**
+             * 压缩安装包
+             * */
+//            zipAlignEnabled true
+
+            /**
+             * 移除无用的resource文件
+             * */
+//            shrinkResources true
+
+            /**
+             * 是否进行混淆
+             * */
+            minifyEnabled false
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
-//    dexOptions {
-//        javaMaxHeapSize "4g"
-//    }
+    /**
+     * lint检查设置
+     * */
+    lintOptions {
+
+        /**
+         * 放弃提示错误
+         * */
+        abortOnError false
+    }
+
     sourceSets {
         main {
-            res.srcDirs = ['src/main/res', 'src/main/res/drawable-xhdpi', 'src/main/res/drawable-xxhdpi']
+            res.srcDirs = ['src/main/res', 'src/main/res/drawable-xhdpi', 'src/main/res/drawable-xxhdpi', 'src/main/res/drawable-xxxhdpi']
         }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     api project(':http_lib')
     api project(':image_cache_lib')
     api project(':threadpoollib')
     api project(':toolslib')
     api project(':support_lib')
     implementation 'com.android.support:support-v4:27.0.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }

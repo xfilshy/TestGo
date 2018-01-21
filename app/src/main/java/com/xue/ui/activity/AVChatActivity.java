@@ -1,18 +1,27 @@
 package com.xue.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.netease.nimlib.sdk.avchat.AVChatCallback;
+import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.xue.R;
+import com.xue.netease.AVChatControlCommand;
 import com.xue.netease.SimpleAVChatData;
 import com.xue.ui.fragment.AudioChatFragment;
 import com.xue.ui.fragment.VideoChatFragment;
@@ -21,7 +30,6 @@ import com.xue.ui.fragment.VideoChatFragment;
 /**
  * Created by xfilshy on 2018/1/18.
  */
-
 public class AVChatActivity extends BaseActivity implements AVChatControllerCallback, View.OnClickListener {
 
     public static void launchVideoCall(Context context, String account) {
@@ -64,17 +72,26 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     private AudioChatFragment mAudioChatFragment;
 
+    private ImageView mForegroundImageView;
+
     private Button mChangeButton;
 
-    private Button mHangupButton;
+    private ImageView mHangupButton;
 
-    private Button mAcceptButton;
+    private View mMiddleSpace;
+
+    private ImageView mAcceptButton;
 
     private Button mRecordButton;
+
+    private int flag = -1;
+
+//    private AVChatControllerCallback mCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dismissKeyguard();
         setContentView(R.layout.activity_avchat);
         readExtra(getIntent());
         findView();
@@ -82,9 +99,38 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
         start();
     }
 
+    // 设置窗口flag，亮屏并且解锁/覆盖在锁屏界面上
+    private void dismissKeyguard() {
+        getWindow().addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+        );
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAVChatController.resumeVideo();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAVChatController.pauseVideo();
+    }
+
     private void init() {
         mAVChatController = new AVChatController(this, mAVChatData);
         mAVChatController.setCallback(this);
+
+        mAVChatController.preview();
+        if (TextUtils.equals("call", mAction)) {
+            mAVChatController.call();
+        } else if (TextUtils.equals("accept", mAction)) {
+            mAVChatController.callIn();
+        }
     }
 
     private void readExtra(Intent intent) {
@@ -95,8 +141,10 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     private void findView() {
         mChangeButton = findViewById(R.id.change);
         mAcceptButton = findViewById(R.id.accept);
+        mMiddleSpace = findViewById(R.id.middleSpace);
         mHangupButton = findViewById(R.id.hangUp);
         mRecordButton = findViewById(R.id.record);
+        mForegroundImageView = findViewById(R.id.foreground);
 
         mChangeButton.setOnClickListener(this);
         mAcceptButton.setOnClickListener(this);
@@ -117,13 +165,15 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
      */
     private void goVideoFragment() {
         if (mVideoChatFragment == null) {
-            mVideoChatFragment = new VideoChatFragment(mAVChatController, mAction);
+            mVideoChatFragment = new VideoChatFragment(mAVChatController);
         }
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_root, mVideoChatFragment);
         transaction.commit();
+
+        flag = 1;
     }
 
     /**
@@ -131,13 +181,15 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
      */
     private void goAudioFragment() {
         if (mAudioChatFragment == null) {
-            mAudioChatFragment = new AudioChatFragment(mAVChatController, mAction);
+            mAudioChatFragment = new AudioChatFragment(mAVChatController);
         }
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_root, mAudioChatFragment);
         transaction.commit();
+
+        flag = 2;
     }
 
     @Override
@@ -146,112 +198,244 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     }
 
     @Override
+    public void onBackPressed() {
+    }
+
+    @Override
     public void onClick(View view) {
         if (mChangeButton == view) {
-
+            if (flag == 1) {
+                mAVChatController.switchVideo2Audio();
+            } else if (flag == 2) {
+                mAVChatController.switchAudio2Video();
+            }
         } else if (mHangupButton == view) {
             mAVChatController.hangUp();
-            finish();
         } else if (mAcceptButton == view) {
-
+            mAVChatController.accept();
         } else if (mRecordButton == view) {
-
+            AVChatManager.getInstance().muteLocalAudio(true);
         }
     }
 
     @Override
-    public void calling() {
+    public void preview() {
+    }
+
+    @Override
+    public void call() {
         mChangeButton.setVisibility(View.GONE);
         mHangupButton.setVisibility(View.VISIBLE);
+        mMiddleSpace.setVisibility(View.GONE);
         mAcceptButton.setVisibility(View.GONE);
         mRecordButton.setVisibility(View.GONE);
+    }
 
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mChangeButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = -1;
+    @Override
+    public void callSuccess() {
+    }
 
-        layoutParams = (ConstraintLayout.LayoutParams) mHangupButton.getLayoutParams();
-        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = -1;
+    @Override
+    public void callReject() {
+    }
 
-        layoutParams = (ConstraintLayout.LayoutParams) mAcceptButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = -1;
-
-        layoutParams = (ConstraintLayout.LayoutParams) mRecordButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = -1;
+    @Override
+    public void callBusy() {
     }
 
     @Override
     public void callIn() {
         mChangeButton.setVisibility(View.GONE);
         mHangupButton.setVisibility(View.VISIBLE);
+        mMiddleSpace.setVisibility(View.VISIBLE);
         mAcceptButton.setVisibility(View.VISIBLE);
         mRecordButton.setVisibility(View.GONE);
-
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mChangeButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = -1;
-
-        layoutParams = (ConstraintLayout.LayoutParams) mHangupButton.getLayoutParams();
-        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = R.id.accept;
-        layoutParams.leftToRight = -1;
-
-        layoutParams = (ConstraintLayout.LayoutParams) mAcceptButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = R.id.hangUp;
-
-        layoutParams = (ConstraintLayout.LayoutParams) mRecordButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = -1;
     }
 
     @Override
     public void accept() {
+    }
+
+    @Override
+    public void acceptSuccess() {
         mChangeButton.setVisibility(View.VISIBLE);
         mHangupButton.setVisibility(View.VISIBLE);
+        mMiddleSpace.setVisibility(View.GONE);
         mAcceptButton.setVisibility(View.GONE);
         mRecordButton.setVisibility(View.VISIBLE);
+    }
 
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mChangeButton.getLayoutParams();
-        layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = R.id.hangUp;
-        layoutParams.leftToRight = -1;
+    @Override
+    public void firstFrame() {
+        mForegroundImageView.setVisibility(View.GONE);
+    }
 
-        layoutParams = (ConstraintLayout.LayoutParams) mHangupButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = R.id.record;
-        layoutParams.leftToRight = R.id.change;
+    @Override
+    public void userJoined() {
+    }
 
-        layoutParams = (ConstraintLayout.LayoutParams) mAcceptButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = -1;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = -1;
+    @Override
+    public void userLeave() {
+    }
 
-        layoutParams = (ConstraintLayout.LayoutParams) mRecordButton.getLayoutParams();
-        layoutParams.leftToLeft = -1;
-        layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.rightToLeft = -1;
-        layoutParams.leftToRight = R.id.hangUp;
+    @Override
+    public void hangup() {
+        finish();
+    }
+
+    @Override
+    public void hangupSuccess() {
+    }
+
+    @Override
+    public void switchVideo2Audio() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("询问")
+                .setMessage("对方请求将视频通话切换为语音通话")
+                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.e("xue", "发送  拒绝请求");
+                        Log.e("xue", "mAVChatData.getChatId() = " + mAVChatData.getChatId());
+                        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_REJECT, new AVChatCallback<Void>() {
+
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.e("xue", "发送  拒绝请求 成功");
+                            }
+
+                            @Override
+                            public void onFailed(int i) {
+                                Log.e("xue", "发送  拒绝请求 失败 i = " + i);
+                            }
+
+                            @Override
+                            public void onException(Throwable throwable) {
+                                Log.e("xue", "发送  拒绝请求 异常");
+                            }
+                        });
+                    }
+                })
+                .setPositiveButton("同意", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.e("xue", "发送  同意请求");
+                        Log.e("xue", "mAVChatData.getChatId() = " + mAVChatData.getChatId());
+                        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_AGREE, new AVChatCallback<Void>() {
+
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //TODO 切换成语音 等待连接
+                                Log.e("xue", "发送  同意请求 成功");
+
+                                AVChatManager.getInstance().stopVideoPreview();
+                                AVChatManager.getInstance().disableVideo();
+                                goAudioFragment();
+                            }
+
+                            @Override
+                            public void onFailed(int i) {
+                                Log.e("xue", "发送  同意请求 失败 i = " + i);
+                            }
+
+                            @Override
+                            public void onException(Throwable throwable) {
+                                Log.e("xue", "发送  同意请求 异常");
+                            }
+                        });
+                    }
+                })
+                .setCancelable(false)
+                .create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void switchVideo2AudioAgree() {
+        Toast.makeText(this, "对方接受切换为语音聊天", Toast.LENGTH_SHORT).show();
+
+        AVChatManager.getInstance().stopVideoPreview();
+        AVChatManager.getInstance().disableVideo();
+        goAudioFragment();
+    }
+
+    @Override
+    public void switchVideo2AudioReject() {
+        Toast.makeText(this, "对方拒绝切换为语音聊天", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void switchAudio2Video() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("询问")
+                .setMessage("对方请求将视频通话切换为语音通话")
+                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.e("xue", "发送  拒绝请求");
+                        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_REJECT, new AVChatCallback<Void>() {
+
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.e("xue", "发送  拒绝请求 成功");
+                            }
+
+                            @Override
+                            public void onFailed(int i) {
+                                Log.e("xue", "发送  拒绝请求 失败 i = " + i);
+                            }
+
+                            @Override
+                            public void onException(Throwable throwable) {
+                                Log.e("xue", "发送  拒绝请求 异常");
+                            }
+                        });
+                    }
+                })
+                .setPositiveButton("同意", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.e("xue", "发送  同意请求");
+                        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_AGREE, new AVChatCallback<Void>() {
+
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //TODO 切换成语音 等待连接
+                                Log.e("xue", "发送  同意请求 成功");
+
+                                AVChatManager.getInstance().enableVideo();
+                                AVChatManager.getInstance().startVideoPreview();
+                                goVideoFragment();
+                            }
+
+                            @Override
+                            public void onFailed(int i) {
+                                Log.e("xue", "发送  同意请求 失败 i = " + i);
+                            }
+
+                            @Override
+                            public void onException(Throwable throwable) {
+                                Log.e("xue", "发送  同意请求 异常");
+                            }
+                        });
+                    }
+                })
+                .setCancelable(false)
+                .create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void switchAudio2VideoAgree() {
+        Toast.makeText(this, "对方接受切换为视频聊天", Toast.LENGTH_SHORT).show();
+
+        AVChatManager.getInstance().enableVideo();
+        AVChatManager.getInstance().startVideoPreview();
+        goVideoFragment();
+    }
+
+    @Override
+    public void switchAudio2VideoReject() {
+        Toast.makeText(this, "对方拒绝切换为视频聊天", Toast.LENGTH_SHORT).show();
     }
 }

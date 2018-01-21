@@ -10,7 +10,7 @@ public class UserBase implements BaseBean, UserToken {
 
     private String id;
 
-    private String name;
+    private String cellphone;
 
     private String token;
 
@@ -22,22 +22,12 @@ public class UserBase implements BaseBean, UserToken {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCellphone() {
+        return cellphone;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
     }
 
     @Override
@@ -48,5 +38,15 @@ public class UserBase implements BaseBean, UserToken {
     @Override
     public String getToken() {
         return token;
+    }
+
+    @Override
+    public void setDataKey(String dataKey) {
+
+    }
+
+    @Override
+    public String getDataKey() {
+        return null;
     }
 }

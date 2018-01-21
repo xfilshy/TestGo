@@ -81,7 +81,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     if (mUserMinor != null) {
-                        AVChatActivity.launchVideoCall(view.getContext(), mUserMinor.getId());
+                        AVChatActivity.launchVideoCall(view.getContext(), mUserMinor.getUserBase().getId());
                     }
                 }
             });
@@ -89,11 +89,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         protected void fill(UserMinor userMinor) {
             this.mUserMinor = userMinor;
-            name.setText("路伟");
+            name.setText(mUserMinor.getUserBase().getCellphone());
             ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo);
             motto.setText("就是赚钱");
         }
-
-
     }
 }

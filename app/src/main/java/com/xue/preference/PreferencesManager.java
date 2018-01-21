@@ -54,7 +54,7 @@ public class PreferencesManager {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("id", userBase.getId());
-        editor.putString("name", userBase.getName());
+        editor.putString("cellphone", userBase.getCellphone());
         editor.putString("token", userBase.getToken());
         editor.commit();
     }
@@ -62,12 +62,12 @@ public class PreferencesManager {
     public UserBase getUser() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
         String id = sharedPreferences.getString("id", null);
-        String name = sharedPreferences.getString("name", null);
+        String name = sharedPreferences.getString("cellphone", null);
         String token = sharedPreferences.getString("token", null);
         if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(name)) {
             UserBase userBase = new UserBase();
             userBase.setId(id);
-            userBase.setName(name);
+            userBase.setCellphone(name);
             userBase.setToken(token);
 
             return userBase;

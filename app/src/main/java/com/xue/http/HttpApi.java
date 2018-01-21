@@ -5,6 +5,7 @@ import android.content.Context;
 import com.elianshang.tools.DeviceTool;
 import com.xue.BaseApplication;
 import com.xue.bean.UserBase;
+import com.xue.bean.UserMinorList;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseHttpParameter;
 import com.xue.http.hook.BaseKVP;
@@ -13,6 +14,7 @@ import com.xue.http.impl.DefaultKVPBean;
 import com.xue.http.okhttp.OkHttpHandler;
 import com.xue.http.parse.BaseParser;
 import com.xue.parsers.UserBaseParser;
+import com.xue.parsers.UserMinorListParser;
 import com.xue.tools.AppTool;
 import com.xue.tools.ConfigTool;
 import com.xue.tools.SecretTool;
@@ -129,6 +131,10 @@ public class HttpApi {
         String cellphone = "cellphone";
 
         String verifyCode = "verify_code";
+    }
+
+    private interface RecommendList {
+        String _funcation = "/home/info/recommendlist";
     }
 
     private static void build() {
@@ -287,8 +293,19 @@ public class HttpApi {
                 new DefaultKVPBean(PhoneLogin.cellphone, cellphone),
                 new DefaultKVPBean(PhoneLogin.verifyCode, verifyCode)
         );
-        int type = BaseHttpParameter.Type.GET;
+        int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<UserBaseParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserBaseParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 首页推荐列表
+     */
+    public static DataHull<UserMinorList> recommendList() {
+        String url = base_url + RecommendList._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<UserMinorListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new UserMinorListParser(), 0, secretKey);
 
         return request(parameter);
     }

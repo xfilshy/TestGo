@@ -92,6 +92,9 @@ public class MainActivity extends BaseActivity {
         public void onEvent(AVChatData avChatData) {
             String extra = avChatData.getExtra();
             Log.e("Extra", "Extra Message->" + extra);
+            Log.e("Extra", "Extra Message->" + avChatData.getChatType());
+            Log.e("Extra", "Extra Message->" + avChatData.getChatId());
+            AVChatActivity.launchVideoAccept(MainActivity.this, avChatData);
         }
     };
 }

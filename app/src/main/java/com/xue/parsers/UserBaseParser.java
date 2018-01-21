@@ -16,10 +16,20 @@ public class UserBaseParser extends MasterParser<UserBase> {
 
         if (data.has("user_info")) {
             data = data.getJSONObject("user_info");
+            userBase = parseBase(data);
+        }
+
+        return userBase;
+    }
+
+    public UserBase parseBase(JSONObject data) throws Exception {
+        UserBase userBase = null;
+
+        if (data != null) {
             userBase = new UserBase();
-            userBase.setId(getString(data, "uid"));
-            userBase.setToken(getString(data, "token"));
-            userBase.setName(getString(data, "cellphone"));
+            userBase.setId(optString(data, "uid"));
+            userBase.setToken(optString(data, "token"));
+            userBase.setCellphone(optString(data, "cellphone"));
         }
 
         return userBase;
