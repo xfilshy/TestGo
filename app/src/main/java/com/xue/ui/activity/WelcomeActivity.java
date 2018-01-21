@@ -41,7 +41,7 @@ public class WelcomeActivity extends BaseActivity {
         setContentView(R.layout.activity_welcome);
 
         if (checkLogin()) {
-            handler.sendEmptyMessageDelayed(2, 500);
+            handler.sendEmptyMessageDelayed(2, 2000);
         }
     }
 

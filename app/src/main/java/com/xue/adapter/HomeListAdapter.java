@@ -23,8 +23,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
     private List<UserMinor> dataList = null;
 
-    public HomeListAdapter() {
+    private int imageWidth = 0;
 
+    public HomeListAdapter() {
     }
 
     public HomeListAdapter(List<UserMinor> dataList) {
@@ -38,7 +39,16 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(parent);
+        if (imageWidth == 0) {
+            int sw = UITool.getScreenWidth(parent.getContext());
+            int dx = UITool.dipToPx(parent.getContext(), 4);
+            if ((sw - dx) % 2 == 0) {
+                imageWidth = (sw - dx) / 2;
+            } else {
+                imageWidth = (sw - dx + 1) / 2;
+            }
+        }
+        return new ViewHolder(parent, imageWidth);
     }
 
     @Override
@@ -64,12 +74,12 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         private UserMinor mUserMinor;
 
-        public ViewHolder(ViewGroup itemView) {
+        public ViewHolder(ViewGroup itemView, int imageWidth) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_home_list, itemView, false));
-            findView();
+            findView(imageWidth);
         }
 
-        private void findView() {
+        private void findView(int imageWidth) {
             name = itemView.findViewById(R.id.name);
             photo = itemView.findViewById(R.id.photo);
             motto = itemView.findViewById(R.id.motto);

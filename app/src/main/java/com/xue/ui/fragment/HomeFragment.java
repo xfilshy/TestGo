@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elianshang.tools.UITool;
 import com.xue.R;
 import com.xue.adapter.HomeListAdapter;
 import com.xue.asyns.HttpAsyncTask;
@@ -16,6 +17,7 @@ import com.xue.bean.UserMinor;
 import com.xue.bean.UserMinorList;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
+import com.xue.ui.views.HomeGridItemDecoration;
 
 import java.util.List;
 
@@ -48,6 +50,9 @@ public class HomeFragment extends BaseFragment {
 
     private void findView() {
         mRecyclerView = getView().findViewById(R.id.recyclerview);
+
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        mRecyclerView.addItemDecoration(new HomeGridItemDecoration(UITool.dipToPx(getActivity(), 4), 2));
     }
 
     private void fillRecyclerView() {
@@ -60,7 +65,6 @@ public class HomeFragment extends BaseFragment {
         }
 
         mAdapter.setDataList(mDataList);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mAdapter.notifyDataSetChanged();
     }
 
