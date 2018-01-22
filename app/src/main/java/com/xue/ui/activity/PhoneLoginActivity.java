@@ -1,5 +1,6 @@
 package com.xue.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.UserBase;
@@ -23,7 +22,7 @@ import com.xue.http.impl.DataHull;
 
 public class PhoneLoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static void launch(BaseActivity activity) {
+    public static void launch(Activity activity) {
         if (activity == null) {
             return;
         }
@@ -99,9 +98,9 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
 
         private void handleUser(UserBase userBase) {
             if (userBase != null) {
-                Toast.makeText(PhoneLoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                BaseApplication.get().setUser(userBase);
-                setResult(RESULT_OK);
+                Intent intent = new Intent();
+                intent.putExtra("userBase", userBase);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         }

@@ -1,5 +1,6 @@
 package com.xue.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,11 +24,10 @@ import com.xue.ui.fragment.HomeFragment;
 
 public class MainActivity extends BaseActivity {
 
-    public static void launch(BaseActivity activity) {
+    public static void launch(Activity activity) {
         if (activity == null) {
             return;
         }
-
 
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
