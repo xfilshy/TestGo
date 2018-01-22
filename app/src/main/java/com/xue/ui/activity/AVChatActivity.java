@@ -48,17 +48,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
         context.startActivity(intent);
     }
 
-    public static void launchVideoAccept(Context context, AVChatData avChatData) {
+    public static void launchAccept(Context context, AVChatData avChatData) {
         Intent intent = new Intent(context, AVChatActivity.class);
         intent.putExtra("avChatData", avChatData);
-        intent.putExtra("action", "accept");
-        context.startActivity(intent);
-    }
-
-    public static void launchAudioAccept(Context context, AVChatData avChatData) {
-        Intent intent = new Intent(context, AVChatActivity.class);
-        intent.putExtra("avChatData", avChatData);
-        intent.putExtra("action", "accept");
         context.startActivity(intent);
     }
 
@@ -85,8 +77,6 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     private Button mRecordButton;
 
     private int flag = -1;
-
-//    private AVChatControllerCallback mCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

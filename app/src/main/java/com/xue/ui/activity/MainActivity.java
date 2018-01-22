@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity {
             Log.e("Extra", "Extra Message->" + extra);
             Log.e("Extra", "Extra Message->" + avChatData.getChatType());
             Log.e("Extra", "Extra Message->" + avChatData.getChatId());
-            AVChatActivity.launchVideoAccept(MainActivity.this, avChatData);
+            AVChatActivity.launchAccept(MainActivity.this, avChatData);
         }
     };
 }
