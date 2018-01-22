@@ -74,6 +74,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         private TextView price;
 
+        private TextView vip;
+
         private UserMinor mUserMinor;
 
         public ViewHolder(ViewGroup itemView, int imageWidth) {
@@ -86,7 +88,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
             photo = itemView.findViewById(R.id.photo);
             position = itemView.findViewById(R.id.position);
             price = itemView.findViewById(R.id.price);
-
+            vip = itemView.findViewById(R.id.vip);
             UITool.zoomView(imageWidth, imageWidth, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +104,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         protected void fill(UserMinor userMinor) {
             this.mUserMinor = userMinor;
-//            name.setText(mUserMinor.getUserBase().getCellphone());
             ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo);
         }
     }

@@ -17,13 +17,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/position"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@id/position"
         android:layout_marginBottom="3dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:lines="1"
         android:text="陆伟"
         android:textColor="@color/white"
         android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/vip"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignBaseline="@id/name"
+        android:layout_toRightOf="@id/name"
+        android:background="@drawable/primary_oval"
+        android:gravity="center"
+        android:text="V"
+        android:textColor="@color/white"
+        android:textSize="12dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@id/position"
@@ -37,7 +50,6 @@
         android:text="百度资深研发工程师"
         android:textColor="@color/white"
         android:textSize="10dp" />
-
 
     <TextView
         android:id="@+id/price"
