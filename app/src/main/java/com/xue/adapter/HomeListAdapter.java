@@ -41,7 +41,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (imageWidth == 0) {
             int sw = UITool.getScreenWidth(parent.getContext());
-            int dx = UITool.dipToPx(parent.getContext(), 4);
+            int dx = UITool.dipToPx(parent.getContext(), 3);
             if ((sw - dx) % 2 == 0) {
                 imageWidth = (sw - dx) / 2;
             } else {
@@ -70,7 +70,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         private ImageView photo;
 
-        private TextView motto;
+        private TextView position;
+
+        private TextView price;
 
         private UserMinor mUserMinor;
 
@@ -82,9 +84,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         private void findView(int imageWidth) {
             name = itemView.findViewById(R.id.name);
             photo = itemView.findViewById(R.id.photo);
-            motto = itemView.findViewById(R.id.motto);
+            position = itemView.findViewById(R.id.position);
+            price = itemView.findViewById(R.id.price);
 
-            UITool.zoomViewByWidth(160, 160, photo);
+            UITool.zoomView(imageWidth, imageWidth, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
 
@@ -99,9 +102,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         protected void fill(UserMinor userMinor) {
             this.mUserMinor = userMinor;
-            name.setText(mUserMinor.getUserBase().getCellphone());
+//            name.setText(mUserMinor.getUserBase().getCellphone());
             ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo);
-            motto.setText("就是赚钱");
         }
     }
 }

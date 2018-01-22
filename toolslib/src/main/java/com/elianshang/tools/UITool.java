@@ -51,6 +51,23 @@ public class UITool {
     }
 
     /**
+     * 缩放控件按照屏幕宽度
+     */
+    public static void zoomView(int w, int h, View view) {
+        if (view == null) {
+            return;
+        }
+
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+
+        if (params == null) {
+            return;
+        }
+        params.width = w;
+        params.height = h;
+    }
+
+    /**
      * 将一倍尺寸缩放到当前屏幕大小的尺寸（宽）
      */
     public static int zoomByWidth(Context context, int w) {
