@@ -198,6 +198,23 @@ public class AVChatController implements View.OnClickListener {
         });
     }
 
+
+    public boolean startAVRecording() {
+        return AVChatManager.getInstance().startAVRecording(mAVChatData.getAccount()) && AVChatManager.getInstance().startAVRecording(BaseApplication.get().getUserId());
+    }
+
+    public boolean stopAVRecording() {
+        return AVChatManager.getInstance().stopAVRecording(mAVChatData.getAccount()) && AVChatManager.getInstance().stopAVRecording(BaseApplication.get().getUserId());
+    }
+
+    public boolean startAudioRecording() {
+        return AVChatManager.getInstance().startAudioRecording();
+    }
+
+    public boolean stopAudioRecording() {
+        return AVChatManager.getInstance().stopAudioRecording();
+    }
+
     private void initAVCharManager() {
         AVChatManager.getInstance().enableRtc();
         AVChatManager.getInstance().setChannelProfile(AVChatChannelProfile.CHANNEL_PROFILE_DEFAULT);
@@ -373,6 +390,19 @@ public class AVChatController implements View.OnClickListener {
             if (mCallback != null) {
                 mCallback.userLeave();
             }
+        }
+
+        @Override
+        public void onAVRecordingCompletion(String s, String s1) {
+            super.onAVRecordingCompletion(s, s1);
+            Log.e("xue", "onAVRecordingCompletion  account == " + s);
+            Log.e("xue", "onAVRecordingCompletion  path == " + s1);
+        }
+
+        @Override
+        public void onAudioRecordingCompletion(String s) {
+            super.onAudioRecordingCompletion(s);
+            Log.e("xue", "onAudioRecordingCompletion  path == " + s);
         }
     };
 

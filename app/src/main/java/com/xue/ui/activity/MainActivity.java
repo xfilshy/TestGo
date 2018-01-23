@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.View;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -23,7 +24,7 @@ import com.xue.ui.fragment.HomeFragment;
  * Created by xfilshy on 2018/1/17.
  */
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static void launch(Activity activity) {
         if (activity == null) {
@@ -62,6 +63,7 @@ public class MainActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
             actionBar.setCustomView(R.layout.actionbar_home);//设置自定义的布局：actionbar_custom
+            actionBar.getCustomView().findViewById(R.id.action_account).setOnClickListener(this);
         }
 
         addHomePage();
@@ -69,6 +71,7 @@ public class MainActivity extends BaseActivity {
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(mOnlineStatusObserver, true);
         AVChatManager.getInstance().observeIncomingCall(mIncomingCallObserver, true);
     }
+
 
     @Override
     protected void onDestroy() {
@@ -105,4 +108,11 @@ public class MainActivity extends BaseActivity {
             AVChatActivity.launchAccept(MainActivity.this, avChatData);
         }
     };
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.action_account) {
+            MyActivity.launch(this);
+        }
+    }
 }

@@ -51,6 +51,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     public static void launchAccept(Context context, AVChatData avChatData) {
         Intent intent = new Intent(context, AVChatActivity.class);
         intent.putExtra("avChatData", avChatData);
+        intent.putExtra("action", "accept");
         context.startActivity(intent);
     }
 
@@ -76,6 +77,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     private Button mRecordButton;
 
+    /**
+     *
+     * */
     private int flag = -1;
 
     @Override
@@ -204,7 +208,34 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
         } else if (mAcceptButton == view) {
             mAVChatController.accept();
         } else if (mRecordButton == view) {
-            AVChatManager.getInstance().muteLocalAudio(true);
+            if (TextUtils.equals("录制", mRecordButton.getText().toString())) {
+                boolean result = false;
+                if (flag == 1) {
+                    result = mAVChatController.startAVRecording();
+                } else if (flag == 2) {
+                    result = mAVChatController.startAudioRecording();
+                }
+                if (result) {
+                    Toast.makeText(this, "开始录制", Toast.LENGTH_SHORT).show();
+                    mRecordButton.setText("停止");
+                } else {
+                    Toast.makeText(this, "开始录制失败", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                boolean result = false;
+                if (flag == 1) {
+                    result = mAVChatController.stopAVRecording();
+                } else if (flag == 2) {
+                    result = mAVChatController.stopAudioRecording();
+                }
+                if (result) {
+                    Toast.makeText(this, "结束录制", Toast.LENGTH_SHORT).show();
+                    mRecordButton.setText("录制");
+                } else {
+                    Toast.makeText(this, "结束录制失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
         }
     }
 

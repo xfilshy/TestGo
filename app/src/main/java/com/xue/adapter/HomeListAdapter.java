@@ -76,8 +76,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
         private TextView vip;
 
-        private UserMinor mUserMinor;
-
         public ViewHolder(ViewGroup itemView, int imageWidth) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_home_list, itemView, false));
             findView(imageWidth);
@@ -91,20 +89,22 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
             vip = itemView.findViewById(R.id.vip);
             UITool.zoomView(imageWidth, imageWidth, itemView);
 
+        }
+
+        protected void fill(final UserMinor userMinor) {
+            name.setText(userMinor.getUserBase().getCellphone());
+            ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo);
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
-                    if (mUserMinor != null) {
-                        AVChatActivity.launchVideoCall(view.getContext(), mUserMinor.getUserBase().getId());
+                    if (userMinor != null) {
+                        AVChatActivity.launchVideoCall(view.getContext(), userMinor.getUserBase().getId());
                     }
                 }
             });
-        }
-
-        protected void fill(UserMinor userMinor) {
-            this.mUserMinor = userMinor;
-            ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo);
         }
     }
 }

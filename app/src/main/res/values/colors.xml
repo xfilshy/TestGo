@@ -9,7 +9,9 @@
     <color name="white_tr_50">#80ffffff</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="black_tr_10">#19000000</color>
+    <color name="black_tr_10">#20000000</color>
+    <color name="black_tr_60">#9a000000</color>
+    <color name="black_tr_80">#cd000000</color>
     <color name="black_light">#515151</color>
     <color name="white_light">#f5f5f5</color>
     <color name="white_dark">#ededed</color>
@@ -34,7 +36,9 @@
     <color name="pink_dark">#FFFFC3C3</color>
     <color name="pink_deep">#FFCAD4</color>
     <color name="brown">#FFFAE7</color>
-    <color name="blue">#5894E6</color>
+    <color name="blue_light">#4b99df</color>
+    <color name="green_dark">#16ab52</color>
+    <color name="yellow">#fff710</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>

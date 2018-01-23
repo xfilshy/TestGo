@@ -123,13 +123,17 @@
         <activity android:name=".ui.activity.PhoneLoginActivity" />
         <activity
             android:name=".ui.activity.MainActivity"
+            android:label=""
             android:launchMode="singleTask"
-            android:logo="@drawable/red_oval"
-            android:label=""/>
+            android:logo="@drawable/red_oval" />
         <activity
             android:name=".ui.activity.AVChatActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/FullscreenTheme" />
+
+        <activity
+            android:name=".ui.activity.MyActivity"
+            android:theme="@style/TransparentFullscreenTheme" />
 
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
