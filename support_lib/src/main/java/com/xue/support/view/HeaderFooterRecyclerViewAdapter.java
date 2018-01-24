@@ -160,11 +160,11 @@ public class HeaderFooterRecyclerViewAdapter<T extends RecyclerView.Adapter> ext
         return i < mFooters.size() ? mFooters.get(i) : null;
     }
 
-    private boolean isHeader(int viewType) {
+    protected boolean isHeader(int viewType) {
         return viewType >= HEADER_VIEW_TYPE && viewType < (HEADER_VIEW_TYPE + mHeaders.size());
     }
 
-    private boolean isFooter(int viewType) {
+    protected boolean isFooter(int viewType) {
         return viewType >= FOOTER_VIEW_TYPE && viewType < (FOOTER_VIEW_TYPE + mFooters.size());
     }
 

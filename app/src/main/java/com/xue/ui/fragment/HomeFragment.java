@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 
 import com.elianshang.tools.UITool;
 import com.xue.R;
-import com.xue.adapter.HomeListAdapter;
+import com.xue.adapter.HomeFooterGridAdapter;
+import com.xue.adapter.HomeGridAdapter;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.UserMinor;
 import com.xue.bean.UserMinorList;
@@ -28,11 +29,11 @@ public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
 
-    private HomeListAdapter mAdapter;
+//    private HomeGridAdapter mAdapter;
 
     private List<UserMinor> mDataList;
 
-    private final int actionFillRecyclerView = 1;
+    private HomeFooterGridAdapter mAdapter;
 
     @Nullable
     @Override
@@ -50,21 +51,24 @@ public class HomeFragment extends BaseFragment {
 
     private void findView() {
         mRecyclerView = getView().findViewById(R.id.recyclerview);
-
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.addItemDecoration(new HomeGridItemDecoration(UITool.dipToPx(getActivity(), 3), 2));
+
+        if (mAdapter == null) {
+            mAdapter = new HomeFooterGridAdapter(new HomeGridAdapter(), gridLayoutManager, 2);
+            mRecyclerView.setAdapter(mAdapter);
+
+            mAdapter.addFooter(View.inflate(getActivity(), R.layout.footer_home_grid, null));
+        }
     }
 
     private void fillRecyclerView() {
         if (getActivity() == null) {
             return;
         }
-        if (mAdapter == null) {
-            mAdapter = new HomeListAdapter();
-            mRecyclerView.setAdapter(mAdapter);
-        }
 
-        mAdapter.setDataList(mDataList);
+        mAdapter.getWrappedAdapter().setDataList(mDataList);
         mAdapter.notifyDataSetChanged();
     }
 

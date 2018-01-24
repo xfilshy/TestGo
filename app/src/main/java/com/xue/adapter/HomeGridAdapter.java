@@ -19,16 +19,16 @@ import java.util.List;
  * Created by xfilshy on 2018/1/17.
  */
 
-public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder> {
+public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHolder> {
 
     private List<UserMinor> dataList = null;
 
     private int imageWidth = 0;
 
-    public HomeListAdapter() {
+    public HomeGridAdapter() {
     }
 
-    public HomeListAdapter(List<UserMinor> dataList) {
+    public HomeGridAdapter(List<UserMinor> dataList) {
         this.dataList = dataList;
     }
 
@@ -36,6 +36,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         this.dataList = dataList;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
