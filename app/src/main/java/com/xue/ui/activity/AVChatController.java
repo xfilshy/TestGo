@@ -5,9 +5,11 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.elianshang.tools.WeakReferenceHandler;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.auth.ClientType;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserver;
@@ -612,6 +614,36 @@ public class AVChatController implements View.OnClickListener {
 
         @Override
         public void onEvent(AVChatOnlineAckEvent avChatOnlineAckEvent) {
+            if (mAVChatData != null && mAVChatData.getChatId() == avChatOnlineAckEvent.getChatId()) {
+                AVChatSoundPlayer.instance().stop();
+
+                String client = null;
+                switch (avChatOnlineAckEvent.getClientType()) {
+                    case ClientType.Web:
+                        client = "Web";
+                        break;
+                    case ClientType.Windows:
+                        client = "Windows";
+                        break;
+                    case ClientType.Android:
+                        client = "Android";
+                        break;
+                    case ClientType.iOS:
+                        client = "iOS";
+                        break;
+                    case ClientType.MAC:
+                        client = "Mac";
+                        break;
+                    default:
+                        break;
+                }
+
+                //TODO 多端情况  需要处理
+                if (client != null) {
+                    String option = avChatOnlineAckEvent.getEvent() == AVChatEventType.CALLEE_ONLINE_CLIENT_ACK_AGREE ? "接听！" : "拒绝！";
+//                    Toast.makeText(AVChatActivity.this, "通话已在" + client + "端被" + option, Toast.LENGTH_SHORT).show();
+                }
+//                finish();
         }
     };
 }
