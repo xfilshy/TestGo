@@ -15,12 +15,12 @@ import com.netease.nimlib.sdk.avchat.constant.AVChatChannelProfile;
 import com.netease.nimlib.sdk.avchat.constant.AVChatEventType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.model.AVChatCalleeAckEvent;
+import com.netease.nimlib.sdk.avchat.model.AVChatCameraCapturer;
 import com.netease.nimlib.sdk.avchat.model.AVChatCommonEvent;
 import com.netease.nimlib.sdk.avchat.model.AVChatControlEvent;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.netease.nimlib.sdk.avchat.model.AVChatNotifyOption;
 import com.netease.nimlib.sdk.avchat.model.AVChatOnlineAckEvent;
-import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturer;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoCapturerFactory;
 import com.xue.BaseApplication;
 import com.xue.netease.AVChatConfigs;
@@ -46,7 +46,7 @@ public class AVChatController implements View.OnClickListener {
 
     private AVChatData mAVChatData;
 
-    private AVChatVideoCapturer mAVChatVideoCapturer;
+    private AVChatCameraCapturer mAVChatVideoCapturer;
 
     private AVChatConfigs mAVChatConfigs;
 
@@ -103,7 +103,6 @@ public class AVChatController implements View.OnClickListener {
             AVChatManager.getInstance().muteLocalAudio(false);
             needRestoreLocalAudio = false;
         }
-
     }
 
     //关闭视频和语音发送.
@@ -198,21 +197,22 @@ public class AVChatController implements View.OnClickListener {
         });
     }
 
-
-    public boolean startAVRecording() {
-        return AVChatManager.getInstance().startAVRecording(mAVChatData.getAccount()) && AVChatManager.getInstance().startAVRecording(BaseApplication.get().getUserId());
+    public boolean switchMic() {
+        boolean flag = !AVChatManager.getInstance().isMicrophoneMute();
+        AVChatManager.getInstance().setMicrophoneMute(flag);
+        return flag;
     }
 
-    public boolean stopAVRecording() {
-        return AVChatManager.getInstance().stopAVRecording(mAVChatData.getAccount()) && AVChatManager.getInstance().stopAVRecording(BaseApplication.get().getUserId());
+    public boolean switchSpeaker() {
+        boolean flag = !AVChatManager.getInstance().speakerEnabled();
+        AVChatManager.getInstance().setSpeaker(!flag);
+        return flag;
     }
 
-    public boolean startAudioRecording() {
-        return AVChatManager.getInstance().startAudioRecording();
-    }
-
-    public boolean stopAudioRecording() {
-        return AVChatManager.getInstance().stopAudioRecording();
+    public void switchCamera() {
+        if(mAVChatVideoCapturer != null){
+            mAVChatVideoCapturer.switchCamera();
+        }
     }
 
     private void initAVCharManager() {
@@ -390,19 +390,6 @@ public class AVChatController implements View.OnClickListener {
             if (mCallback != null) {
                 mCallback.userLeave();
             }
-        }
-
-        @Override
-        public void onAVRecordingCompletion(String s, String s1) {
-            super.onAVRecordingCompletion(s, s1);
-            Log.e("xue", "onAVRecordingCompletion  account == " + s);
-            Log.e("xue", "onAVRecordingCompletion  path == " + s1);
-        }
-
-        @Override
-        public void onAudioRecordingCompletion(String s) {
-            super.onAudioRecordingCompletion(s);
-            Log.e("xue", "onAudioRecordingCompletion  path == " + s);
         }
     };
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <android.support.constraint.Guideline
-        android:id="@+id/bottom"
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -18,7 +18,7 @@
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
@@ -53,7 +53,7 @@
         android:onClick="goPhoneLogin"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/wechat"
-        app:layout_constraintTop_toBottomOf="@id/bottom"
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
         app:srcCompat="@drawable/icon_phone" />
 
     <ImageView
@@ -63,7 +63,7 @@
         android:onClick="goPhoneLogin"
         app:layout_constraintLeft_toRightOf="@id/phone"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bottom"
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
         app:srcCompat="@drawable/icon_wechat" />
 
 </android.support.constraint.ConstraintLayout>

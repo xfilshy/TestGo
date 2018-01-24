@@ -12,8 +12,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
@@ -21,11 +22,10 @@ import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.xue.R;
+import com.xue.imagecache.ImageCacheMannager;
 import com.xue.netease.AVChatControlCommand;
 import com.xue.netease.SimpleAVChatData;
-import com.xue.ui.fragment.AudioChatFragment;
 import com.xue.ui.fragment.VideoChatFragment;
-
 
 /**
  * Created by xfilshy on 2018/1/18.
@@ -63,24 +63,32 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     private VideoChatFragment mVideoChatFragment;
 
-    private AudioChatFragment mAudioChatFragment;
-
     private ImageView mForegroundImageView;
 
-    private Button mChangeButton;
+    private LinearLayout mAccountLargeLayout;
+
+    private LinearLayout mAccountSmallLayout;
+
+    private ImageView mCutImageView;
+
+    private ImageView mChangeImageView;
+
+    private ImageView mMicImageView;
+
+    private ImageView mVolumeImageView;
 
     private ImageView mHangupButton;
 
-    private View mMiddleSpace;
-
     private ImageView mAcceptButton;
 
-    private Button mRecordButton;
+    private TextView mTimeTextView;
 
     /**
-     *
-     * */
+     * 当前页面标记  1 视频通话 ， 2 音频通话
+     */
     private int flag = -1;
+
+    private boolean userJoinedFlag = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,17 +141,23 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     }
 
     private void findView() {
-        mChangeButton = findViewById(R.id.change);
+        mCutImageView = findViewById(R.id.cut);
+        mChangeImageView = findViewById(R.id.change);
+        mMicImageView = findViewById(R.id.mic);
+        mVolumeImageView = findViewById(R.id.volume);
         mAcceptButton = findViewById(R.id.accept);
-        mMiddleSpace = findViewById(R.id.middleSpace);
         mHangupButton = findViewById(R.id.hangUp);
-        mRecordButton = findViewById(R.id.record);
+        mTimeTextView = findViewById(R.id.time);
         mForegroundImageView = findViewById(R.id.foreground);
+        mAccountLargeLayout = findViewById(R.id.accountLargeLayout);
+        mAccountSmallLayout = findViewById(R.id.accountSmallLayout);
 
-        mChangeButton.setOnClickListener(this);
+        mChangeImageView.setOnClickListener(this);
+        mMicImageView.setOnClickListener(this);
+        mVolumeImageView.setOnClickListener(this);
+        mCutImageView.setOnClickListener(this);
         mAcceptButton.setOnClickListener(this);
         mHangupButton.setOnClickListener(this);
-        mRecordButton.setOnClickListener(this);
     }
 
     private void start() {
@@ -174,13 +188,14 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
      * 去音频聊天页
      */
     private void goAudioFragment() {
-        if (mAudioChatFragment == null) {
-            mAudioChatFragment = new AudioChatFragment(mAVChatController);
-        }
+        mForegroundImageView.setVisibility(View.VISIBLE);
+        mAccountLargeLayout.setVisibility(View.VISIBLE);
+        mAccountSmallLayout.setVisibility(View.GONE);
+        mCutImageView.setVisibility(View.GONE);
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.fragment_root, mAudioChatFragment);
+        transaction.remove(mVideoChatFragment);
         transaction.commit();
 
         flag = 2;
@@ -197,45 +212,30 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     @Override
     public void onClick(View view) {
-        if (mChangeButton == view) {
+        if (mChangeImageView == view) {
             if (flag == 1) {
                 mAVChatController.switchVideo2Audio();
             } else if (flag == 2) {
                 mAVChatController.switchAudio2Video();
             }
+        } else if (mMicImageView == view) {
+            if (mAVChatController.switchMic()) {
+                ImageCacheMannager.loadImage(this, R.drawable.icon_mic_off, mMicImageView);
+            } else {
+                ImageCacheMannager.loadImage(this, R.drawable.icon_mic_up, mMicImageView);
+            }
+        } else if (mVolumeImageView == view) {
+            if (mAVChatController.switchSpeaker()) {
+                ImageCacheMannager.loadImage(this, R.drawable.icon_volume_off, mVolumeImageView);
+            } else {
+                ImageCacheMannager.loadImage(this, R.drawable.icon_volume_up, mVolumeImageView);
+            }
+        } else if (mCutImageView == view) {
+            mAVChatController.switchCamera();
         } else if (mHangupButton == view) {
             mAVChatController.hangUp();
         } else if (mAcceptButton == view) {
             mAVChatController.accept();
-        } else if (mRecordButton == view) {
-            if (TextUtils.equals("录制", mRecordButton.getText().toString())) {
-                boolean result = false;
-                if (flag == 1) {
-                    result = mAVChatController.startAVRecording();
-                } else if (flag == 2) {
-                    result = mAVChatController.startAudioRecording();
-                }
-                if (result) {
-                    Toast.makeText(this, "开始录制", Toast.LENGTH_SHORT).show();
-                    mRecordButton.setText("停止");
-                } else {
-                    Toast.makeText(this, "开始录制失败", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                boolean result = false;
-                if (flag == 1) {
-                    result = mAVChatController.stopAVRecording();
-                } else if (flag == 2) {
-                    result = mAVChatController.stopAudioRecording();
-                }
-                if (result) {
-                    Toast.makeText(this, "结束录制", Toast.LENGTH_SHORT).show();
-                    mRecordButton.setText("录制");
-                } else {
-                    Toast.makeText(this, "结束录制失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-
         }
     }
 
@@ -245,11 +245,13 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     @Override
     public void call() {
-        mChangeButton.setVisibility(View.GONE);
+        mCutImageView.setVisibility(View.GONE);
+        mChangeImageView.setVisibility(View.GONE);
+        mMicImageView.setVisibility(View.GONE);
+        mVolumeImageView.setVisibility(View.GONE);
         mHangupButton.setVisibility(View.VISIBLE);
-        mMiddleSpace.setVisibility(View.GONE);
         mAcceptButton.setVisibility(View.GONE);
-        mRecordButton.setVisibility(View.GONE);
+        mTimeTextView.setVisibility(View.GONE);
     }
 
     @Override
@@ -266,11 +268,13 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     @Override
     public void callIn() {
-        mChangeButton.setVisibility(View.GONE);
+        mCutImageView.setVisibility(View.GONE);
+        mChangeImageView.setVisibility(View.GONE);
+        mMicImageView.setVisibility(View.GONE);
+        mVolumeImageView.setVisibility(View.GONE);
         mHangupButton.setVisibility(View.VISIBLE);
-        mMiddleSpace.setVisibility(View.VISIBLE);
         mAcceptButton.setVisibility(View.VISIBLE);
-        mRecordButton.setVisibility(View.GONE);
+        mTimeTextView.setVisibility(View.GONE);
     }
 
     @Override
@@ -279,24 +283,56 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     @Override
     public void acceptSuccess() {
-        mChangeButton.setVisibility(View.VISIBLE);
+        mCutImageView.setVisibility(View.VISIBLE);
+        mChangeImageView.setVisibility(View.VISIBLE);
+        mMicImageView.setVisibility(View.VISIBLE);
+        mVolumeImageView.setVisibility(View.VISIBLE);
         mHangupButton.setVisibility(View.VISIBLE);
-        mMiddleSpace.setVisibility(View.GONE);
         mAcceptButton.setVisibility(View.GONE);
-        mRecordButton.setVisibility(View.VISIBLE);
+        mTimeTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void firstFrame() {
         mForegroundImageView.setVisibility(View.GONE);
+        if (!userJoinedFlag && TextUtils.equals("call", mAction)) {
+            mAccountSmallLayout.setVisibility(View.VISIBLE);
+            mAccountLargeLayout.setVisibility(View.GONE);
+        } else {
+            mAccountSmallLayout.setVisibility(View.GONE);
+            mAccountLargeLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void userJoined() {
+        userJoinedFlag = true;
+        if (flag == 1) {
+            mCutImageView.setVisibility(View.VISIBLE);
+            mChangeImageView.setVisibility(View.VISIBLE);
+            mMicImageView.setVisibility(View.VISIBLE);
+            mVolumeImageView.setVisibility(View.VISIBLE);
+            mHangupButton.setVisibility(View.VISIBLE);
+            mAcceptButton.setVisibility(View.GONE);
+            mTimeTextView.setVisibility(View.VISIBLE);
+            mAccountLargeLayout.setVisibility(View.GONE);
+            mAccountSmallLayout.setVisibility(View.GONE);
+        } else if (flag == 2) {
+            mCutImageView.setVisibility(View.GONE);
+            mChangeImageView.setVisibility(View.VISIBLE);
+            mMicImageView.setVisibility(View.VISIBLE);
+            mVolumeImageView.setVisibility(View.VISIBLE);
+            mHangupButton.setVisibility(View.VISIBLE);
+            mAcceptButton.setVisibility(View.GONE);
+            mTimeTextView.setVisibility(View.VISIBLE);
+            mAccountLargeLayout.setVisibility(View.VISIBLE);
+            mAccountSmallLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void userLeave() {
+        userJoinedFlag = false;
     }
 
     @Override
@@ -349,9 +385,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
                                 //TODO 切换成语音 等待连接
                                 Log.e("xue", "发送  同意请求 成功");
 
+                                goAudioFragment();
                                 AVChatManager.getInstance().stopVideoPreview();
                                 AVChatManager.getInstance().disableVideo();
-                                goAudioFragment();
                             }
 
                             @Override
@@ -375,9 +411,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     public void switchVideo2AudioAgree() {
         Toast.makeText(this, "对方接受切换为语音聊天", Toast.LENGTH_SHORT).show();
 
+        goAudioFragment();
         AVChatManager.getInstance().stopVideoPreview();
         AVChatManager.getInstance().disableVideo();
-        goAudioFragment();
     }
 
     @Override
@@ -424,9 +460,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
                                 //TODO 切换成语音 等待连接
                                 Log.e("xue", "发送  同意请求 成功");
 
+                                goVideoFragment();
                                 AVChatManager.getInstance().enableVideo();
                                 AVChatManager.getInstance().startVideoPreview();
-                                goVideoFragment();
                             }
 
                             @Override
@@ -450,9 +486,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     public void switchAudio2VideoAgree() {
         Toast.makeText(this, "对方接受切换为视频聊天", Toast.LENGTH_SHORT).show();
 
+        goVideoFragment();
         AVChatManager.getInstance().enableVideo();
         AVChatManager.getInstance().startVideoPreview();
-        goVideoFragment();
     }
 
     @Override

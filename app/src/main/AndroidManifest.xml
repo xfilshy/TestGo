@@ -93,6 +93,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <!--demo的   45c6af3c98409b18a84451215d0bdd6e-->
+        <!--我们的    075c3ef1159d00f4875896b55f8ccf30-->
         <meta-data
             android:name="com.netease.nim.appKey"
             android:value="075c3ef1159d00f4875896b55f8ccf30" />
@@ -119,16 +123,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".ui.activity.LoginActivity" />-->
-        <activity android:name=".ui.activity.PhoneLoginActivity" />
+
+        <activity
+            android:name=".ui.activity.PhoneLoginActivity"
+            android:theme="@style/WhiteAppTheme" />
         <activity
             android:name=".ui.activity.MainActivity"
             android:label=""
             android:launchMode="singleTask"
             android:logo="@drawable/red_oval" />
+
         <activity
             android:name=".ui.activity.AVChatActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
 
         <activity

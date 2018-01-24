@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,16 +34,5 @@ public class AudioChatFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        init();
-    }
-
-    private void init() {
-        if (TextUtils.equals("call", mAction)) {
-            mAVChatController.preview();
-            mAVChatController.call();
-        } else if (TextUtils.equals("accept", mAction)) {
-            mAVChatController.preview();
-            mAVChatController.callIn();
-        }
     }
 }
