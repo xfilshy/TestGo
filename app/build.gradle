@@ -68,7 +68,11 @@ android {
 
     sourceSets {
         main {
-            res.srcDirs = ['src/main/res', 'src/main/res/drawable-xhdpi', 'src/main/res/drawable-xxhdpi', 'src/main/res/drawable-xxxhdpi']
+            res.srcDirs = [
+                    'src/main/res',
+                    'src/main/res/drawable-xhdpi',
+                    'src/main/res/drawable-xxhdpi',
+                    'src/main/res/drawable-xxxhdpi']
         }
     }
 }
