@@ -34,13 +34,13 @@ public interface AVChatControllerCallback {
 
     void switchVideo2Audio();
 
-    void switchVideo2AudioAgree();
+    void switchVideo2AudioAgree(boolean self);
 
-    void switchVideo2AudioReject();
+    void switchVideo2AudioReject(boolean self);
 
     void switchAudio2Video();
 
-    void switchAudio2VideoAgree();
+    void switchAudio2VideoAgree(boolean self);
 
-    void switchAudio2VideoReject();
+    void switchAudio2VideoReject(boolean self);
 }

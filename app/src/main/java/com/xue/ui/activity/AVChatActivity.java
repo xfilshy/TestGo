@@ -17,13 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.xue.R;
 import com.xue.imagecache.ImageCacheMannager;
-import com.xue.netease.AVChatControlCommand;
 import com.xue.netease.SimpleAVChatData;
 import com.xue.ui.fragment.VideoChatFragment;
 
@@ -75,6 +73,8 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     private ImageView mMicImageView;
 
+    private ImageView mRingImageView;
+
     private ImageView mVolumeImageView;
 
     private ImageView mHangupButton;
@@ -87,8 +87,6 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
      * 当前页面标记  1 视频通话 ， 2 音频通话
      */
     private int flag = -1;
-
-    private boolean userJoinedFlag = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,6 +141,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     private void findView() {
         mCutImageView = findViewById(R.id.cut);
         mChangeImageView = findViewById(R.id.change);
+        mRingImageView = findViewById(R.id.ring);
         mMicImageView = findViewById(R.id.mic);
         mVolumeImageView = findViewById(R.id.volume);
         mAcceptButton = findViewById(R.id.accept);
@@ -153,6 +152,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
         mAccountSmallLayout = findViewById(R.id.accountSmallLayout);
 
         mChangeImageView.setOnClickListener(this);
+        mRingImageView.setOnClickListener(this);
         mMicImageView.setOnClickListener(this);
         mVolumeImageView.setOnClickListener(this);
         mCutImageView.setOnClickListener(this);
@@ -224,6 +224,10 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
             } else {
                 ImageCacheMannager.loadImage(this, R.drawable.icon_mic_up, mMicImageView);
             }
+        } else if (mRingImageView == view) {
+            mAVChatController.stopRing();
+            ImageCacheMannager.loadImage(this, R.drawable.icon_ring_off, mRingImageView);
+            mRingImageView.setClickable(false);
         } else if (mVolumeImageView == view) {
             if (mAVChatController.switchSpeaker()) {
                 ImageCacheMannager.loadImage(this, R.drawable.icon_volume_off, mVolumeImageView);
@@ -233,7 +237,11 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
         } else if (mCutImageView == view) {
             mAVChatController.switchCamera();
         } else if (mHangupButton == view) {
-            mAVChatController.hangUp();
+//            if (!mAVChatController.isUserJoined() && TextUtils.equals("accept", mAction)) {
+//                mAVChatController.busy();
+//            } else {
+                mAVChatController.hangUp();
+//            }
         } else if (mAcceptButton == view) {
             mAVChatController.accept();
         }
@@ -247,6 +255,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     public void call() {
         mCutImageView.setVisibility(View.GONE);
         mChangeImageView.setVisibility(View.GONE);
+        mRingImageView.setVisibility(View.VISIBLE);
         mMicImageView.setVisibility(View.GONE);
         mVolumeImageView.setVisibility(View.GONE);
         mHangupButton.setVisibility(View.VISIBLE);
@@ -270,6 +279,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     public void callIn() {
         mCutImageView.setVisibility(View.GONE);
         mChangeImageView.setVisibility(View.GONE);
+        mRingImageView.setVisibility(View.VISIBLE);
         mMicImageView.setVisibility(View.GONE);
         mVolumeImageView.setVisibility(View.GONE);
         mHangupButton.setVisibility(View.VISIBLE);
@@ -285,6 +295,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     public void acceptSuccess() {
         mCutImageView.setVisibility(View.VISIBLE);
         mChangeImageView.setVisibility(View.VISIBLE);
+        mRingImageView.setVisibility(View.GONE);
         mMicImageView.setVisibility(View.VISIBLE);
         mVolumeImageView.setVisibility(View.VISIBLE);
         mHangupButton.setVisibility(View.VISIBLE);
@@ -295,7 +306,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     @Override
     public void firstFrame() {
         mForegroundImageView.setVisibility(View.GONE);
-        if (!userJoinedFlag && TextUtils.equals("call", mAction)) {
+        if (!mAVChatController.isUserJoined() && TextUtils.equals("call", mAction)) {
             mAccountSmallLayout.setVisibility(View.VISIBLE);
             mAccountLargeLayout.setVisibility(View.GONE);
         } else {
@@ -306,10 +317,10 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     @Override
     public void userJoined() {
-        userJoinedFlag = true;
         if (flag == 1) {
             mCutImageView.setVisibility(View.VISIBLE);
             mChangeImageView.setVisibility(View.VISIBLE);
+            mRingImageView.setVisibility(View.GONE);
             mMicImageView.setVisibility(View.VISIBLE);
             mVolumeImageView.setVisibility(View.VISIBLE);
             mHangupButton.setVisibility(View.VISIBLE);
@@ -320,6 +331,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
         } else if (flag == 2) {
             mCutImageView.setVisibility(View.GONE);
             mChangeImageView.setVisibility(View.VISIBLE);
+            mRingImageView.setVisibility(View.GONE);
             mMicImageView.setVisibility(View.VISIBLE);
             mVolumeImageView.setVisibility(View.VISIBLE);
             mHangupButton.setVisibility(View.VISIBLE);
@@ -332,7 +344,6 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     @Override
     public void userLeave() {
-        userJoinedFlag = false;
     }
 
     @Override
@@ -353,53 +364,14 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e("xue", "发送  拒绝请求");
-                        Log.e("xue", "mAVChatData.getChatId() = " + mAVChatData.getChatId());
-                        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_REJECT, new AVChatCallback<Void>() {
-
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.e("xue", "发送  拒绝请求 成功");
-                            }
-
-                            @Override
-                            public void onFailed(int i) {
-                                Log.e("xue", "发送  拒绝请求 失败 i = " + i);
-                            }
-
-                            @Override
-                            public void onException(Throwable throwable) {
-                                Log.e("xue", "发送  拒绝请求 异常");
-                            }
-                        });
+                        mAVChatController.rejectVideo2Audio();
                     }
                 })
                 .setPositiveButton("同意", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e("xue", "发送  同意请求");
-                        Log.e("xue", "mAVChatData.getChatId() = " + mAVChatData.getChatId());
-                        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_AGREE, new AVChatCallback<Void>() {
-
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                //TODO 切换成语音 等待连接
-                                Log.e("xue", "发送  同意请求 成功");
-
-                                goAudioFragment();
-                                AVChatManager.getInstance().stopVideoPreview();
-                                AVChatManager.getInstance().disableVideo();
-                            }
-
-                            @Override
-                            public void onFailed(int i) {
-                                Log.e("xue", "发送  同意请求 失败 i = " + i);
-                            }
-
-                            @Override
-                            public void onException(Throwable throwable) {
-                                Log.e("xue", "发送  同意请求 异常");
-                            }
-                        });
+                        mAVChatController.agreetVideo2Audio();
                     }
                 })
                 .setCancelable(false)
@@ -408,8 +380,10 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     }
 
     @Override
-    public void switchVideo2AudioAgree() {
-        Toast.makeText(this, "对方接受切换为语音聊天", Toast.LENGTH_SHORT).show();
+    public void switchVideo2AudioAgree(boolean self) {
+        if (!self) {
+            Toast.makeText(this, "对方接受切换为语音聊天", Toast.LENGTH_SHORT).show();
+        }
 
         goAudioFragment();
         AVChatManager.getInstance().stopVideoPreview();
@@ -417,8 +391,10 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     }
 
     @Override
-    public void switchVideo2AudioReject() {
-        Toast.makeText(this, "对方拒绝切换为语音聊天", Toast.LENGTH_SHORT).show();
+    public void switchVideo2AudioReject(boolean self) {
+        if (!self) {
+            Toast.makeText(this, "对方拒绝切换为语音聊天", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -430,51 +406,14 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e("xue", "发送  拒绝请求");
-                        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_REJECT, new AVChatCallback<Void>() {
-
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.e("xue", "发送  拒绝请求 成功");
-                            }
-
-                            @Override
-                            public void onFailed(int i) {
-                                Log.e("xue", "发送  拒绝请求 失败 i = " + i);
-                            }
-
-                            @Override
-                            public void onException(Throwable throwable) {
-                                Log.e("xue", "发送  拒绝请求 异常");
-                            }
-                        });
+                        mAVChatController.rejectAudio2Video();
                     }
                 })
                 .setPositiveButton("同意", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e("xue", "发送  同意请求");
-                        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_AGREE, new AVChatCallback<Void>() {
-
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                //TODO 切换成语音 等待连接
-                                Log.e("xue", "发送  同意请求 成功");
-
-                                goVideoFragment();
-                                AVChatManager.getInstance().enableVideo();
-                                AVChatManager.getInstance().startVideoPreview();
-                            }
-
-                            @Override
-                            public void onFailed(int i) {
-                                Log.e("xue", "发送  同意请求 失败 i = " + i);
-                            }
-
-                            @Override
-                            public void onException(Throwable throwable) {
-                                Log.e("xue", "发送  同意请求 异常");
-                            }
-                        });
+                        mAVChatController.agreeAudio2Video();
                     }
                 })
                 .setCancelable(false)
@@ -483,8 +422,10 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     }
 
     @Override
-    public void switchAudio2VideoAgree() {
-        Toast.makeText(this, "对方接受切换为视频聊天", Toast.LENGTH_SHORT).show();
+    public void switchAudio2VideoAgree(boolean self) {
+        if (!self) {
+            Toast.makeText(this, "对方接受切换为视频聊天", Toast.LENGTH_SHORT).show();
+        }
 
         goVideoFragment();
         AVChatManager.getInstance().enableVideo();
@@ -492,7 +433,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
     }
 
     @Override
-    public void switchAudio2VideoReject() {
-        Toast.makeText(this, "对方拒绝切换为视频聊天", Toast.LENGTH_SHORT).show();
+    public void switchAudio2VideoReject(boolean self) {
+        if (!self) {
+            Toast.makeText(this, "对方拒绝切换为视频聊天", Toast.LENGTH_SHORT).show();
+        }
     }
 }

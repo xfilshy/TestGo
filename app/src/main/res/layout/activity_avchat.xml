@@ -217,7 +217,7 @@
             android:id="@+id/accept"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="130dp"
             android:background="@drawable/green_oval"
             android:scaleType="centerInside"
             android:src="@drawable/accept"
@@ -228,6 +228,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/guideline2"
@@ -238,15 +239,14 @@
             android:id="@+id/change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_loop"
-            android:visibility="visible" />
+            android:layout_marginLeft="55dp"
+            android:src="@drawable/icon_loop" />
 
         <ImageView
             android:id="@+id/mic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
+            android:layout_centerInParent="true"
             android:scaleType="centerInside"
             android:src="@drawable/icon_mic_up" />
 
@@ -256,9 +256,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="50dp"
+            android:layout_marginRight="55dp"
             android:scaleType="centerInside"
             android:src="@drawable/icon_volume_up" />
+
+        <ImageView
+            android:id="@+id/ring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_ring_up" />
 
     </RelativeLayout>
 

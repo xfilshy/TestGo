@@ -70,6 +70,11 @@ public class AVChatController implements View.OnClickListener {
      */
     private int defaultVideoMode = 1;
 
+    /**
+     * 用户是否加入
+     */
+    private boolean isUserJoined = false;
+
     public AVChatController(Context context, AVChatData avChatData) {
         registerObserves(true);
         mAVChatConfigs = new AVChatConfigs(context);
@@ -90,6 +95,10 @@ public class AVChatController implements View.OnClickListener {
 
     public int getVideoMode() {
         return videoMode;
+    }
+
+    public boolean isUserJoined() {
+        return isUserJoined;
     }
 
     //恢复视频和语音发送
@@ -148,7 +157,16 @@ public class AVChatController implements View.OnClickListener {
     }
 
     public void hangUp() {
+        Log.d("xue", "主动调用 hangUp");
         AVChatManager.getInstance().hangUp2(mAVChatData.getChatId(), mHangUpCallback);
+        destroy();
+        if (mCallback != null) {
+            mCallback.hangup();
+        }
+    }
+
+    public void busy() {
+        AVChatManager.getInstance().sendControlCommand(mAVChatData.getChatId(), com.netease.nimlib.sdk.avchat.constant.AVChatControlCommand.BUSY, mHangUpCallback);
         destroy();
         if (mCallback != null) {
             mCallback.hangup();
@@ -197,6 +215,93 @@ public class AVChatController implements View.OnClickListener {
         });
     }
 
+    public void rejectVideo2Audio() {
+        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_REJECT, new AVChatCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e("xue", "发送  拒绝请求 成功");
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Log.e("xue", "发送  拒绝请求 失败 i = " + i);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e("xue", "发送  拒绝请求 异常");
+            }
+        });
+    }
+
+    public void agreetVideo2Audio() {
+        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_AGREE, new AVChatCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e("xue", "发送  同意请求 成功");
+                if (mCallback != null) {
+                    mCallback.switchVideo2AudioAgree(true);
+                }
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Log.e("xue", "发送  同意请求 失败 i = " + i);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e("xue", "发送  同意请求 异常");
+            }
+        });
+    }
+
+    public void rejectAudio2Video() {
+        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_REJECT, new AVChatCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e("xue", "发送  拒绝请求 成功");
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Log.e("xue", "发送  拒绝请求 失败 i = " + i);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e("xue", "发送  拒绝请求 异常");
+            }
+        });
+    }
+
+    public void agreeAudio2Video() {
+        AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_AGREE, new AVChatCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e("xue", "发送  同意请求 成功");
+                if (mCallback != null) {
+                    mCallback.switchAudio2VideoAgree(true);
+                }
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Log.e("xue", "发送  同意请求 失败 i = " + i);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e("xue", "发送  同意请求 异常");
+            }
+        });
+    }
+
+
     public boolean switchMic() {
         boolean flag = !AVChatManager.getInstance().isMicrophoneMute();
         AVChatManager.getInstance().setMicrophoneMute(flag);
@@ -210,9 +315,13 @@ public class AVChatController implements View.OnClickListener {
     }
 
     public void switchCamera() {
-        if(mAVChatVideoCapturer != null){
+        if (mAVChatVideoCapturer != null) {
             mAVChatVideoCapturer.switchCamera();
         }
+    }
+
+    public void stopRing() {
+        AVChatSoundPlayer.instance().stop();
     }
 
     private void initAVCharManager() {
@@ -324,7 +433,7 @@ public class AVChatController implements View.OnClickListener {
 
         @Override
         public void onSuccess(Void aVoid) {
-            Log.e("xue", "挂断成功");
+            Log.e("xue", "mHangUpCallback 挂断成功");
             if (mCallback != null) {
                 mCallback.hangupSuccess();
             }
@@ -372,6 +481,8 @@ public class AVChatController implements View.OnClickListener {
         @Override
         public void onUserJoined(String s) {
             super.onUserJoined(s);
+            isUserJoined = true;
+
             AVChatSoundPlayer.instance().stop();
             Log.e("xue", "onUserJoined == " + s);
             if (mCallback != null) {
@@ -386,10 +497,18 @@ public class AVChatController implements View.OnClickListener {
         @Override
         public void onUserLeave(String s, int i) {
             super.onUserLeave(s, i);
+            isUserJoined = false;
+
             Log.e("xue", "onUserLeave == " + s);
             if (mCallback != null) {
                 mCallback.userLeave();
             }
+        }
+
+        @Override
+        public void onDisconnectServer(int i) {
+            super.onDisconnectServer(i);
+            Log.e("xue", "onDisconnectServer == " + i);
         }
     };
 
@@ -401,6 +520,7 @@ public class AVChatController implements View.OnClickListener {
         @Override
         public void onEvent(AVChatCommonEvent avChatCommonEvent) {
             if (avChatCommonEvent.getEvent() == AVChatEventType.PEER_HANG_UP) {
+                Log.d("xue", "对方挂断");
                 hangUp();
             }
         }
@@ -414,16 +534,21 @@ public class AVChatController implements View.OnClickListener {
         @Override
         public void onEvent(AVChatCalleeAckEvent avChatCalleeAckEvent) {
             if (avChatCalleeAckEvent.getEvent() == AVChatEventType.CALLEE_ACK_AGREE) {//同意接通
+                Log.e("xue", "对方同意连接");
                 if (mCallback != null) {
                     mCallback.acceptSuccess();
                 }
             } else if (avChatCalleeAckEvent.getEvent() == AVChatEventType.CALLEE_ACK_REJECT) {//拒绝接听
+                Log.e("xue", "对方拒绝");
+
                 AVChatSoundPlayer.instance().play(AVChatSoundPlayer.RingerTypeEnum.PEER_REJECT);
                 if (mCallback != null) {
                     mCallback.callReject();
                 }
                 mHandler.sendEmptyMessageDelayed(actionHangUp, 4200);
             } else if (avChatCalleeAckEvent.getEvent() == AVChatEventType.CALLEE_ACK_BUSY) {//接通忙
+                Log.e("xue", "对方忙");
+
                 AVChatSoundPlayer.instance().play(AVChatSoundPlayer.RingerTypeEnum.PEER_BUSY);
                 if (mCallback != null) {
                     mCallback.callBusy();
@@ -450,15 +575,14 @@ public class AVChatController implements View.OnClickListener {
                 }
             } else if (command == AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_AGREE) {
                 Log.e("xue", "接到 切换同意请求");
-
                 if (mCallback != null) {
-                    mCallback.switchVideo2AudioAgree();
+                    mCallback.switchVideo2AudioAgree(false);
                 }
             } else if (command == AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_REJECT) {
                 Log.e("xue", "接到 切换拒绝请求");
 
                 if (mCallback != null) {
-                    mCallback.switchVideo2AudioReject();
+                    mCallback.switchVideo2AudioReject(false);
                 }
             } else if (command == AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO) {
                 Log.e("xue", "接到 切换请求");
@@ -469,13 +593,13 @@ public class AVChatController implements View.OnClickListener {
                 Log.e("xue", "接到 切换同意请求");
 
                 if (mCallback != null) {
-                    mCallback.switchAudio2VideoAgree();
+                    mCallback.switchAudio2VideoAgree(false);
                 }
             } else if (command == AVChatControlCommand.SWITCH_AUDIO_TO_VIDEO_REJECT) {
                 Log.e("xue", "接到 切换拒绝请求");
 
                 if (mCallback != null) {
-                    mCallback.switchAudio2VideoReject();
+                    mCallback.switchAudio2VideoReject(false);
                 }
             }
         }
