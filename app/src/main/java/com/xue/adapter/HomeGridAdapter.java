@@ -11,7 +11,7 @@ import com.elianshang.tools.UITool;
 import com.xue.R;
 import com.xue.bean.UserMinor;
 import com.xue.imagecache.ImageCacheMannager;
-import com.xue.ui.activity.AVChatActivity;
+import com.xue.ui.activity.DetailActivity;
 
 import java.util.List;
 
@@ -105,7 +105,8 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     if (userMinor != null) {
-                        AVChatActivity.launchVideoCall(view.getContext(), userMinor.getUserBase().getId());
+//                        AVChatActivity.launchVideoCall(view.getContext(), userMinor.getUserBase().getId());
+                        DetailActivity.launch(view.getContext());
                     }
                 }
             });

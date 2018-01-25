@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#00bb88</color>
     <color name="colorPrimaryDark">#00bb88</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#9B26AF</color>
     <color name="colorPrimaryLight">#00CF96</color>
 
     <color name="transparent">#00ffffff</color>
@@ -41,4 +41,12 @@
     <color name="yellow">#fff710</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="red_a200">#FF5252</color>
+    <color name="red_a400">#FF1744</color>
+    <color name="green_a200">#B2FF59</color>
+    <color name="green_a400">#76FF03</color>
+    <color name="blue_a200">#40C4FF</color>
+    <color name="blue_a400">#00B0FF</color>
+
 </resources>
