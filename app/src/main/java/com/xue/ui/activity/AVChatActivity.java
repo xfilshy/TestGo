@@ -65,7 +65,11 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 
     private LinearLayout mAccountLargeLayout;
 
+    private ImageView mLargePhotoImageView;
+
     private LinearLayout mAccountSmallLayout;
+
+    private ImageView mSmallPhotoImageView;
 
     private ImageView mCutImageView;
 
@@ -149,7 +153,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
         mTimeTextView = findViewById(R.id.time);
         mForegroundImageView = findViewById(R.id.foreground);
         mAccountLargeLayout = findViewById(R.id.accountLargeLayout);
+        mLargePhotoImageView = findViewById(R.id.large_photo);
         mAccountSmallLayout = findViewById(R.id.accountSmallLayout);
+        mSmallPhotoImageView = findViewById(R.id.small_photo);
 
         mChangeImageView.setOnClickListener(this);
         mRingImageView.setOnClickListener(this);
@@ -158,6 +164,9 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
         mCutImageView.setOnClickListener(this);
         mAcceptButton.setOnClickListener(this);
         mHangupButton.setOnClickListener(this);
+
+        ImageCacheMannager.loadImage(this, R.drawable.photo_test, mLargePhotoImageView, true);
+        ImageCacheMannager.loadImage(this, R.drawable.photo_test, mSmallPhotoImageView, true);
     }
 
     private void start() {
@@ -220,19 +229,19 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
             }
         } else if (mMicImageView == view) {
             if (mAVChatController.switchMic()) {
-                ImageCacheMannager.loadImage(this, R.drawable.icon_mic_off, mMicImageView);
+                ImageCacheMannager.loadImage(this, R.drawable.icon_mic_off, mMicImageView, false);
             } else {
-                ImageCacheMannager.loadImage(this, R.drawable.icon_mic_up, mMicImageView);
+                ImageCacheMannager.loadImage(this, R.drawable.icon_mic_up, mMicImageView, false);
             }
         } else if (mRingImageView == view) {
             mAVChatController.stopRing();
-            ImageCacheMannager.loadImage(this, R.drawable.icon_ring_off, mRingImageView);
+            ImageCacheMannager.loadImage(this, R.drawable.icon_ring_off, mRingImageView, false);
             mRingImageView.setClickable(false);
         } else if (mVolumeImageView == view) {
             if (mAVChatController.switchSpeaker()) {
-                ImageCacheMannager.loadImage(this, R.drawable.icon_volume_off, mVolumeImageView);
+                ImageCacheMannager.loadImage(this, R.drawable.icon_volume_off, mVolumeImageView, false);
             } else {
-                ImageCacheMannager.loadImage(this, R.drawable.icon_volume_up, mVolumeImageView);
+                ImageCacheMannager.loadImage(this, R.drawable.icon_volume_up, mVolumeImageView, false);
             }
         } else if (mCutImageView == view) {
             mAVChatController.switchCamera();
@@ -240,7 +249,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
 //            if (!mAVChatController.isUserJoined() && TextUtils.equals("accept", mAction)) {
 //                mAVChatController.busy();
 //            } else {
-                mAVChatController.hangUp();
+            mAVChatController.hangUp();
 //            }
         } else if (mAcceptButton == view) {
             mAVChatController.accept();

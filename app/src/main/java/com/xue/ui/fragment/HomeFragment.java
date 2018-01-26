@@ -52,7 +52,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void findView() {
-        mRecyclerView = getView().findViewById(R.id.recyclerview);
+        mRecyclerView = getView().findViewById(R.id.recyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.addItemDecoration(new HomeGridItemDecoration(UITool.dipToPx(getActivity(), 3), 2));

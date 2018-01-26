@@ -45,114 +45,119 @@ public class ImageCacheMannager {
     /**
      * 加载图片
      */
-    public static void loadImage(Context context, Object model, ImageView imageView) {
-        loadImage(context, model, 0, 0, imageView);
+    public static void loadImage(Context context, Object model, ImageView imageView, boolean isCircle) {
+        loadImage(context, model, 0, 0, imageView, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(ContextWrapper contextWrapper, Object model, ImageView imageView) {
-        loadImage(contextWrapper, model, 0, 0, imageView);
+    public static void loadImage(ContextWrapper contextWrapper, Object model, ImageView imageView, boolean isCircle) {
+        loadImage(contextWrapper, model, 0, 0, imageView, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(Activity activity, Object model, ImageView imageView) {
-        loadImage(activity, model, 0, 0, imageView);
+    public static void loadImage(Activity activity, Object model, ImageView imageView, boolean isCircle) {
+        loadImage(activity, model, 0, 0, imageView, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(FragmentActivity activity, Object model, ImageView imageView) {
-        loadImage(activity, model, 0, 0, imageView);
+    public static void loadImage(FragmentActivity activity, Object model, ImageView imageView, boolean isCircle) {
+        loadImage(activity, model, 0, 0, imageView, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(Fragment fragment, Object model, ImageView imageView) {
-        loadImage(fragment, model, 0, 0, imageView);
+    public static void loadImage(Fragment fragment, Object model, ImageView imageView, boolean isCircle) {
+        loadImage(fragment, model, 0, 0, imageView, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(Context context, Object model, int placeholder, int error, ImageView imageView) {
-        loadImage(context, model, placeholder, error, imageView, null);
+    public static void loadImage(Context context, Object model, int placeholder, int error, ImageView imageView, boolean isCircle) {
+        loadImage(context, model, placeholder, error, imageView, null, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(ContextWrapper contextWrapper, Object model, int placeholder, int error, ImageView imageView) {
-        loadImage(contextWrapper, model, placeholder, error, imageView, null);
+    public static void loadImage(ContextWrapper contextWrapper, Object model, int placeholder, int error, ImageView imageView, boolean isCircle) {
+        loadImage(contextWrapper, model, placeholder, error, imageView, null, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(Activity activity, Object model, int placeholder, int error, ImageView imageView) {
-        loadImage(activity, model, placeholder, error, imageView, null);
+    public static void loadImage(Activity activity, Object model, int placeholder, int error, ImageView imageView, boolean isCircle) {
+        loadImage(activity, model, placeholder, error, imageView, null, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(FragmentActivity activity, Object model, int placeholder, int error, ImageView imageView) {
-        loadImage(activity, model, placeholder, error, imageView, null);
+    public static void loadImage(FragmentActivity activity, Object model, int placeholder, int error, ImageView imageView, boolean isCircle) {
+        loadImage(activity, model, placeholder, error, imageView, null, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(Fragment fragment, Object model, int placeholder, int error, ImageView imageView) {
-        loadImage(fragment, model, placeholder, error, imageView, null);
+    public static void loadImage(Fragment fragment, Object model, int placeholder, int error, ImageView imageView, boolean isCircle) {
+        loadImage(fragment, model, placeholder, error, imageView, null, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(Context context, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener) {
-        loadImage(Glide.with(context), model, placeholder, error, imageView, listener);
+    public static void loadImage(Context context, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener, boolean isCircle) {
+        loadImage(Glide.with(context), model, placeholder, error, imageView, listener, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(ContextWrapper contextWrapper, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener) {
-        loadImage(Glide.with(contextWrapper), model, placeholder, error, imageView, listener);
+    public static void loadImage(ContextWrapper contextWrapper, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener, boolean isCircle) {
+        loadImage(Glide.with(contextWrapper), model, placeholder, error, imageView, listener, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(Activity activity, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener) {
-        loadImage(Glide.with(activity), model, placeholder, error, imageView, listener);
+    public static void loadImage(Activity activity, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener, boolean isCircle) {
+        loadImage(Glide.with(activity), model, placeholder, error, imageView, listener, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(FragmentActivity activity, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener) {
-        loadImage(Glide.with(activity), model, placeholder, error, imageView, listener);
+    public static void loadImage(FragmentActivity activity, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener, boolean isCircle) {
+        loadImage(Glide.with(activity), model, placeholder, error, imageView, listener, isCircle);
     }
 
     /**
      * 加载图片
      */
-    public static void loadImage(Fragment fragment, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener) {
-        loadImage(Glide.with(fragment), model, placeholder, error, imageView, listener);
+    public static void loadImage(Fragment fragment, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener, boolean isCircle) {
+        loadImage(Glide.with(fragment), model, placeholder, error, imageView, listener, isCircle);
     }
 
     /**
      * 加载图片
      */
-    private static void loadImage(RequestManager requestManager, Object model, int placeholder, int error, ImageView imageView, RequestListener<Drawable> listener) {
+    private static void loadImage(RequestManager requestManager, Object model, int placeholder, int error, final ImageView imageView, RequestListener<Drawable> listener, boolean isCircle) {
+        RequestOptions requestOptions = RequestOptions.placeholderOf(placeholder).error(error);
+        if (isCircle) {
+            requestOptions.circleCrop();
+        }
+
         requestManager.load(model)
-                .apply(RequestOptions.placeholderOf(placeholder).error(error))
+                .apply(requestOptions)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .listener(listener)
                 .into(imageView);

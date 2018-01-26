@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.xue.R;
+import com.xue.imagecache.ImageCacheMannager;
 
 public class MyActivity extends BaseActivity {
 
@@ -15,6 +17,8 @@ public class MyActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+    private ImageView mPhotoImageView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +26,15 @@ public class MyActivity extends BaseActivity {
         setContentView(R.layout.activity_my);
 
         findView();
+        init();
     }
 
     private void findView() {
+        mPhotoImageView = findViewById(R.id.photo);
+    }
+
+    private void init() {
+        ImageCacheMannager.loadImage(this, R.drawable.photo_test, mPhotoImageView, true);
     }
 
 

@@ -55,11 +55,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.xue.support.view.CircleImageView
+        <ImageView
+            android:id="@+id/small_photo"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/photo_test" />
+            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -125,12 +125,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <com.xue.support.view.CircleImageView
-            android:id="@+id/photo"
+        <ImageView
+            android:id="@+id/large_photo"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/photo_test" />
+            android:layout_centerInParent="true" />
 
         <TextView
             android:layout_width="wrap_content"

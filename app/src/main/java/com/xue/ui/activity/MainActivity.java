@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -18,6 +19,7 @@ import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.xue.R;
+import com.xue.imagecache.ImageCacheMannager;
 import com.xue.ui.fragment.HomeFragment;
 
 /**
@@ -45,6 +47,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         context.startActivity(intent);
     }
 
+    private ImageView mActionLogoImageView;
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -63,7 +67,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
             actionBar.setCustomView(R.layout.actionbar_home);//设置自定义的布局：actionbar_custom
-            actionBar.getCustomView().findViewById(R.id.action_account).setOnClickListener(this);
+            mActionLogoImageView = actionBar.getCustomView().findViewById(R.id.action_account);
+            mActionLogoImageView.setOnClickListener(this);
+
+            ImageCacheMannager.loadImage(this, R.drawable.photo_test, mActionLogoImageView, true);
         }
 
         addHomePage();

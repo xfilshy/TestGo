@@ -134,7 +134,7 @@
                         android:layout_marginRight="10dp"
                         android:src="@drawable/icon_arrow" />
 
-                    <com.xue.support.view.CircleImageView
+                    <ImageView
                         android:id="@+id/logo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -191,7 +191,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/icon_chat" />
 
-    <include layout="@layout/content_scrolling" />
+    <include layout="@layout/content_detail" />
 
     <com.xue.support.view.FloatingActionButton
         android:id="@+id/call"
@@ -200,9 +200,9 @@
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
+        app:fab_colorDisabled="@color/black_light"
         app:fab_colorNormal="@color/colorAccent"
         app:fab_colorPressed="@color/colorPrimary"
-        app:fab_colorDisabled="@color/black_light"
         app:fab_icon="@drawable/icon_call" />
 
 </android.support.design.widget.CoordinatorLayout>

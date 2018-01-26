@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -14,8 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xue.R;
-import com.xue.support.view.CircleImageView;
+import com.xue.adapter.DetailListAdapter;
+import com.xue.imagecache.ImageCacheMannager;
+import com.xue.support.view.FloatingActionButton;
 import com.xue.ui.views.ChatImageBehavior;
+import com.xue.ui.views.DividerItemDecoration;
 import com.xue.ui.views.FavoriteImageBehavior;
 
 import static android.view.View.INVISIBLE;
@@ -23,14 +28,17 @@ import static android.view.View.VISIBLE;
 
 public class DetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
 
-    public static void launch(Context context) {
+    public static void launch(Context context, String uid) {
         Intent intent = new Intent(context, DetailActivity.class);
+        intent.putExtra("uid", uid);
         context.startActivity(intent);
     }
 
+    private String mUid;
+
     private AppBarLayout mAppBarLayout;
 
-    private CircleImageView mActionLogoImageView;
+    private ImageView mActionLogoImageView;
 
     private TextView mActionTitleTextView;
 
@@ -46,6 +54,12 @@ public class DetailActivity extends AppCompatActivity implements AppBarLayout.On
 
     private ImageView mChatImageView;
 
+    private FloatingActionButton mCallFloatingButton;
+
+    private RecyclerView mRecyclerView;
+
+    private DetailListAdapter mAdapter;
+
     private boolean mActionBarVisible;
 
     @Override
@@ -55,22 +69,33 @@ public class DetailActivity extends AppCompatActivity implements AppBarLayout.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        initActionBar();
         findView();
-        initAppBarLayout();
+
+        initRecyclerView();
+
+        readExtra();
     }
 
     private void findView() {
+        initActionBar();
+        initAppBarLayout();
+
         mInfoLayout = findViewById(R.id.infoLayout);
         mVipTextView = findViewById(R.id.vip);
         mFavoriteImageView = findViewById(R.id.favorite);
         mChatImageView = findViewById(R.id.chat);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
+
+        mCallFloatingButton = findViewById(R.id.call);
 
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mFavoriteImageView.getLayoutParams();
         layoutParams.setBehavior(new FavoriteImageBehavior(this, mActionFavoriteImageView, null));
 
         layoutParams = (CoordinatorLayout.LayoutParams) mChatImageView.getLayoutParams();
         layoutParams.setBehavior(new ChatImageBehavior(this, mActionChatImageView, null));
+
+        mCallFloatingButton.setOnClickListener(this);
     }
 
     private void initAppBarLayout() {
@@ -85,6 +110,22 @@ public class DetailActivity extends AppCompatActivity implements AppBarLayout.On
         mActionFavoriteImageView = toolbar.findViewById(R.id.actionFavorite);
         mActionChatImageView = toolbar.findViewById(R.id.actionChat);
         setSupportActionBar(toolbar);
+
+        ImageCacheMannager.loadImage(this, R.drawable.photo_test, mActionLogoImageView, true);
+    }
+
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL, 1, R.color.grey_light));
+        if (mAdapter == null) {
+            mAdapter = new DetailListAdapter();
+            mRecyclerView.setAdapter(mAdapter);
+        }
+    }
+
+    private void readExtra() {
+        Intent intent = getIntent();
+        mUid = intent.getStringExtra("uid");
     }
 
     @Override
@@ -134,6 +175,9 @@ public class DetailActivity extends AppCompatActivity implements AppBarLayout.On
 
     @Override
     public void onClick(View v) {
+        if (v == mCallFloatingButton) {
+            AVChatActivity.launchVideoCall(this, mUid);
+        }
 
     }
 }

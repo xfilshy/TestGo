@@ -84,7 +84,7 @@ public class AVChatSoundPlayer {
         }
 
         if (ringId != 0) {
-//            play(ringId);
+            play(ringId);
         }
 
     }

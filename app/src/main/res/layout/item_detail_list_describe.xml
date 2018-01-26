@@ -2,11 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:lines="1"
         android:text="独白"
         android:textColor="@color/black_light"
         android:textSize="20dp" />
@@ -15,8 +20,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:lineSpacingMultiplier="1.5"
         android:text="这是一大段描述，非常的长。这是一大段描述，非常的长。这是一大段描述，非常的长。这是一大段描述，非常的长。这是一大段描述，非常的长。这是一大段描述，非常的长。这是一大段描述，非常的长。这是一大段描述，非常的长。这是一大段描述，非常的长。这是一大段描述，非常的长"
         android:textColor="@color/black_light"
-        android:textSize="20dp" />
+        android:textSize="14dp" />
 
 </LinearLayout>

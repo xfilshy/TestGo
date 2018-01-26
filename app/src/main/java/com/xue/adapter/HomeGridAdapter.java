@@ -81,7 +81,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
         private TextView vip;
 
         public ViewHolder(ViewGroup itemView, int imageWidth) {
-            super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_home_list, itemView, false));
+            super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_home_list_user, itemView, false));
             findView(imageWidth);
         }
 
@@ -97,7 +97,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
 
         protected void fill(final UserMinor userMinor) {
             name.setText(userMinor.getUserBase().getCellphone());
-            ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo);
+            ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo, false);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +105,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     if (userMinor != null) {
-//                        AVChatActivity.launchVideoCall(view.getContext(), userMinor.getUserBase().getId());
-                        DetailActivity.launch(view.getContext());
+                        DetailActivity.launch(view.getContext() , userMinor.getUserBase().getId());
                     }
                 }
             });
