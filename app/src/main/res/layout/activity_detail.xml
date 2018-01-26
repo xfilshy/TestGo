@@ -34,17 +34,16 @@
 
             <LinearLayout
                 android:id="@+id/infoLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal|bottom"
-                android:orientation="vertical"
-                android:paddingBottom="50dp">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -77,6 +76,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="44dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -153,6 +153,20 @@
                         android:visibility="invisible" />
 
                     <ImageView
+                        android:id="@+id/actionFavorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icon_favorite_border" />
+
+                    <ImageView
+                        android:id="@+id/actionChat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icon_chat" />
+
+                    <ImageView
                         android:id="@+id/setting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -165,17 +179,30 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
+    <ImageView
+        android:id="@+id/favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_favorite_border" />
+
+    <ImageView
+        android:id="@+id/chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_chat" />
+
     <include layout="@layout/content_scrolling" />
 
-    <com.xue.support.view.FloatingActionsMenu
-        android:id="@+id/floatingMenu"
+    <com.xue.support.view.FloatingActionButton
+        android:id="@+id/call"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
-        app:fab_addButtonColorNormal="@color/colorAccent"
-        app:fab_addButtonColorPressed="@color/colorPrimary"
-        app:fab_addButtonPlusIconColor="@color/white" />
+        app:fab_colorNormal="@color/colorAccent"
+        app:fab_colorPressed="@color/colorPrimary"
+        app:fab_colorDisabled="@color/black_light"
+        app:fab_icon="@drawable/icon_call" />
 
 </android.support.design.widget.CoordinatorLayout>

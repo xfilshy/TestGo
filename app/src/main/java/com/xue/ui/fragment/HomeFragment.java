@@ -35,6 +35,8 @@ public class HomeFragment extends BaseFragment {
 
     private HomeFooterGridAdapter mAdapter;
 
+    private View mFooterView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -54,12 +56,10 @@ public class HomeFragment extends BaseFragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.addItemDecoration(new HomeGridItemDecoration(UITool.dipToPx(getActivity(), 3), 2));
-
+        mFooterView = View.inflate(getActivity(), R.layout.footer_home_grid, null);
         if (mAdapter == null) {
             mAdapter = new HomeFooterGridAdapter(new HomeGridAdapter(), gridLayoutManager, 2);
             mRecyclerView.setAdapter(mAdapter);
-
-            mAdapter.addFooter(View.inflate(getActivity(), R.layout.footer_home_grid, null));
         }
     }
 
@@ -68,6 +68,15 @@ public class HomeFragment extends BaseFragment {
             return;
         }
 
+        if (mDataList != null && mDataList.size() > 0) {
+            if (mFooterView.getParent() == null) {
+                mAdapter.addFooter(mFooterView);
+            }
+        } else {
+            if (mFooterView.getParent() != null) {
+                mAdapter.removeFooter(mFooterView);
+            }
+        }
         mAdapter.getWrappedAdapter().setDataList(mDataList);
         mAdapter.notifyDataSetChanged();
     }

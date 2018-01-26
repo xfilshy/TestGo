@@ -4,17 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.support.view.CircleImageView;
-import com.xue.support.view.FloatingActionButton;
-import com.xue.support.view.FloatingActionsMenu;
+import com.xue.ui.views.ChatImageBehavior;
+import com.xue.ui.views.FavoriteImageBehavior;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -32,9 +34,17 @@ public class DetailActivity extends AppCompatActivity implements AppBarLayout.On
 
     private TextView mActionTitleTextView;
 
+    private ImageView mActionFavoriteImageView;
+
+    private ImageView mActionChatImageView;
+
     private LinearLayout mInfoLayout;
 
-    private FloatingActionsMenu mFloatingActionsMenu;
+    private TextView mVipTextView;
+
+    private ImageView mFavoriteImageView;
+
+    private ImageView mChatImageView;
 
     private boolean mActionBarVisible;
 
@@ -45,15 +55,22 @@ public class DetailActivity extends AppCompatActivity implements AppBarLayout.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        findView();
         initActionBar();
+        findView();
         initAppBarLayout();
-        initFloatingActionsMenu();
     }
 
     private void findView() {
         mInfoLayout = findViewById(R.id.infoLayout);
-        mFloatingActionsMenu = findViewById(R.id.floatingMenu);
+        mVipTextView = findViewById(R.id.vip);
+        mFavoriteImageView = findViewById(R.id.favorite);
+        mChatImageView = findViewById(R.id.chat);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mFavoriteImageView.getLayoutParams();
+        layoutParams.setBehavior(new FavoriteImageBehavior(this, mActionFavoriteImageView, null));
+
+        layoutParams = (CoordinatorLayout.LayoutParams) mChatImageView.getLayoutParams();
+        layoutParams.setBehavior(new ChatImageBehavior(this, mActionChatImageView, null));
     }
 
     private void initAppBarLayout() {
@@ -65,33 +82,9 @@ public class DetailActivity extends AppCompatActivity implements AppBarLayout.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         mActionLogoImageView = toolbar.findViewById(R.id.logo);
         mActionTitleTextView = toolbar.findViewById(R.id.title);
+        mActionFavoriteImageView = toolbar.findViewById(R.id.actionFavorite);
+        mActionChatImageView = toolbar.findViewById(R.id.actionChat);
         setSupportActionBar(toolbar);
-    }
-
-    private void initFloatingActionsMenu() {
-        FloatingActionButton actionButton = new FloatingActionButton(this);
-        actionButton.setTitle("关心");
-        actionButton.setOnClickListener(this);
-        actionButton.setColorNormalResId(R.color.red_a200);
-        actionButton.setColorPressedResId(R.color.red_a400);
-        actionButton.setIcon(R.drawable.icon_favorite_border);
-        mFloatingActionsMenu.addButton(actionButton);
-
-        actionButton = new FloatingActionButton(this);
-        actionButton.setTitle("消息");
-        actionButton.setOnClickListener(this);
-        actionButton.setColorNormalResId(R.color.blue_a200);
-        actionButton.setColorPressedResId(R.color.blue_a400);
-        actionButton.setIcon(R.drawable.icon_chat);
-        mFloatingActionsMenu.addButton(actionButton);
-
-        actionButton = new FloatingActionButton(this);
-        actionButton.setTitle("电话");
-        actionButton.setOnClickListener(this);
-        actionButton.setColorNormalResId(R.color.green_a200);
-        actionButton.setColorPressedResId(R.color.green_a400);
-        actionButton.setIcon(R.drawable.icon_call);
-        mFloatingActionsMenu.addButton(actionButton);
     }
 
     @Override

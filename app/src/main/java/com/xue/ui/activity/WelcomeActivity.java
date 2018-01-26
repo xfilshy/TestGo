@@ -30,7 +30,8 @@ public class WelcomeActivity extends BaseActivity {
             if (msg.what == 1) {
                 activity.loadLoginFragment();
             } else if (msg.what == 2) {
-                MainActivity.launch(activity);
+                DetailActivity.launch(activity);
+//                MainActivity.launch(activity);
                 activity.finish();
             }
         }
