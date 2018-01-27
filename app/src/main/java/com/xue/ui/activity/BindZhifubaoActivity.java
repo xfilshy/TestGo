@@ -11,21 +11,21 @@ import android.widget.TextView;
 
 import com.xue.R;
 
-public class WithdrawalsActivity extends BaseActivity implements View.OnClickListener {
+public class BindZhifubaoActivity extends BaseActivity implements View.OnClickListener {
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, WithdrawalsActivity.class);
+        Intent intent = new Intent(context, BindZhifubaoActivity.class);
         context.startActivity(intent);
     }
 
     private ImageView mBackImageView = null;
 
-    private TextView mPromptTextView = null;
+    private TextView mTitleTextView = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_withdrawals);
+        setContentView(R.layout.activity_bind_zhifubao);
 
         initActionBar();
         findView();
@@ -35,12 +35,13 @@ public class WithdrawalsActivity extends BaseActivity implements View.OnClickLis
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_withdrawals);//设置自定义的布局：actionbar_custom
+            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
             mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mPromptTextView = actionBar.getCustomView().findViewById(R.id.prompt);
+            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
+
+            mTitleTextView.setText("绑定提现支付宝");
 
             mBackImageView.setOnClickListener(this);
-            mPromptTextView.setOnClickListener(this);
         }
     }
 
@@ -48,16 +49,10 @@ public class WithdrawalsActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-    public void bindZhifubao(View view) {
-        BindZhifubaoActivity.launch(this);
-    }
-
     @Override
     public void onClick(View v) {
         if (mBackImageView == v) {
             finish();
-        } else if (mPromptTextView == v) {
-
         }
     }
 }
