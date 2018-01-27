@@ -46,6 +46,11 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
      */
     private int TYPE_GALLERY = 7;
 
+    /**
+     * 收藏
+     */
+    private int TYPE_FAVORITE = 8;
+
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,6 +59,8 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             baseViewHolder = new DescribeViewHolder(parent);
         } else if (viewType == TYPE_GALLERY) {
             baseViewHolder = new GalleryViewHolder(parent);
+        } else if (viewType == TYPE_FAVORITE) {
+            baseViewHolder = new FavoriteiewHolder(parent);
         } else if (viewType == TYPE_TITLE) {
             baseViewHolder = new TitleViewHolder(parent);
         } else if (viewType == TYPE_INFO) {
@@ -74,14 +81,16 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
         if (position == 0) {
             return TYPE_DESCRIBE;
         } else if (position == 1) {
-            return TYPE_GALLERY;
+            return TYPE_FAVORITE;
         } else if (position == 2) {
+            return TYPE_GALLERY;
+        } else if (position == 3) {
             return TYPE_TITLE;
-        } else if (position > 2 && position < 7) {
+        } else if (position > 3 && position < 8) {
             return TYPE_INFO;
-        } else if (position == 7) {
-            return TYPE_COMMENT_TITLE;
         } else if (position == 8) {
+            return TYPE_COMMENT_TITLE;
+        } else if (position == 9) {
             return TYPE_MARK;
         } else {
             return TYPE_COMMENT;
@@ -118,6 +127,13 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
 
         public GalleryViewHolder(ViewGroup itemView) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_detail_list_gallery, itemView, false));
+        }
+    }
+
+    public static class FavoriteiewHolder extends BaseViewHolder {
+
+        public FavoriteiewHolder(ViewGroup itemView) {
+            super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_detail_list_favorite, itemView, false));
         }
     }
 

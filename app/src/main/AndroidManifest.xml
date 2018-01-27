@@ -147,6 +147,13 @@
             android:name=".ui.activity.DetailActivity"
             android:theme="@style/TransparentTitleTheme"></activity>
 
+        <activity
+            android:name=".ui.activity.RechargeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.PayActivity"
+            android:screenOrientation="portrait" />
+
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
