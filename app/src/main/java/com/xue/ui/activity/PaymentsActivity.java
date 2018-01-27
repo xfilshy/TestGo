@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import com.xue.R;
 
-public class RechargeActivity extends BaseActivity implements View.OnClickListener {
+public class PaymentsActivity extends BaseActivity implements View.OnClickListener {
 
-    public static void launch(Context context) {
-        Intent intent = new Intent(context, RechargeActivity.class);
+    public static void launsh(Context context) {
+        Intent intent = new Intent(context, PaymentsActivity.class);
         context.startActivity(intent);
     }
 
@@ -22,13 +22,15 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
 
     private TextView mHistoryTextView;
 
-    private TextView mConfirmButton;
+    private TextView mRechargeTextView;
+
+    private TextView mWithdrawalsTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_payments);
 
-        setContentView(R.layout.activity_recharge);
         initActionBar();
         findView();
     }
@@ -37,7 +39,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_recharge);//设置自定义的布局：actionbar_custom
+            actionBar.setCustomView(R.layout.actionbar_payments);//设置自定义的布局：actionbar_custom
             mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
             mHistoryTextView = actionBar.getCustomView().findViewById(R.id.history);
             mBackImageView.setOnClickListener(this);
@@ -46,10 +48,11 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void findView() {
-        mConfirmButton = findViewById(R.id.confirm);
+        mRechargeTextView = findViewById(R.id.recharge);
+        mWithdrawalsTextView = findViewById(R.id.withdrawals);
 
-        mConfirmButton.setEnabled(true);
-        mConfirmButton.setOnClickListener(this);
+        mRechargeTextView.setOnClickListener(this);
+        mWithdrawalsTextView.setOnClickListener(this);
     }
 
     @Override
@@ -57,9 +60,11 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         if (mBackImageView == v) {
             finish();
         } else if (mHistoryTextView == v) {
-            RechargeHistoryActivity.launch(this);
-        } else if (mConfirmButton == v) {
-            PayActivity.launch(this);
+            PaymentsHistoryActivity.launch(this);
+        } else if (mRechargeTextView == v) {
+
+        } else if (mWithdrawalsTextView == v) {
+
         }
     }
 }

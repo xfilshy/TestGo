@@ -4,5 +4,5 @@
     <item android:drawable="@drawable/primary_shape" android:state_pressed="true" />
     <item android:drawable="@drawable/primary_shape" android:state_enabled="true" />
     <item android:drawable="@drawable/grey_shape" android:state_enabled="false" />
-    <item android:drawable="@drawable/grey_shape" />
+    <item android:drawable="@drawable/primary_shape" />
 </selector>

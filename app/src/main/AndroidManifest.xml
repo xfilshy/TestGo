@@ -159,6 +159,9 @@
             android:name=".ui.activity.RechargeHistoryActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.PaymentsActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.activity.PaymentsHistoryActivity"

@@ -81,15 +81,16 @@
             android:layout_height="1px"
             android:background="@color/grey_light" />
 
-        <Button
+        <TextView
             android:id="@+id/confirm"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/primary_button_selector"
             android:enabled="false"
+            android:gravity="center"
             android:text="立即购买"
             android:textColor="@color/white"
             android:textSize="20dp" />

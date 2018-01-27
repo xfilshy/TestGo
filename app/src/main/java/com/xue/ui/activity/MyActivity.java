@@ -22,6 +22,8 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
 
     private LinearLayout mRechargeLinerLayout;
 
+    private LinearLayout mPaymentsLinerLayout;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +38,10 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         mPhotoImageView = findViewById(R.id.photo);
 
         mRechargeLinerLayout = findViewById(R.id.recharge);
+        mPaymentsLinerLayout = findViewById(R.id.payments);
 
         mRechargeLinerLayout.setOnClickListener(this);
+        mPaymentsLinerLayout.setOnClickListener(this);
     }
 
     private void init() {
@@ -53,6 +57,8 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (mRechargeLinerLayout == v) {
             RechargeActivity.launch(this);
+        } else if (mPaymentsLinerLayout == v) {
+            PaymentsActivity.launsh(this);
         }
     }
 }

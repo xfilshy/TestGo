@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
@@ -37,9 +38,9 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
 
     private EditText mVerifyCodeEditText;
 
-    private Button mVerifyButton;
+    private TextView mVerifyButton;
 
-    private Button mLoginButton;
+    private TextView mLoginButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
