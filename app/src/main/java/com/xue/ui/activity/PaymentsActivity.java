@@ -62,9 +62,9 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
         } else if (mHistoryTextView == v) {
             PaymentsHistoryActivity.launch(this);
         } else if (mRechargeTextView == v) {
-
+            RechargeNiubiActivity.launch(this);
         } else if (mWithdrawalsTextView == v) {
-
+            WithdrawalsActivity.launch(this);
         }
     }
 }

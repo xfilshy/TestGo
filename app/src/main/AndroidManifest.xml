@@ -167,6 +167,14 @@
             android:name=".ui.activity.PaymentsHistoryActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.RechargeNiubiActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.WithdrawalsActivity"
+            android:screenOrientation="portrait" />
+
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->

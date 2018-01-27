@@ -33,7 +33,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="售价30元"
+        android:text="售价50牛币"
         android:textColor="@color/colorPrimary"
         android:textSize="14dp" />
 
