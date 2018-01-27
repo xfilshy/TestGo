@@ -58,7 +58,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         if (mBackImageView == v) {
             finish();
         } else if (mHistoryTextView == v) {
-
+            RechargeHistoryActivity.launch(this);
         } else if (mConfirmButton == v) {
             PayActivity.launch(this);
         }
