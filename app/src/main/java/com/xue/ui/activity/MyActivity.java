@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.xue.R;
 import com.xue.imagecache.ImageCacheMannager;
@@ -20,10 +19,6 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView mPhotoImageView;
 
-    private LinearLayout mRechargeLinerLayout;
-
-    private LinearLayout mPaymentsLinerLayout;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +31,6 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
 
     private void findView() {
         mPhotoImageView = findViewById(R.id.photo);
-
-        mRechargeLinerLayout = findViewById(R.id.recharge);
-        mPaymentsLinerLayout = findViewById(R.id.payments);
-
-        mRechargeLinerLayout.setOnClickListener(this);
-        mPaymentsLinerLayout.setOnClickListener(this);
     }
 
     private void init() {
@@ -53,12 +42,24 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         finish();
     }
 
+    public void goInfo(View view) {
+        InfoActivity.launch(this);
+    }
+
+    public void goRecharge(View view) {
+        RechargeActivity.launch(this);
+    }
+
+    public void goPayments(View view) {
+        PaymentsActivity.launsh(this);
+    }
+
+    public void goSetting(View view) {
+        SettingActivity.launch(this);
+    }
+
     @Override
     public void onClick(View v) {
-        if (mRechargeLinerLayout == v) {
-            RechargeActivity.launch(this);
-        } else if (mPaymentsLinerLayout == v) {
-            PaymentsActivity.launsh(this);
-        }
+
     }
 }

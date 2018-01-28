@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:lineSpacingMultiplier="1.3"
+            android:padding="16dp"
+            android:text="用户协议\n啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪\n啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪\n\n啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪\n\n啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="50dp"
+            android:background="@color/grey_light" />
+    </LinearLayout>
+</ScrollView>

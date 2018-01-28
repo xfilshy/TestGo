@@ -179,6 +179,25 @@
             android:name=".ui.activity.BindZhifubaoActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.InfoActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.BaseInfoActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.ModifyNameActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.AgreementActivity"
+            android:screenOrientation="portrait" />
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->

@@ -48,6 +48,8 @@
     <color name="green_a400">#76FF03</color>
     <color name="blue_a200">#40C4FF</color>
     <color name="blue_a400">#00B0FF</color>
+    <color name="grey_300">#E7E7E7</color>
+    <color name="grey_50">#FAFAFA</color>
 
     <color name="green_white">#f2fffa</color>
 
