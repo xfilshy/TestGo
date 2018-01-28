@@ -46,6 +46,10 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         InfoActivity.launch(this);
     }
 
+    public void goCertify(View view) {
+        CertifyActivity.launch(this);
+    }
+
     public void goRecharge(View view) {
         RechargeActivity.launch(this);
     }
@@ -57,6 +61,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     public void goSetting(View view) {
         SettingActivity.launch(this);
     }
+
 
     @Override
     public void onClick(View v) {

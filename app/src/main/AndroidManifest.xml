@@ -198,6 +198,18 @@
         <activity
             android:name=".ui.activity.AgreementActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.CertifyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.BusinessCardCertifyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.WorkCardCertifyActivity"
+            android:screenOrientation="portrait" />
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
