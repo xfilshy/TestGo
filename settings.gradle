@@ -1,1 +1,1 @@
-include ':app',':http_lib',':image_cache_lib',':threadpoollib',':support_lib',':toolslib'
+include ':app',':http_lib',':image_cache_lib',':threadpoollib',':support_lib',':toolslib',':gallerypick',':ucrop'

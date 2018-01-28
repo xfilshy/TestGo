@@ -35,7 +35,8 @@
                     android:layout_marginTop="120dp"
                     android:background="@drawable/yellow_oval"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_photo" />
+                    android:src="@drawable/icon_photo"
+                    android:onClick="goI"/>
             </RelativeLayout>
 
             <LinearLayout

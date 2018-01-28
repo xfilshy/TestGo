@@ -19,7 +19,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 import okhttp3.OkHttpClient;
-import okhttp3.internal.Platform;
 import okio.Buffer;
 
 /**
@@ -41,7 +40,7 @@ class OkHttpClientBuidler {
 
         if (!TextUtils.isEmpty(opensslSecret)) {
             SSLContext sslContext = sslContextForTrustedCertificates(trustedCertificatesInputStream(opensslSecret));
-            builder.sslSocketFactory(sslContext.getSocketFactory(), Platform.get().trustManager(sslContext.getSocketFactory()));
+            builder.sslSocketFactory(sslContext.getSocketFactory());
         }
     }
 

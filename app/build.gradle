@@ -84,5 +84,6 @@ dependencies {
     api project(':threadpoollib')
     api project(':toolslib')
     api project(':support_lib')
+    api project(':gallerypick')
     implementation 'com.android.support:support-v4:27.0.2'
 }
