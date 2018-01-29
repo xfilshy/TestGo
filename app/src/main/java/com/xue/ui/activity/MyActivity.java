@@ -69,7 +69,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         SettingActivity.launch(this);
     }
 
-    public void goI(View view) {
+    public void goPickPhoto(View view) {
         IHandlerCallBack iHandlerCallBack = new IHandlerCallBack() {
             @Override
             public void onStart() {

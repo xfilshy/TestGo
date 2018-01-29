@@ -14,9 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.elianshang.tools.WeakReferenceHandler;
-import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.NIMSDK;
 import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.xue.BaseApplication;
 import com.xue.R;
@@ -71,7 +70,7 @@ public class LoginFragment extends BaseFragment implements RequestCallback<Login
 
     public void doLogin() {
         LoginInfo info = new LoginInfo(mUserBase.getId(), mUserBase.getToken());
-        NIMClient.getService(AuthService.class).login(info).setCallback(this);
+        NIMSDK.getAuthService().login(info).setCallback(this);
     }
 
     @Override

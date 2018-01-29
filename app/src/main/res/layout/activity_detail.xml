@@ -164,6 +164,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
+                        android:onClick="goChat"
                         android:src="@drawable/icon_chat" />
 
                     <ImageView
@@ -189,6 +190,7 @@
         android:id="@+id/chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="goChat"
         android:src="@drawable/icon_chat" />
 
     <include layout="@layout/content_detail" />

@@ -11,27 +11,39 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/grey_300">
+            android:layout_height="wrap_content"
+            android:background="@color/grey_300"
+            android:onClick="goPickBusinessCard">
 
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/grey_oval_frame"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_setting" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/image"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="上传工牌照片"
-                android:textColor="@color/grey_dark"
-                android:textSize="16dp" />
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/grey_oval_frame"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_setting" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="上传工牌照片"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:scaleType="centerCrop" />
+
         </RelativeLayout>
 
         <LinearLayout
@@ -64,6 +76,7 @@
                 android:text="2.资料将对其他用户可见，隐私信息会打码处理"
                 android:textColor="@color/grey_dark"
                 android:textSize="14dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

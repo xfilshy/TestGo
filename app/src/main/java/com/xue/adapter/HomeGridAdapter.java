@@ -1,7 +1,6 @@
 package com.xue.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,8 +93,6 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
             position = itemView.findViewById(R.id.position);
             price = itemView.findViewById(R.id.price);
             vip = itemView.findViewById(R.id.vip);
-
-            Log.e("xue", "imageWidth" + imageWidth);
         }
 
         protected void fill(final UserMinor userMinor) {

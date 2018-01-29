@@ -210,6 +210,31 @@
         <activity
             android:name=".ui.activity.WorkCardCertifyActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.ChatActivity"
+            android:screenOrientation="portrait" />
+
+
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <!--图片选择器-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.xue.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
         <!-- 网易 通信云相关声明 -->
@@ -273,7 +298,8 @@
 
 
         <!-- 申明自定义通知的广播接收器，第三方APP集成时，action中的com.netease.nim.demo请替换为自己的包名 -->
-        <!-- 需要权限申明 <uses-permission android:name="com.netease.nim.demo.permission.RECEIVE_MSG"/> -->
+         <!--需要权限申明 -->
+        <!--<uses-permission android:name="com.netease.nim.demo.permission.RECEIVE_MSG"/>-->
         <!-- <receiver -->
         <!-- android:name=".receiver.CustomNotificationReceiver" -->
         <!-- android:enabled="true" -->
@@ -437,15 +463,7 @@
         <!-- android:name="io.fabric.ApiKey" -->
         <!-- android:value="c3b7877640734c92138bf0a8becce1df29155681" /> -->
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.xue.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
-        </provider>
+
     </application>
 
 </manifest>

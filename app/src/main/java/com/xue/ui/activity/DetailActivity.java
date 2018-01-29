@@ -173,6 +173,10 @@ public class DetailActivity extends AppCompatActivity implements AppBarLayout.On
         v.startAnimation(alphaAnimation);
     }
 
+    public void goChat(View view) {
+        ChatActivity.launch(this, mUid);
+    }
+
     @Override
     public void onClick(View v) {
         if (v == mCallFloatingButton) {
