@@ -143,7 +143,7 @@ public class GalleryPickActivity extends BaseActivity {
 
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3);
         rvGalleryImage.setLayoutManager(gridLayoutManager);
-        rvGalleryImage.addItemDecoration(new GridItemDecoration(UITool.dipToPx(this, 3) , 3));
+        rvGalleryImage.addItemDecoration(new GridItemDecoration(UITool.dipToPx(this, 3)));
         photoAdapter = new PhotoAdapter(mActivity, mContext, photoInfoList);
         photoAdapter.setOnCallBack(new PhotoAdapter.OnCallBack() {
             @Override

@@ -151,7 +151,7 @@ public class ImageCacheMannager {
      * 加载图片
      */
     private static void loadImage(RequestManager requestManager, Object model, int placeholder, int error, final ImageView imageView, RequestListener<Drawable> listener, boolean isCircle) {
-        RequestOptions requestOptions = RequestOptions.placeholderOf(placeholder).error(error);
+        RequestOptions requestOptions = RequestOptions.placeholderOf(placeholder).error(error).centerCrop();
         if (isCircle) {
             requestOptions.circleCrop();
         }
