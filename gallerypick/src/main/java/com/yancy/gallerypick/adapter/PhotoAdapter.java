@@ -3,11 +3,13 @@ package com.yancy.gallerypick.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import com.elianshang.tools.UITool;
 import com.yancy.gallerypick.R;
 import com.yancy.gallerypick.bean.PhotoInfo;
 import com.yancy.gallerypick.config.GalleryConfig;
@@ -57,9 +59,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         // 设置 每个imageView 的大小
         ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
-        params.height = ScreenUtils.getScreenWidth(mContext) / 3;
-        params.width = ScreenUtils.getScreenWidth(mContext) / 3;
-        holder.itemView.setLayoutParams(params);
+        params.height = params.width = (UITool.getScreenWidth(mContext) - UITool.dipToPx(mContext, 3) * 2) / 3;
+
+        Log.e("xue", "params.height == " + params.height);
+        Log.e("xue", "UITool.getScreenWidth(mContext) == " + UITool.getScreenWidth(mContext));
+        Log.e("xue", "UITool.dipToPx(mContext, 3) == " + UITool.dipToPx(mContext, 3));
 
         if (getItemViewType(position) == HEAD) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

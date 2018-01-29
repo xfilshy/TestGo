@@ -7,7 +7,6 @@
         android:id="@+id/ivGalleryPhotoImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="0.5dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/gallery_pick_photo" />
@@ -16,7 +15,6 @@
         android:id="@+id/vGalleryPhotoMask"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="0.5dp"
         android:background="@color/gallery_photo_mask"
         android:visibility="visible" />
 

@@ -18,7 +18,7 @@ import com.xue.bean.UserMinor;
 import com.xue.bean.UserMinorList;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
-import com.xue.ui.views.HomeGridItemDecoration;
+import com.xue.support.view.GridItemDecoration;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class HomeFragment extends BaseFragment {
         mRecyclerView = getView().findViewById(R.id.recyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
-        mRecyclerView.addItemDecoration(new HomeGridItemDecoration(UITool.dipToPx(getActivity(), 3), 2));
+        mRecyclerView.addItemDecoration(new GridItemDecoration(UITool.dipToPx(getActivity(), 3), 2));
         mFooterView = View.inflate(getActivity(), R.layout.footer_home_grid, null);
         if (mAdapter == null) {
             mAdapter = new HomeFooterGridAdapter(new HomeGridAdapter(), gridLayoutManager, 2);

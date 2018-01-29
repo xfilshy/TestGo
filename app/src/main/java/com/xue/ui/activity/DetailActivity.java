@@ -18,9 +18,9 @@ import android.widget.TextView;
 import com.xue.R;
 import com.xue.adapter.DetailListAdapter;
 import com.xue.imagecache.ImageCacheMannager;
+import com.xue.support.view.DividerItemDecoration;
 import com.xue.support.view.FloatingActionButton;
 import com.xue.ui.views.ChatImageBehavior;
-import com.xue.ui.views.DividerItemDecoration;
 import com.xue.ui.views.FavoriteImageBehavior;
 
 import static android.view.View.INVISIBLE;

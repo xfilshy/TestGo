@@ -32,6 +32,7 @@ android {
 dependencies {
     api project(':support_lib')
     api project(':ucrop')
+    api project(':toolslib')
 }
 //
 //// 指定编码

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.adapter.PaymentsHistoryListAdapter;
-import com.xue.ui.views.DividerItemDecoration;
+import com.xue.support.view.DividerItemDecoration;
 
 public class PaymentsHistoryActivity extends BaseActivity implements View.OnClickListener {
 

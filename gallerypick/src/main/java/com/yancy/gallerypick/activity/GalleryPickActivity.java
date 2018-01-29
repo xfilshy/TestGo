@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.elianshang.tools.UITool;
+import com.xue.support.view.GridItemDecoration;
 import com.yalantis.ucrop.UCrop;
 import com.yancy.gallerypick.R;
 import com.yancy.gallerypick.adapter.FolderAdapter;
@@ -141,6 +143,7 @@ public class GalleryPickActivity extends BaseActivity {
 
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3);
         rvGalleryImage.setLayoutManager(gridLayoutManager);
+        rvGalleryImage.addItemDecoration(new GridItemDecoration(UITool.dipToPx(this, 3) , 3));
         photoAdapter = new PhotoAdapter(mActivity, mContext, photoInfoList);
         photoAdapter.setOnCallBack(new PhotoAdapter.OnCallBack() {
             @Override

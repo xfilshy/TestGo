@@ -1,4 +1,4 @@
-package com.xue.ui.views;
+package com.xue.support.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,8 +8,6 @@ import android.support.annotation.ColorRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import com.xue.R;
 
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
@@ -51,7 +49,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         if (dividerColor == 0) {
-            mPaint.setColor(context.getResources().getColor(R.color.grey_light));
+            mPaint.setColor(context.getResources().getColor(android.R.color.black));
         } else {
             mPaint.setColor(context.getResources().getColor(dividerColor));
         }

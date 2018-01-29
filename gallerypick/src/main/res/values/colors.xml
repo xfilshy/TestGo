@@ -16,7 +16,7 @@
     <color name="gallery_folder_bg">#88FFFFFF</color>
 
     <!-- 常用颜色 -->
-    <color name="gallery_white">#FFFFFFFF</color>
+    <color name="gallery_white">#FFF5F5F5</color>
     <color name="gallery_black">#000000</color>
     <color name="gallery_green">#00FF00</color>
     <color name="gallery_blue">#00bb88</color>

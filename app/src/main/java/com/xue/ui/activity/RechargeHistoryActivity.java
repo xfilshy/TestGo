@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.adapter.RechargeHistoryListAdapter;
-import com.xue.ui.views.DividerItemDecoration;
+import com.xue.support.view.DividerItemDecoration;
 
 public class RechargeHistoryActivity extends BaseActivity implements View.OnClickListener {
 
