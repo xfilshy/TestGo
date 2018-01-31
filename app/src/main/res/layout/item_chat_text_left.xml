@@ -27,10 +27,10 @@
             android:textColor="@color/grey_dark"
             android:textSize="14dp" />
 
-        <com.xue.support.view.JustifyTextView
+        <TextView
             android:id="@+id/message"
             android:layout_width="wrap_content"
-            android:maxWidth="200dp"
+            android:maxWidth="250dp"
             android:layout_height="wrap_content"
             android:background="@drawable/white_shape"
             android:padding="10dp"

@@ -43,6 +43,7 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
             mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
             mBackImageView.setOnClickListener(this);
             mRightTextView.setOnClickListener(this);
+            mRightTextView.setVisibility(View.VISIBLE);
 
             mTitleTextView.setText("修改姓名");
             mRightTextView.setText("保存");

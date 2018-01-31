@@ -140,6 +140,11 @@
             android:theme="@style/FullscreenTheme" />
 
         <activity
+            android:name=".ui.activity.ChatActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
             android:name=".ui.activity.MyActivity"
             android:theme="@style/Transparent80FullscreenTheme" />
 
@@ -212,9 +217,16 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.activity.ChatActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:name=".ui.activity.DescribeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.WorkActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.EducationActivity"
+            android:screenOrientation="portrait" />
 
 
         <!--图片选择器-->
@@ -299,7 +311,7 @@
 
 
         <!-- 申明自定义通知的广播接收器，第三方APP集成时，action中的com.netease.nim.demo请替换为自己的包名 -->
-         <!--需要权限申明 -->
+        <!--需要权限申明 -->
         <!--<uses-permission android:name="com.netease.nim.demo.permission.RECEIVE_MSG"/>-->
         <!-- <receiver -->
         <!-- android:name=".receiver.CustomNotificationReceiver" -->

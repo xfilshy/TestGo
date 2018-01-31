@@ -25,12 +25,12 @@
             android:textColor="@color/grey_dark"
             android:textSize="14dp" />
 
-        <com.xue.support.view.JustifyTextView
+        <TextView
             android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/primary_shape"
-            android:maxWidth="200dp"
+            android:maxWidth="250dp"
             android:padding="10dp"
             android:text="视频"
             android:textColor="@color/white"

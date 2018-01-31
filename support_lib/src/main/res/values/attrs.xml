@@ -61,7 +61,9 @@
     </declare-styleable>
 
     <declare-styleable name="JustifyTextView">
-        <attr name="lineSpacing" format="dimension" />
+        <attr name="character_space" format="dimension"></attr>
+        <attr name="line_space" format="dimension"></attr>
+        <attr name="align_chars" format="boolean"></attr>
     </declare-styleable>
 
 </resources>

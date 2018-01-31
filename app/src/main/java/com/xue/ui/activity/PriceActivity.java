@@ -10,25 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xue.R;
-import com.xue.imagecache.ImageCacheMannager;
 
-public class InfoActivity extends BaseActivity implements View.OnClickListener {
+public class PriceActivity extends BaseActivity implements View.OnClickListener {
+
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, InfoActivity.class);
+        Intent intent = new Intent(context, DescribeActivity.class);
         context.startActivity(intent);
     }
 
     private ImageView mBackImageView;
 
-    private TextView mSaveTextView;
+    private TextView mTitleTextView;
 
-    private ImageView mPhotoImageView;
+    private TextView mRightTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
+        setContentView(R.layout.activity_describe);
 
         initActionBar();
         findView();
@@ -38,38 +38,27 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_info);//设置自定义的布局：actionbar_custom
+            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
             mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mSaveTextView = actionBar.getCustomView().findViewById(R.id.save);
+            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
+            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
             mBackImageView.setOnClickListener(this);
-            mSaveTextView.setOnClickListener(this);
+            mRightTextView.setOnClickListener(this);
+            mRightTextView.setVisibility(View.VISIBLE);
+
+            mTitleTextView.setText("独白");
+            mRightTextView.setText("保存");
         }
     }
 
     private void findView() {
-        mPhotoImageView = findViewById(R.id.photo);
 
-        ImageCacheMannager.loadImage(this, R.drawable.photo_test, mPhotoImageView, true);
-    }
-
-    public void goDescribe(View view) {
-        DescribeActivity.launch(this);
-    }
-
-    public void goWork(View view) {
-        WorkActivity.launch(this);
-    }
-
-    public void goEducation(View view) {
-        EducationActivity.launch(this);
     }
 
     @Override
     public void onClick(View v) {
         if (mBackImageView == v) {
             finish();
-        } else if (mSaveTextView == v) {
-
         }
     }
 }
