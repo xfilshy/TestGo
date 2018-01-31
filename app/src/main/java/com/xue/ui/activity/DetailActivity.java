@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +25,7 @@ import com.xue.ui.views.FavoriteImageBehavior;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
-public class DetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
 
     public static void launch(Context context, String uid) {
         Intent intent = new Intent(context, DetailActivity.class);

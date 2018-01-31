@@ -15,7 +15,7 @@ public class PriceActivity extends BaseActivity implements View.OnClickListener 
 
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, DescribeActivity.class);
+        Intent intent = new Intent(context, PriceActivity.class);
         context.startActivity(intent);
     }
 
@@ -28,7 +28,7 @@ public class PriceActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_describe);
+        setContentView(R.layout.activity_price);
 
         initActionBar();
         findView();
@@ -46,7 +46,7 @@ public class PriceActivity extends BaseActivity implements View.OnClickListener 
             mRightTextView.setOnClickListener(this);
             mRightTextView.setVisibility(View.VISIBLE);
 
-            mTitleTextView.setText("独白");
+            mTitleTextView.setText("通话定价");
             mRightTextView.setText("保存");
         }
     }

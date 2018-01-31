@@ -56,6 +56,10 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         DescribeActivity.launch(this);
     }
 
+    public void goGallery(View view) {
+        GalleryActivity.launch(this);
+    }
+
     public void goWork(View view) {
         WorkActivity.launch(this);
     }

@@ -44,9 +44,8 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         ImageCacheMannager.loadImage(this, R.drawable.photo_test, mPhotoImageView, true);
     }
 
-
-    public void closeActivity(View view) {
-        finish();
+    public void goPrice(View view) {
+        PriceActivity.launch(this);
     }
 
     public void goInfo(View view) {
