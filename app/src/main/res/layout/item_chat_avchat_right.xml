@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/primary_shape"
             android:padding="10dp"
+            android:text="音视频聊天"
             android:textColor="@color/white"
             android:textSize="16dp" />
 

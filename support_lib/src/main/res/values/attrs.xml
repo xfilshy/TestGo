@@ -60,4 +60,8 @@
         <attr name="sp_progress" format="float" />
     </declare-styleable>
 
+    <declare-styleable name="JustifyTextView">
+        <attr name="lineSpacing" format="dimension" />
+    </declare-styleable>
+
 </resources>
