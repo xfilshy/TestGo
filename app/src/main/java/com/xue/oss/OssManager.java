@@ -234,7 +234,7 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
 
     private static File pngComPress(File file) {
         try {
-            if (file.length() > 1f * 1024 * 1024) {
+            if (file.length() > 0.5f * 1024 * 1024) {
                 File tmpFile = new File(file.getAbsolutePath() + "tmp");
                 Bitmap bitmap = decodeSampledBitmap(file);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 70, new FileOutputStream(tmpFile));
@@ -253,7 +253,7 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
 
     private static File jpegComPress(File file) {
         try {
-            if (file.length() > 1f * 1024 * 1024) {
+            if (file.length() > 0.5f * 1024 * 1024) {
                 File tmpFile = new File(file.getAbsolutePath() + "tmp");
                 Bitmap bitmap = decodeSampledBitmap(file);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 70, new FileOutputStream(tmpFile));
