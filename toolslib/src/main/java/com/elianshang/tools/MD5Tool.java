@@ -47,7 +47,7 @@ public class MD5Tool {
         FileInputStream fis = null;
         MessageDigest md5 = null;
         try {
-            md5 = MessageDigest.getInstance("MD5Tool");
+            md5 = MessageDigest.getInstance("MD5");
             fis = new FileInputStream(file);
             byte[] buffer = new byte[8192];
             int length;

@@ -16,7 +16,6 @@ import com.xue.preference.PreferencesManager;
 /**
  * Created by xfilshy on 2018/1/17.
  */
-
 public class BaseApplication extends Application {
 
     private static BaseApplication instance;
@@ -30,7 +29,6 @@ public class BaseApplication extends Application {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
-//        MultiDex.install(this);
     }
 
     @Override

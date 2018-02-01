@@ -22,6 +22,7 @@ public class UCropUtils {
         UCrop.Options options = new UCrop.Options();
         options.setToolbarColor(mActivity.getResources().getColor(R.color.gallery_blue));
         options.setStatusBarColor(mActivity.getResources().getColor(R.color.gallery_blue));
+        options.setCompressionQuality(70);
         uCrop.withOptions(options);
 
 

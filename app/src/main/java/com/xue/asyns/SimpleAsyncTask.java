@@ -26,14 +26,21 @@ public abstract class SimpleAsyncTask<T> extends BaseTaskImpl implements SimpleA
             });
 
             if (!isCancel) {
-                final T result = doInBackground();
+                T result = null;
 
+                try {
+                    result = doInBackground();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                final T r = result;
                 if (!isCancel) {
                     postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<SimpleAsyncTask>() {
                         @Override
                         public void run(SimpleAsyncTask simpleAsyncTask) {
                             if (!isCancel) {
-                                simpleAsyncTask.onPostExecute(result);
+                                simpleAsyncTask.onPostExecute(r);
                             }
                         }
                     });

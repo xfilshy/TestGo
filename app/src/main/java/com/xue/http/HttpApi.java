@@ -13,6 +13,10 @@ import com.xue.http.impl.DataHull;
 import com.xue.http.impl.DefaultKVPBean;
 import com.xue.http.okhttp.OkHttpHandler;
 import com.xue.http.parse.BaseParser;
+import com.xue.oss.OssConfig;
+import com.xue.oss.OssConfigParser;
+import com.xue.oss.SignConentParser;
+import com.xue.oss.SignContent;
 import com.xue.parsers.UserBaseParser;
 import com.xue.parsers.UserMinorListParser;
 import com.xue.tools.AppTool;
@@ -135,6 +139,16 @@ public class HttpApi {
 
     private interface RecommendList {
         String _funcation = "/home/info/recommendlist";
+    }
+
+    private interface OssConfigParameter {
+        String _funcation = "/app/init/config";
+    }
+
+    private interface SignConentParameter {
+        String _funcation = "/res/oss/signconent";
+
+        String content = "content";
     }
 
     private static void build() {
@@ -306,6 +320,31 @@ public class HttpApi {
         String url = base_url + RecommendList._funcation;
         int type = BaseHttpParameter.Type.GET;
         HttpDynamicParameter<UserMinorListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new UserMinorListParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取OSS配置
+     */
+    public static DataHull<OssConfig> ossConfig() {
+        String url = base_url + OssConfigParameter._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<OssConfigParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new OssConfigParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取OSS 签名
+     */
+    public static DataHull<SignContent> signContent(String content) {
+        String url = base_url + SignConentParameter._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(SignConentParameter.content, content)
+        );
+        HttpDynamicParameter<SignConentParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new SignConentParser(), 0, secretKey);
 
         return request(parameter);
     }

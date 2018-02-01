@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.xue.R;
 import com.xue.imagecache.ImageCacheMannager;
+import com.xue.oss.OssManager;
 import com.xue.tools.GlideImageLoader;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
@@ -17,7 +18,7 @@ import com.yancy.gallerypick.inter.IHandlerCallBack;
 
 import java.util.List;
 
-public class MyActivity extends BaseActivity implements View.OnClickListener {
+public class MyActivity extends BaseActivity implements View.OnClickListener, OssManager.Callback {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, MyActivity.class);
@@ -77,10 +78,12 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onSuccess(List<String> photoList) {
-                Log.e("xue", "成功了" + photoList);
                 if (photoList != null && photoList.size() > 0) {
                     String photoPath = photoList.get(0);
                     ImageCacheMannager.loadImage(MyActivity.this, photoPath, mPhotoImageView, true);
+
+                    OssManager.get().setCallback(MyActivity.this);
+                    OssManager.get().upload(photoPath);
                 }
             }
 
@@ -114,5 +117,40 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    public void onInit() {
+        Log.e("xue", "初始化");
+    }
+
+    @Override
+    public void onInitFailure() {
+        Log.e("xue", "初始化失败");
+    }
+
+    @Override
+    public void onStarted() {
+        Log.e("xue", "开始上传");
+    }
+
+    @Override
+    public void onProgress(String file, float progress) {
+        Log.e("xue", "上传进度 " + progress);
+    }
+
+    @Override
+    public void onSuccess(String file, String resultName) {
+        Log.e("xue", "上传完成");
+    }
+
+    @Override
+    public void onFailure(String file, int code) {
+        Log.e("xue", "上传失败");
+    }
+
+    @Override
+    public void onFinish() {
+        Log.e("xue", "上传完成");
     }
 }
