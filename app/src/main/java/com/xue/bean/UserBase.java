@@ -6,20 +6,24 @@ import com.xue.http.hook.BaseBean;
  * 基础用户类，提供用户最基本的数据 如 id token name 等
  */
 
-public class UserBase implements BaseBean, UserToken {
+public class UserBase implements BaseBean {
 
-    private String id;
+    private String uid;
 
     private String cellphone;
 
+    private String neteaseToken;
+
     private String token;
 
-    public String getId() {
-        return id;
+    private String status;
+
+    public String getUid() {
+        return uid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getCellphone() {
@@ -30,14 +34,28 @@ public class UserBase implements BaseBean, UserToken {
         this.cellphone = cellphone;
     }
 
-    @Override
+    public String getNeteaseToken() {
+        return neteaseToken;
+    }
+
+    public void setNeteaseToken(String neteaseToken) {
+        this.neteaseToken = neteaseToken;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
     public void setToken(String token) {
         this.token = token;
     }
 
-    @Override
-    public String getToken() {
-        return token;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

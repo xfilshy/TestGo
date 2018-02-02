@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.elianshang.tools.UITool;
 import com.xue.R;
 import com.xue.adapter.GalleryGridAdapter;
+import com.xue.oss.OssManager;
 import com.xue.support.view.GridItemDecoration;
 import com.xue.tools.GlideImageLoader;
 import com.yancy.gallerypick.config.GalleryConfig;
@@ -24,7 +25,7 @@ import com.yancy.gallerypick.inter.IHandlerCallBack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryActivity extends BaseActivity implements View.OnClickListener, GalleryGridAdapter.AddCallBack {
+public class GalleryActivity extends BaseActivity implements View.OnClickListener, GalleryGridAdapter.AddCallBack, OssManager.Callback {
 
 
     public static void launch(Context context) {
@@ -107,6 +108,9 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
                 mImageList.addAll(photoList);
                 Log.e("xue", "mImageList == " + mImageList);
                 mAdapter.notifyDataSetChanged();
+
+                OssManager.get().setCallback(GalleryActivity.this);
+                OssManager.get().upload(photoList);
             }
 
             @Override
@@ -140,5 +144,40 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClickAdd() {
         goPickPhoto();
+    }
+
+    @Override
+    public void onInit() {
+
+    }
+
+    @Override
+    public void onInitFailure() {
+
+    }
+
+    @Override
+    public void onStarted() {
+
+    }
+
+    @Override
+    public void onProgress(String file, float progress) {
+
+    }
+
+    @Override
+    public void onSuccess(String file, String resultName) {
+        Log.e("xue", "批量上传  成功  " + file);
+    }
+
+    @Override
+    public void onFailure(String file, int code) {
+        Log.e("xue", "批量上传  失败  " + file);
+    }
+
+    @Override
+    public void onFinish() {
+        Log.e("xue", "批量上传  完成");
     }
 }

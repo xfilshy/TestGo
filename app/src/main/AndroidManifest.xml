@@ -236,6 +236,10 @@
             android:name=".ui.activity.GalleryActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.BaseInfoEditActivity"
+            android:screenOrientation="portrait" />
+
 
         <!--图片选择器-->
         <!--图片选择器-->

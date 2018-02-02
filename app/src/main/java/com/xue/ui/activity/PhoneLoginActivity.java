@@ -10,13 +10,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
-import com.xue.bean.UserBase;
+import com.xue.bean.User;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 
@@ -63,6 +63,19 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
         mVerifyButton.setOnClickListener(this);
         mCellphoneEditText.addTextChangedListener(cellphoneWatcher);
         mVerifyCodeEditText.addTextChangedListener(verifyWatcher);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            setResult(RESULT_OK);
+            finish();
+        } else if (requestCode == 1 && resultCode == RESULT_CANCELED) {
+            BaseApplication.get().setUser(null, true);
+            setResult(RESULT_CANCELED);
+            finish();
+        }
     }
 
     @Override
@@ -142,7 +155,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
     };
 
 
-    private class LoginTask extends HttpAsyncTask<UserBase> {
+    private class LoginTask extends HttpAsyncTask<User> {
 
         private String cellphone;
 
@@ -155,21 +168,24 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
         }
 
         @Override
-        public DataHull<UserBase> doInBackground() {
+        public DataHull<User> doInBackground() {
             return HttpApi.phoneLogin(cellphone, verifyCode);
         }
 
         @Override
-        public void onPostExecute(int updateId, UserBase result) {
+        public void onPostExecute(int updateId, User result) {
             handleUser(result);
         }
 
-        private void handleUser(UserBase userBase) {
-            if (userBase != null) {
-                Intent intent = new Intent();
-                intent.putExtra("userBase", userBase);
-                setResult(RESULT_OK, intent);
-                finish();
+        private void handleUser(User user) {
+            BaseApplication.get().setUser(user, false);
+            if (user != null) {
+                if (user.getUserInfoDetail() != null) {
+                    setResult(RESULT_OK);
+                    finish();
+                } else {
+                    BaseInfoEditActivity.launch(PhoneLoginActivity.this);
+                }
             }
         }
     }

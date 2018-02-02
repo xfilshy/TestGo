@@ -26,7 +26,7 @@ public class UserMinorListParser extends MasterParser<UserMinorList> {
                 UserMinor userMinor = userMinorParser.parse(object);
                 if (userMinor != null) {
                     //TODO 测试逻辑
-                    if (!TextUtils.equals(BaseApplication.get().getUserId(), userMinor.getUserBase().getId())) {
+                    if (!TextUtils.equals(BaseApplication.get().getUserId(), userMinor.getUserBase().getUid())) {
                         userMinorList.add(userMinor);
                     }
                 }

@@ -9,7 +9,9 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.util.NIMUtil;
 import com.xue.asyns.UserSaveTask;
+import com.xue.bean.User;
 import com.xue.bean.UserBase;
+import com.xue.bean.UserInfoDetail;
 import com.xue.netease.NimSDKOptionConfig;
 import com.xue.preference.PreferencesManager;
 
@@ -20,7 +22,12 @@ public class BaseApplication extends Application {
 
     private static BaseApplication instance;
 
-    private static UserBase mUserBase;
+    private User mUser;
+
+    /**
+     * 标记只会第一次获取 从本地读取
+     */
+    private boolean mUserInitFlag = false;
 
     private String deviceId;
 
@@ -35,45 +42,56 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-
         Log.e("xue", "getUserId() == " + getUserId());
-        Log.e("xue", "getUserToken() == " + getUserToken());
+        Log.e("xue", "getUserToken() == " + getNeteaseToken());
 
-        NIMClient.init(this, new LoginInfo(getUserId(), getUserToken()), NimSDKOptionConfig.getSDKOptions(this));
+        NIMClient.init(this, new LoginInfo(getUserId(), getNeteaseToken()), NimSDKOptionConfig.getSDKOptions(this));
 
         if (NIMUtil.isMainProcess(this)) {
 
         }
     }
 
-
     public static BaseApplication get() {
         return instance;
     }
 
-    public UserBase getUser() {
-        if (mUserBase == null) {
-            mUserBase = PreferencesManager.get().getUser();
-            if (mUserBase == null) {
-                mUserBase = new UserBase();
+    private synchronized User getUser() {
+        if (mUser == null) {
+            if (!mUserInitFlag) {
+                mUser = PreferencesManager.get().getUser();
+                mUserInitFlag = true;
+            }
+            if (mUser == null) {//这个逻辑代表是初始化过
+                mUser = new User(new UserBase());
             }
         }
 
-        return mUserBase;
+        return mUser;
     }
 
-    public void setUser(UserBase userBase) {
-        mUserBase = userBase;
-        NIMClient.init(this, new LoginInfo(getUserId(), getUserToken()), NimSDKOptionConfig.getSDKOptions(this));
-        new UserSaveTask(userBase).start();
+    public void setUser(User user, boolean init) {
+        mUser = user;
+        new UserSaveTask(mUser).start();
+        if (init) {
+            NIMClient.init(this, new LoginInfo(getUserId(), getNeteaseToken()), NimSDKOptionConfig.getSDKOptions(this));
+        }
     }
 
     public String getUserId() {
-        return getUser().getId();
+        return getUser().getUserBase().getUid();
     }
 
     public String getUserToken() {
-        return getUser().getToken();
+        return getUser().getUserBase().getToken();
+    }
+
+    public String getNeteaseToken() {
+        return getUser().getUserBase().getNeteaseToken();
+    }
+
+    public void setUserInfoDetail(UserInfoDetail userInfoDetail) {
+        getUser().setUserInfoDetail(userInfoDetail);
     }
 
     public String getDeviceId() {

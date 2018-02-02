@@ -105,7 +105,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     if (userMinor != null) {
-                        DetailActivity.launch(view.getContext(), userMinor.getUserBase().getId());
+                        DetailActivity.launch(view.getContext(), userMinor.getUserBase().getUid());
                     }
                 }
             });

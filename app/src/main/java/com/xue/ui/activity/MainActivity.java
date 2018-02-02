@@ -95,10 +95,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+    /**
+     * 登录状态监听
+     */
     private Observer<StatusCode> mOnlineStatusObserver = new Observer<StatusCode>() {
         @Override
         public void onEvent(StatusCode statusCode) {
-            Log.i("tag", "User status changed to: " + statusCode);
+            Log.i("xue", "登录状态: " + statusCode);
             if (statusCode.wontAutoLogin()) {
                 // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
             }
@@ -109,9 +112,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public void onEvent(AVChatData avChatData) {
             String extra = avChatData.getExtra();
-            Log.e("Extra", "Extra Message->" + extra);
-            Log.e("Extra", "Extra Message->" + avChatData.getChatType());
-            Log.e("Extra", "Extra Message->" + avChatData.getChatId());
             AVChatActivity.launchAccept(MainActivity.this, avChatData);
         }
     };

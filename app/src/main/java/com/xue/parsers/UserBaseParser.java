@@ -1,5 +1,7 @@
 package com.xue.parsers;
 
+import android.text.TextUtils;
+
 import com.xue.bean.UserBase;
 
 import org.json.JSONObject;
@@ -7,7 +9,6 @@ import org.json.JSONObject;
 /**
  * Created by xfilshy on 2018/1/17.
  */
-
 public class UserBaseParser extends MasterParser<UserBase> {
 
     @Override
@@ -15,7 +16,7 @@ public class UserBaseParser extends MasterParser<UserBase> {
         UserBase userBase = null;
 
         if (data.has("user_info")) {
-            data = data.getJSONObject("user_info");
+            data = data.optJSONObject("user_info");
             userBase = parseBase(data);
         }
 
@@ -24,12 +25,21 @@ public class UserBaseParser extends MasterParser<UserBase> {
 
     public UserBase parseBase(JSONObject data) throws Exception {
         UserBase userBase = null;
-
         if (data != null) {
-            userBase = new UserBase();
-            userBase.setId(optString(data, "uid"));
-            userBase.setToken(optString(data, "token"));
-            userBase.setCellphone(optString(data, "cellphone"));
+            String uid = optString(data, "uid");
+            String token = optString(data, "token");
+            String cellphone = optString(data, "cellphone");
+            String neteaseToken = optString(data, "netease_token");
+            String status = optString(data, "status");
+
+            if (!TextUtils.isEmpty(uid) && !TextUtils.isEmpty(token) && !TextUtils.isEmpty(neteaseToken)) {
+                userBase = new UserBase();
+                userBase.setUid(uid);
+                userBase.setToken(token);
+                userBase.setCellphone(cellphone);
+                userBase.setNeteaseToken(neteaseToken);
+                userBase.setStatus(status);
+            }
         }
 
         return userBase;

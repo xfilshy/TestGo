@@ -1,20 +1,20 @@
 package com.xue.asyns;
 
 
-import com.xue.bean.UserBase;
+import com.xue.bean.User;
 import com.xue.preference.PreferencesManager;
 
 public class UserSaveTask extends SimpleAsyncTask<Void> {
 
-    private UserBase userBase;
+    private User user;
 
-    public UserSaveTask(UserBase userBase) {
-        this.userBase = userBase;
+    public UserSaveTask(User user) {
+        this.user = user;
     }
 
     @Override
     public Void doInBackground() {
-        PreferencesManager.get().setUser(userBase);
+        PreferencesManager.get().setUser(user);
         return null;
     }
 

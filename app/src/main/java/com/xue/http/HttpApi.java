@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.elianshang.tools.DeviceTool;
 import com.xue.BaseApplication;
-import com.xue.bean.UserBase;
+import com.xue.bean.User;
+import com.xue.bean.UserInfoDetail;
 import com.xue.bean.UserMinorList;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseHttpParameter;
@@ -17,8 +18,9 @@ import com.xue.oss.OssConfig;
 import com.xue.oss.OssConfigParser;
 import com.xue.oss.SignConentParser;
 import com.xue.oss.SignContent;
-import com.xue.parsers.UserBaseParser;
+import com.xue.parsers.UserInfoDetailParser;
 import com.xue.parsers.UserMinorListParser;
+import com.xue.parsers.UserParser;
 import com.xue.tools.AppTool;
 import com.xue.tools.ConfigTool;
 import com.xue.tools.SecretTool;
@@ -135,6 +137,22 @@ public class HttpApi {
         String cellphone = "cellphone";
 
         String verifyCode = "verify_code";
+    }
+
+    private interface UpdateUserInfoDetail {
+        String _funcation = "/user/info/updatedetail";
+
+        String gender = "gender";
+
+        String region_ids = "region_ids";
+
+        String realname = "realname";
+
+        String profile = "profile";
+
+        String cover = "cover";
+
+        String intro = "intro";
     }
 
     private interface RecommendList {
@@ -301,14 +319,34 @@ public class HttpApi {
     /**
      * 手机登录
      */
-    public static DataHull<UserBase> phoneLogin(String cellphone, String verifyCode) {
+    public static DataHull<User> phoneLogin(String cellphone, String verifyCode) {
         String url = base_url + PhoneLogin._funcation;
         List<BaseKVP> params = addParams(
                 new DefaultKVPBean(PhoneLogin.cellphone, cellphone),
                 new DefaultKVPBean(PhoneLogin.verifyCode, verifyCode)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserBaseParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserBaseParser(), 0, secretKey);
+        HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 更新UserInfoDetail
+     */
+    public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String rigionIds, String profile, String cover, String intro) {
+        String url = base_url + UpdateUserInfoDetail._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean("uid", BaseApplication.get().getUserId()),
+                new DefaultKVPBean(UpdateUserInfoDetail.realname, realName),
+                new DefaultKVPBean(UpdateUserInfoDetail.gender, gender),
+                new DefaultKVPBean(UpdateUserInfoDetail.region_ids, rigionIds),
+                new DefaultKVPBean(UpdateUserInfoDetail.profile, profile),
+                new DefaultKVPBean(UpdateUserInfoDetail.cover, cover),
+                new DefaultKVPBean(UpdateUserInfoDetail.intro, intro)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserInfoDetailParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserInfoDetailParser(), 0, secretKey);
 
         return request(parameter);
     }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.xue.BaseApplication;
+import com.xue.bean.User;
 import com.xue.bean.UserBase;
 
 
@@ -50,27 +51,36 @@ public class PreferencesManager {
         return sharedPreferences.getString("IMEI", null);
     }
 
-    public void setUser(UserBase userBase) {
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("id", userBase.getId());
-        editor.putString("cellphone", userBase.getCellphone());
-        editor.putString("token", userBase.getToken());
-        editor.commit();
+    public void setUser(User user) {
+        if (user == null) {
+            SharedPreferences sharedPreferences = mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+        } else {
+            SharedPreferences sharedPreferences = mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("id", user.getUserBase().getUid());
+            editor.putString("cellphone", user.getUserBase().getCellphone());
+            editor.putString("token", user.getUserBase().getNeteaseToken());
+            editor.commit();
+        }
     }
 
-    public UserBase getUser() {
+    public User getUser() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
         String id = sharedPreferences.getString("id", null);
         String name = sharedPreferences.getString("cellphone", null);
         String token = sharedPreferences.getString("token", null);
         if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(name)) {
             UserBase userBase = new UserBase();
-            userBase.setId(id);
+            userBase.setUid(id);
             userBase.setCellphone(name);
-            userBase.setToken(token);
+            userBase.setNeteaseToken(token);
 
-            return userBase;
+            User user = new User(userBase);
+
+            return user;
         }
 
         return null;
