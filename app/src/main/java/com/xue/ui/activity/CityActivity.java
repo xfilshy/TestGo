@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,8 +23,11 @@ import com.xue.bean.UserInfoDetail;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.support.view.DividerItemDecoration;
+import com.xue.support.view.SideBar;
 
-public class CityActivity extends BaseActivity implements View.OnClickListener, CityListAdapter.OnItemClickCallback {
+import java.util.HashMap;
+
+public class CityActivity extends BaseActivity implements View.OnClickListener, CityListAdapter.OnItemClickCallback, SideBar.OnTouchingLetterChangedListener {
 
     public static final int HomeTown = 1;
 
@@ -47,15 +51,21 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
 
     private RecyclerView mRecyclerView;
 
+    private SideBar mSideBar;
+
     private CityListAdapter mAdapter;
 
     private CityList mCityList;
 
     private int mType;
 
+    private LinearLayoutManager mLinearLayoutManager;
+
     private UserInfoDetail mUserInfoDetail;
 
     private CityList.City mCity;
+
+    private HashMap<String, Integer> positions = new HashMap();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +88,6 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
             mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
             mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
             mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mBackImageView.setOnClickListener(this);
             mRightTextView.setOnClickListener(this);
 
             if (mType == HomeTown) {
@@ -97,6 +106,7 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
 
     private void findView() {
         mRecyclerView = findViewById(R.id.recyclerView);
+        mSideBar = findViewById(R.id.sidebar);
         mCityTitleTextView = findViewById(R.id.cityTitle);
         mCityTextView = findViewById(R.id.city);
     }
@@ -114,18 +124,32 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
             mCityTextView.setText(mUserInfoDetail.getHomeTownName());
         }
 
+        mSideBar.setOnTouchingLetterChangedListener(this);
+
         if (mAdapter == null) {
             mAdapter = new CityListAdapter();
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.setCallback(this);
         }
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(mAdapter));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL, 1, R.color.black_light));
     }
 
     private void fillData() {
+        positions.clear();
+
+        String s = null;
+        for (int i = 0; i < mCityList.size(); i++) {
+            CityList.City city = mCityList.get(i);
+            if (!TextUtils.equals(s, city.getInitial())) {
+                s = city.getInitial();
+                positions.put(s, i);
+            }
+        }
+
         mAdapter.setDataList(mCityList);
         mAdapter.notifyDataSetChanged();
     }
@@ -149,6 +173,15 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
             mRightTextView.setVisibility(View.VISIBLE);
         } else {
             mRightTextView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onTouchingLetterChanged(String s) {
+        Integer integer = positions.get(s);
+        Log.e("xue", "onTouchingLetterChanged == " + s + "  " + integer);
+        if (integer != null) {
+            mLinearLayoutManager.scrollToPositionWithOffset(integer, 0);
         }
     }
 
