@@ -16,8 +16,7 @@ public class UserBaseParser extends MasterParser<UserBase> {
         UserBase userBase = null;
 
         if (data.has("user_info")) {
-            data = data.optJSONObject("user_info");
-            userBase = parseBase(data);
+            userBase = parseBase(data.optJSONObject("user_info"));
         }
 
         return userBase;

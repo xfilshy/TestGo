@@ -334,13 +334,13 @@ public class HttpApi {
     /**
      * 更新UserInfoDetail
      */
-    public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String rigionIds, String profile, String cover, String intro) {
+    public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String regionIds, String profile, String cover, String intro) {
         String url = base_url + UpdateUserInfoDetail._funcation;
         List<BaseKVP> params = addParams(
                 new DefaultKVPBean("uid", BaseApplication.get().getUserId()),
                 new DefaultKVPBean(UpdateUserInfoDetail.realname, realName),
                 new DefaultKVPBean(UpdateUserInfoDetail.gender, gender),
-                new DefaultKVPBean(UpdateUserInfoDetail.region_ids, rigionIds),
+                new DefaultKVPBean(UpdateUserInfoDetail.region_ids, regionIds),
                 new DefaultKVPBean(UpdateUserInfoDetail.profile, profile),
                 new DefaultKVPBean(UpdateUserInfoDetail.cover, cover),
                 new DefaultKVPBean(UpdateUserInfoDetail.intro, intro)

@@ -2,6 +2,9 @@ package com.xue.bean;
 
 import com.xue.http.hook.BaseBean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class UserInfoDetail implements BaseBean {
 
     /**
@@ -80,6 +83,24 @@ public class UserInfoDetail implements BaseBean {
 
     public void setIntro(String intro) {
         this.intro = intro;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject object = null;
+        try {
+            object = new JSONObject();
+            object.put("gender", gender);
+            object.put("region_ids", regionIds);
+            object.put("realname", realName);
+            object.put("profile", profile);
+            object.put("cover", cover);
+            object.put("intro", intro);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return object == null ? null : object.toString();
     }
 
     @Override

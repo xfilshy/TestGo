@@ -56,7 +56,7 @@ public class BaseApplication extends Application {
         return instance;
     }
 
-    private synchronized User getUser() {
+    public synchronized User getUser() {
         if (mUser == null) {
             if (!mUserInitFlag) {
                 mUser = PreferencesManager.get().getUser();

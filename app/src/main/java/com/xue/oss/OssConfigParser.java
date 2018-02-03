@@ -19,10 +19,6 @@ public class OssConfigParser extends MasterParser<OssConfig> {
                 String bucket = optString(data, "bucket");
                 String uploadPath = optString(data, "upload_path");
 
-                endPoint = "http://oss-cn-beijing.aliyuncs.com";
-                bucket = "meetdaniutest";
-                uploadPath = "tmp/";
-
                 if (!TextUtils.isEmpty(endPoint) && !TextUtils.isEmpty(bucket)) {
                     ossConfig = new OssConfig();
                     ossConfig.setEndPoint(endPoint);

@@ -6,7 +6,9 @@ import android.text.TextUtils;
 
 import com.xue.BaseApplication;
 import com.xue.bean.User;
-import com.xue.bean.UserBase;
+import com.xue.parsers.UserParser;
+
+import org.json.JSONObject;
 
 
 public class PreferencesManager {
@@ -60,29 +62,24 @@ public class PreferencesManager {
         } else {
             SharedPreferences sharedPreferences = mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("id", user.getUserBase().getUid());
-            editor.putString("cellphone", user.getUserBase().getCellphone());
-            editor.putString("token", user.getUserBase().getNeteaseToken());
+            editor.putString("user", user.toString());
             editor.commit();
         }
     }
 
     public User getUser() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(USER, Context.MODE_PRIVATE);
-        String id = sharedPreferences.getString("id", null);
-        String name = sharedPreferences.getString("cellphone", null);
-        String token = sharedPreferences.getString("token", null);
-        if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(name)) {
-            UserBase userBase = new UserBase();
-            userBase.setUid(id);
-            userBase.setCellphone(name);
-            userBase.setNeteaseToken(token);
-
-            User user = new User(userBase);
-
-            return user;
+        String userString = sharedPreferences.getString("user", null);
+        User user = null;
+        if (!TextUtils.isEmpty(userString)) {
+            UserParser userParser = new UserParser();
+            try {
+                user = userParser.parse(new JSONObject(userString));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        return null;
+        return user;
     }
 }

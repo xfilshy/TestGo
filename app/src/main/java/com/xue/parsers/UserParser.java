@@ -13,7 +13,7 @@ public class UserParser extends MasterParser<User> {
         User user = null;
         if (data != null) {
             UserBase userBase = new UserBaseParser().parse(data);
-            UserInfoDetail userInfoDetail = new UserInfoDetailParser().parse(optJSONObject(data, "user_info"));
+            UserInfoDetail userInfoDetail = new UserInfoDetailParser().parse(data);
 
             if (userBase != null) {
                 user = new User(userBase);

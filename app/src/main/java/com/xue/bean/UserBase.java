@@ -2,6 +2,9 @@ package com.xue.bean;
 
 import com.xue.http.hook.BaseBean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * 基础用户类，提供用户最基本的数据 如 id token name 等
  */
@@ -56,6 +59,23 @@ public class UserBase implements BaseBean {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject object = null;
+        try {
+            object = new JSONObject();
+            object.put("uid", uid);
+            object.put("token", token);
+            object.put("cellphone", cellphone);
+            object.put("netease_token", neteaseToken);
+            object.put("status", status);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return object == null ? null : object.toString();
     }
 
     @Override

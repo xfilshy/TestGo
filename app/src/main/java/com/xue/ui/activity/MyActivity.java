@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.xue.BaseApplication;
 import com.xue.R;
+import com.xue.bean.User;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.oss.OssManager;
 import com.xue.tools.GlideImageLoader;
@@ -25,13 +27,15 @@ public class MyActivity extends BaseActivity implements View.OnClickListener, Os
         context.startActivity(intent);
     }
 
+    private User mUser;
+
     private ImageView mPhotoImageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_my);
+        mUser = BaseApplication.get().getUser();
 
         findView();
         init();
@@ -42,7 +46,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener, Os
     }
 
     private void init() {
-        ImageCacheMannager.loadImage(this, R.drawable.photo_test, mPhotoImageView, true);
+        ImageCacheMannager.loadImage(this, mUser.getUserInfoDetail().getProfile(), mPhotoImageView, true);
     }
 
     public void goPrice(View view) {
