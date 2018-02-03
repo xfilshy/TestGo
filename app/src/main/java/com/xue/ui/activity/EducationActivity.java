@@ -56,8 +56,5 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (mBackImageView == v) {
-            finish();
-        }
     }
 }

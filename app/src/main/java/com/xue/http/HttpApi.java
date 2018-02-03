@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.elianshang.tools.DeviceTool;
 import com.xue.BaseApplication;
+import com.xue.bean.CityList;
 import com.xue.bean.User;
 import com.xue.bean.UserInfoDetail;
 import com.xue.bean.UserMinorList;
@@ -18,6 +19,7 @@ import com.xue.oss.OssConfig;
 import com.xue.oss.OssConfigParser;
 import com.xue.oss.SignConentParser;
 import com.xue.oss.SignContent;
+import com.xue.parsers.CityListParser;
 import com.xue.parsers.UserInfoDetailParser;
 import com.xue.parsers.UserMinorListParser;
 import com.xue.parsers.UserParser;
@@ -37,7 +39,7 @@ public class HttpApi {
 
     /**
      * 请求地址
-     * */
+     */
     public static String base_url;
 
     /**
@@ -128,7 +130,7 @@ public class HttpApi {
         String timestampt = "timestamp";
     }
 
-    private interface PhoneLogin {
+    private interface PhoneLoginParameter {
         String _funcation = "/account/user/login";
 
         String cellphone = "cellphone";
@@ -139,15 +141,15 @@ public class HttpApi {
     /**
      * 获取用户信息 自己的
      */
-    private interface UserInfo {
+    private interface UserInfoParameter {
 
         String _funcation = "/user/info/getinfo";
     }
 
     /**
      * 更新用户 UserInfoDetail
-     * */
-    private interface UpdateUserInfoDetail {
+     */
+    private interface UpdateUserInfoDetailParameter {
         String _funcation = "/user/detail/update";
 
         String gender = "gender";
@@ -163,7 +165,7 @@ public class HttpApi {
         String intro = "intro";
     }
 
-    private interface RecommendList {
+    private interface RecommendListParameter {
         String _funcation = "/home/info/recommendlist";
     }
 
@@ -171,8 +173,14 @@ public class HttpApi {
         String _funcation = "/app/init/config";
     }
 
-    private interface SignConentParameter {
+    private interface SignConetntParameter {
         String _funcation = "/res/oss/signconent";
+
+        String content = "content";
+    }
+
+    private interface ResCityParameter {
+        String _funcation = "/res/city/getall";
 
         String content = "content";
     }
@@ -327,10 +335,10 @@ public class HttpApi {
      * 手机登录
      */
     public static DataHull<User> phoneLogin(String cellphone, String verifyCode) {
-        String url = base_url + PhoneLogin._funcation;
+        String url = base_url + PhoneLoginParameter._funcation;
         List<BaseKVP> params = addParams(
-                new DefaultKVPBean(PhoneLogin.cellphone, cellphone),
-                new DefaultKVPBean(PhoneLogin.verifyCode, verifyCode)
+                new DefaultKVPBean(PhoneLoginParameter.cellphone, cellphone),
+                new DefaultKVPBean(PhoneLoginParameter.verifyCode, verifyCode)
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserParser(), 0, secretKey);
@@ -343,7 +351,7 @@ public class HttpApi {
      * 获取个人用户信息  全量
      */
     public static DataHull<User> userInfo() {
-        String url = base_url + UserInfo._funcation;
+        String url = base_url + UserInfoParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
         HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new UserParser(), 0, secretKey);
 
@@ -354,14 +362,14 @@ public class HttpApi {
      * 更新UserInfoDetail
      */
     public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String regionId, String profile, String cover, String intro) {
-        String url = base_url + UpdateUserInfoDetail._funcation;
+        String url = base_url + UpdateUserInfoDetailParameter._funcation;
         List<BaseKVP> params = addParams(
-                new DefaultKVPBean(UpdateUserInfoDetail.realname, realName),
-                new DefaultKVPBean(UpdateUserInfoDetail.gender, gender),
-                new DefaultKVPBean(UpdateUserInfoDetail.region_id, regionId),
-                new DefaultKVPBean(UpdateUserInfoDetail.profile, profile),
-                new DefaultKVPBean(UpdateUserInfoDetail.cover, cover),
-                new DefaultKVPBean(UpdateUserInfoDetail.intro, intro)
+                new DefaultKVPBean(UpdateUserInfoDetailParameter.realname, realName),
+                new DefaultKVPBean(UpdateUserInfoDetailParameter.gender, gender),
+                new DefaultKVPBean(UpdateUserInfoDetailParameter.region_id, regionId),
+                new DefaultKVPBean(UpdateUserInfoDetailParameter.profile, profile),
+                new DefaultKVPBean(UpdateUserInfoDetailParameter.cover, cover),
+                new DefaultKVPBean(UpdateUserInfoDetailParameter.intro, intro)
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<UserInfoDetailParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserInfoDetailParser(), 0, secretKey);
@@ -373,7 +381,7 @@ public class HttpApi {
      * 首页推荐列表
      */
     public static DataHull<UserMinorList> recommendList() {
-        String url = base_url + RecommendList._funcation;
+        String url = base_url + RecommendListParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
         HttpDynamicParameter<UserMinorListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new UserMinorListParser(), 0, secretKey);
 
@@ -395,12 +403,23 @@ public class HttpApi {
      * 获取OSS 签名
      */
     public static DataHull<SignContent> signContent(String content) {
-        String url = base_url + SignConentParameter._funcation;
+        String url = base_url + SignConetntParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
         List<BaseKVP> params = addParams(
-                new DefaultKVPBean(SignConentParameter.content, content)
+                new DefaultKVPBean(SignConetntParameter.content, content)
         );
         HttpDynamicParameter<SignConentParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new SignConentParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取城市列表
+     */
+    public static DataHull<CityList> resCityList() {
+        String url = base_url + ResCityParameter._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<CityListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new CityListParser(), 0, secretKey);
 
         return request(parameter);
     }

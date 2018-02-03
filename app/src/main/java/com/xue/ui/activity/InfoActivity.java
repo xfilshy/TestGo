@@ -122,6 +122,14 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         EducationActivity.launch(this);
     }
 
+    public void getHomeTown(View view) {
+        CityActivity.launch(this, CityActivity.HomeTown);
+    }
+
+    public void getLocation(View view) {
+        CityActivity.launch(this, CityActivity.Location);
+    }
+
     @Override
     public void onClick(View v) {
         if (mBackImageView == v) {

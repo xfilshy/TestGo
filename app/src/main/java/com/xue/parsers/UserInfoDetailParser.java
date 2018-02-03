@@ -24,8 +24,8 @@ public class UserInfoDetailParser extends MasterParser<UserInfoDetail> {
         if (data != null) {
             String gender = optString(data, "gender");
             String genderName = optString(data, "gender_name");
-            String regionId = optString(data, "region_id");
-            String regionName = optString(data, "region_name");
+            String hometown = optString(data, "hometown");
+            String hometownName = optString(data, "hometown_name");
             String realName = optString(data, "realname");
             String profile = optString(data, "profile");
             String cover = optString(data, "cover");
@@ -35,8 +35,8 @@ public class UserInfoDetailParser extends MasterParser<UserInfoDetail> {
                 userInfoDetail = new UserInfoDetail();
                 userInfoDetail.setGender(gender);
                 userInfoDetail.setGenderName(genderName);
-                userInfoDetail.setRegionId(regionId);
-                userInfoDetail.setRegionName(regionName);
+                userInfoDetail.setHomeTown(hometown);
+                userInfoDetail.setHomeTownName(hometownName);
                 userInfoDetail.setRealName(realName);
                 userInfoDetail.setProfile(profile);
                 userInfoDetail.setCover(cover);

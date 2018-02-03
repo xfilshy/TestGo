@@ -263,6 +263,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:gravity="center_vertical"
+            android:onClick="getHomeTown"
             android:orientation="horizontal"
             android:paddingBottom="10dp"
             android:paddingLeft="16dp"

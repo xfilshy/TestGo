@@ -18,14 +18,14 @@ public class UserInfoDetail implements BaseBean {
     private String genderName;
 
     /**
-     * 区域id
+     * 家乡ID
      */
-    private String regionId;
+    private String homeTown;
 
     /**
-     * 区域id
+     * 家乡名
      */
-    private String regionName;
+    private String homeTownName;
 
     /**
      * 真实名
@@ -55,12 +55,12 @@ public class UserInfoDetail implements BaseBean {
         this.gender = gender;
     }
 
-    public String getRegionId() {
-        return regionId;
+    public String getHomeTown() {
+        return homeTown;
     }
 
-    public void setRegionId(String regionId) {
-        this.regionId = regionId;
+    public void setHomeTown(String homeTown) {
+        this.homeTown = homeTown;
     }
 
     public String getRealName() {
@@ -103,12 +103,12 @@ public class UserInfoDetail implements BaseBean {
         this.genderName = genderName;
     }
 
-    public String getRegionName() {
-        return regionName;
+    public String getHomeTownName() {
+        return homeTownName;
     }
 
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
+    public void setHomeTownName(String homeTownName) {
+        this.homeTownName = homeTownName;
     }
 
     @Override
@@ -118,8 +118,8 @@ public class UserInfoDetail implements BaseBean {
             object = new JSONObject();
             object.put("gender", gender);
             object.put("gender_name", genderName);
-            object.put("region_id", regionId);
-            object.put("region_name", regionName);
+            object.put("region_id", homeTown);
+            object.put("region_name", homeTownName);
             object.put("realname", realName);
             object.put("profile", profile);
             object.put("cover", cover);
