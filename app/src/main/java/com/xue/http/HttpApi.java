@@ -35,6 +35,9 @@ import java.util.List;
 
 public class HttpApi {
 
+    /**
+     * 请求地址
+     * */
     public static String base_url;
 
     /**
@@ -141,6 +144,9 @@ public class HttpApi {
         String _funcation = "/user/info/getinfo";
     }
 
+    /**
+     * 更新用户 UserInfoDetail
+     * */
     private interface UpdateUserInfoDetail {
         String _funcation = "/user/detail/update";
 
@@ -176,7 +182,6 @@ public class HttpApi {
         secretKey = SecretTool.getHttpSecretKey(BaseApplication.get());
         OkHttpHandler.setOpensslSecret(SecretTool.getOpensslSecretKey(BaseApplication.get()));
     }
-
 
     private synchronized static void setDefaultHeaders(BaseKVP... kvPairs) {
         if (default_headers == null) {
