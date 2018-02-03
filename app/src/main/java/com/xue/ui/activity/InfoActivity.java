@@ -49,6 +49,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView mPhotoImageView;
 
+    private TextView mHomeTownTextView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         mCoverImageView = findViewById(R.id.cover);
         mPhotoImageView = findViewById(R.id.photo);
 
+        mHomeTownTextView = findViewById(R.id.homeTown);
+
         UITool.zoomViewByWidth(320, 320, mCoverImageView);
 
         mCoverRelativeLayout.setOnClickListener(this);
@@ -103,6 +107,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         if (userInfoDetail != null) {
             ImageCacheMannager.loadImage(this, userInfoDetail.getCover(), mCoverImageView, false);
             ImageCacheMannager.loadImage(this, userInfoDetail.getProfile(), mPhotoImageView, true);
+
+            mHomeTownTextView.setText(userInfoDetail.getHomeTownName());
         }
     }
 

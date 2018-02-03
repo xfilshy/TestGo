@@ -154,7 +154,7 @@ public class HttpApi {
 
         String gender = "gender";
 
-        String region_id = "region_id";
+        String homeTown = "hometown";
 
         String realname = "realname";
 
@@ -361,12 +361,12 @@ public class HttpApi {
     /**
      * 更新UserInfoDetail
      */
-    public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String regionId, String profile, String cover, String intro) {
+    public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String homeTown, String profile, String cover, String intro) {
         String url = base_url + UpdateUserInfoDetailParameter._funcation;
         List<BaseKVP> params = addParams(
                 new DefaultKVPBean(UpdateUserInfoDetailParameter.realname, realName),
                 new DefaultKVPBean(UpdateUserInfoDetailParameter.gender, gender),
-                new DefaultKVPBean(UpdateUserInfoDetailParameter.region_id, regionId),
+                new DefaultKVPBean(UpdateUserInfoDetailParameter.homeTown, homeTown),
                 new DefaultKVPBean(UpdateUserInfoDetailParameter.profile, profile),
                 new DefaultKVPBean(UpdateUserInfoDetailParameter.cover, cover),
                 new DefaultKVPBean(UpdateUserInfoDetailParameter.intro, intro)

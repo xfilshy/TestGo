@@ -8,7 +8,6 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -115,7 +114,6 @@ public class SideBar extends View {
                     if (mChoose != characterIndex) {
                         if (characterIndex >= 0 && characterIndex < mLetters.length) {
                             mChoose = characterIndex;
-                            Log.d(TAG, "mChoose " + mChoose + " mLetterHeight " + mLetterHeight);
                             mOnTouchingLetterChangedListener.onTouchingLetterChanged(mLetters[characterIndex]);
                         }
                     }
@@ -192,12 +190,14 @@ public class SideBar extends View {
             canvas.save();
             canvas.scale(diff, diff, mHalfWidth * 1.20f + diffX, letterPosY + diffY);
             if (diff == 1f) {
+                mPaint.setColor(mTextColor);
                 this.mPaint.setAlpha(255);
                 this.mPaint.setTypeface(Typeface.DEFAULT);
             } else {
                 int alpha = (int) (255 * (1 - Math.min(0.9, diff - 1)));
                 if (mChoose == i)
                     alpha = 255;
+                this.mPaint.setColor(0xff00bb88);
                 this.mPaint.setAlpha(alpha);
                 this.mPaint.setTypeface(Typeface.DEFAULT_BOLD);
             }

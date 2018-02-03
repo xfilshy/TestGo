@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -168,8 +167,8 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onItemClick(CityList.City city) {
         mCity = city;
-        if (!TextUtils.equals(mUserInfoDetail.getGender(), city.getId())) {
-            mCityTextView.setText(city.getShowName());
+        mCityTextView.setText(city.getShowName());
+        if (!TextUtils.equals(mUserInfoDetail.getHomeTown(), city.getId())) {
             mRightTextView.setVisibility(View.VISIBLE);
         } else {
             mRightTextView.setVisibility(View.GONE);
@@ -179,7 +178,6 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onTouchingLetterChanged(String s) {
         Integer integer = positions.get(s);
-        Log.e("xue", "onTouchingLetterChanged == " + s + "  " + integer);
         if (integer != null) {
             mLinearLayoutManager.scrollToPositionWithOffset(integer, 0);
         }
