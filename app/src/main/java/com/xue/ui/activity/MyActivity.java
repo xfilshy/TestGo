@@ -4,23 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.elianshang.tools.ToastTool;
 import com.xue.BaseApplication;
 import com.xue.R;
+import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.User;
+import com.xue.bean.UserInfoDetail;
+import com.xue.http.HttpApi;
+import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.oss.OssManager;
 import com.xue.tools.GlideImageLoader;
+import com.xue.tools.SimplePickHandlerCallBack;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
-import com.yancy.gallerypick.inter.IHandlerCallBack;
 
 import java.util.List;
 
-public class MyActivity extends BaseActivity implements View.OnClickListener, OssManager.Callback {
+public class MyActivity extends BaseActivity implements View.OnClickListener {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, MyActivity.class);
@@ -31,6 +36,10 @@ public class MyActivity extends BaseActivity implements View.OnClickListener, Os
 
     private ImageView mPhotoImageView;
 
+    private TextView mRealNameTextView;
+
+    private TextView mUidTextView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +48,24 @@ public class MyActivity extends BaseActivity implements View.OnClickListener, Os
 
         findView();
         init();
+
+        new UserInfoTask(this).start();
     }
 
     private void findView() {
         mPhotoImageView = findViewById(R.id.photo);
+        mRealNameTextView = findViewById(R.id.realName);
+        mUidTextView = findViewById(R.id.uid);
     }
 
     private void init() {
         ImageCacheMannager.loadImage(this, mUser.getUserInfoDetail().getProfile(), mPhotoImageView, true);
+        mUidTextView.setText(mUser.getUserBase().getUid());
+
+        UserInfoDetail userInfoDetail = mUser.getUserInfoDetail();
+        if (userInfoDetail != null) {
+            mRealNameTextView.setText(userInfoDetail.getRealName());
+        }
     }
 
     public void goPrice(View view) {
@@ -74,11 +93,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener, Os
     }
 
     public void goPickPhoto(View view) {
-        IHandlerCallBack iHandlerCallBack = new IHandlerCallBack() {
-            @Override
-            public void onStart() {
-                Log.e("xue", "去选择了");
-            }
+        SimplePickHandlerCallBack iHandlerCallBack = new SimplePickHandlerCallBack() {
 
             @Override
             public void onSuccess(List<String> photoList) {
@@ -86,24 +101,8 @@ public class MyActivity extends BaseActivity implements View.OnClickListener, Os
                     String photoPath = photoList.get(0);
                     ImageCacheMannager.loadImage(MyActivity.this, photoPath, mPhotoImageView, true);
 
-                    OssManager.get().setCallback(MyActivity.this);
-                    OssManager.get().upload(photoPath);
+                    new UploadTask(MyActivity.this, photoPath);
                 }
-            }
-
-            @Override
-            public void onCancel() {
-                Log.e("xue", "取消了");
-            }
-
-            @Override
-            public void onFinish() {
-                Log.e("xue", "完成了");
-            }
-
-            @Override
-            public void onError() {
-                Log.e("xue", "错误了");
             }
         };
         GalleryConfig galleryConfig = new GalleryConfig.Builder()
@@ -123,38 +122,99 @@ public class MyActivity extends BaseActivity implements View.OnClickListener, Os
 
     }
 
-    @Override
-    public void onInit() {
-        Log.e("xue", "初始化");
+    private class UserInfoTask extends HttpAsyncTask<User> {
+
+        public UserInfoTask(Context context) {
+            super(context);
+        }
+
+        @Override
+        public DataHull<User> doInBackground() {
+            return HttpApi.userInfo();
+        }
+
+        @Override
+        public void onPostExecute(int updateId, User result) {
+            BaseApplication.get().setUser(result, false);
+            mUser = BaseApplication.get().getUser();
+            init();
+        }
     }
 
-    @Override
-    public void onInitFailure() {
-        Log.e("xue", "初始化失败");
-    }
+    private static class UploadTask extends HttpAsyncTask<UserInfoDetail> implements OssManager.Callback {
 
-    @Override
-    public void onStarted() {
-        Log.e("xue", "开始上传");
-    }
+        private String resultPath;
 
-    @Override
-    public void onProgress(String file, float progress) {
-        Log.e("xue", "上传进度 " + progress);
-    }
+        public UploadTask(Context context, String cover) {
+            super(context);
 
-    @Override
-    public void onSuccess(String file, String resultName) {
-        Log.e("xue", "上传完成");
-    }
+            OssManager.get().setCallback(this);
+            OssManager.get().upload(cover);
+        }
 
-    @Override
-    public void onFailure(String file, int code) {
-        Log.e("xue", "上传失败");
-    }
+        @Override
+        public DataHull<UserInfoDetail> doInBackground() {
+            return HttpApi.updateUserInfoDetail(null, null, null, resultPath, null, null);
+        }
 
-    @Override
-    public void onFinish() {
-        Log.e("xue", "上传完成");
+        @Override
+        public void onPostExecute(int updateId, UserInfoDetail result) {
+            ToastTool.show(context, "头像上传成功");
+            BaseApplication.get().setUserInfoDetail(result);
+        }
+
+        @Override
+        public void dataNull(int updateId, String errMsg) {
+            super.dataNull(updateId, errMsg);
+            ToastTool.show(context, "头像上传失败");
+        }
+
+        @Override
+        public void netNull() {
+            super.netNull();
+            ToastTool.show(context, "头像上传失败");
+        }
+
+        @Override
+        public void netErr(int updateId, String errMsg) {
+            super.netErr(updateId, errMsg);
+            ToastTool.show(context, "头像上传失败");
+        }
+
+        @Override
+        public void onInit() {
+
+        }
+
+        @Override
+        public void onInitFailure() {
+
+        }
+
+        @Override
+        public void onStarted() {
+
+        }
+
+        @Override
+        public void onProgress(String file, float progress) {
+
+        }
+
+        @Override
+        public void onSuccess(String file, String resultName) {
+            this.resultPath = resultName;
+            start();
+        }
+
+        @Override
+        public void onFailure(String file, int code) {
+            ToastTool.show(context, "头像上传失败");
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
     }
 }

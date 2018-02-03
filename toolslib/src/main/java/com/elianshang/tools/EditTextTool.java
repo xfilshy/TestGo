@@ -2,17 +2,38 @@ package com.elianshang.tools;
 
 import android.graphics.Paint;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by liuhanzhi on 15/11/27.
  */
 public class EditTextTool {
 
+    public static void setEmojiFilter(EditText et) {
+        InputFilter emojiFilter;
+        emojiFilter = new InputFilter() {
+            Pattern pattern = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]", Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                Matcher matcher = pattern.matcher(source);
+                if (matcher.find()) {
+                    return "";
+                }
+                return null;
+            }
+        };
+        et.setFilters(new InputFilter[]{emojiFilter});
+    }
 
     /**
      * 监听EditText的内容变化，逻辑是：
@@ -147,7 +168,7 @@ public class EditTextTool {
         float textSize = textView.getPaint().getTextSize();
         while (measureTextWidth(textView, text) > width) {
             textSize--;
-            if(textSize == 0){
+            if (textSize == 0) {
                 return;
             }
             textView.getPaint().setTextSize(textSize);

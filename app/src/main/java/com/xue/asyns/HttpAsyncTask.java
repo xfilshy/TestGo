@@ -12,7 +12,6 @@ import com.xue.http.hook.BaseBean;
 import com.xue.http.impl.DataHull;
 
 
-
 /**
  * 网络请求的异步任务
  */
@@ -21,12 +20,12 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
     /**
      * 上下文对象
      */
-    protected Context context;
+    protected final Context context;
 
     /**
      * 回调主线程 handler
      */
-    private WeakReferenceHandler<HttpAsyncTask> handler;
+    protected final WeakReferenceHandler<HttpAsyncTask> handler;
 
     /**
      * 错误信息

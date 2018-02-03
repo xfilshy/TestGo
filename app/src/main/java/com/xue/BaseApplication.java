@@ -92,6 +92,7 @@ public class BaseApplication extends Application {
 
     public void setUserInfoDetail(UserInfoDetail userInfoDetail) {
         getUser().setUserInfoDetail(userInfoDetail);
+        new UserSaveTask(mUser).start();
     }
 
     public String getDeviceId() {

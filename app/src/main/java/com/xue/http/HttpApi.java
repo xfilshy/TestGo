@@ -111,15 +111,9 @@ public class HttpApi {
         String os_version = "os-version";
 
         /**
-         * 区域ID
-         */
-        String zone_id = "zone-id";
-
-        /**
          * 网络类型
          */
         String network_type = "network-type";
-
     }
 
 
@@ -139,12 +133,20 @@ public class HttpApi {
         String verifyCode = "verify_code";
     }
 
+    /**
+     * 获取用户信息 自己的
+     */
+    private interface UserInfo {
+
+        String _funcation = "/user/info/getinfo";
+    }
+
     private interface UpdateUserInfoDetail {
-        String _funcation = "/user/info/updatedetail";
+        String _funcation = "/user/detail/update";
 
         String gender = "gender";
 
-        String region_ids = "region_ids";
+        String region_id = "region_id";
 
         String realname = "realname";
 
@@ -331,16 +333,27 @@ public class HttpApi {
         return request(parameter);
     }
 
+
+    /**
+     * 获取个人用户信息  全量
+     */
+    public static DataHull<User> userInfo() {
+        String url = base_url + UserInfo._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new UserParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
     /**
      * 更新UserInfoDetail
      */
-    public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String regionIds, String profile, String cover, String intro) {
+    public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String regionId, String profile, String cover, String intro) {
         String url = base_url + UpdateUserInfoDetail._funcation;
         List<BaseKVP> params = addParams(
-                new DefaultKVPBean("uid", BaseApplication.get().getUserId()),
                 new DefaultKVPBean(UpdateUserInfoDetail.realname, realName),
                 new DefaultKVPBean(UpdateUserInfoDetail.gender, gender),
-                new DefaultKVPBean(UpdateUserInfoDetail.region_ids, regionIds),
+                new DefaultKVPBean(UpdateUserInfoDetail.region_id, regionId),
                 new DefaultKVPBean(UpdateUserInfoDetail.profile, profile),
                 new DefaultKVPBean(UpdateUserInfoDetail.cover, cover),
                 new DefaultKVPBean(UpdateUserInfoDetail.intro, intro)

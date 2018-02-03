@@ -23,9 +23,9 @@ import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.oss.OssManager;
 import com.xue.tools.GlideImageLoader;
+import com.xue.tools.SimplePickHandlerCallBack;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
-import com.yancy.gallerypick.inter.IHandlerCallBack;
 
 import java.util.List;
 
@@ -119,10 +119,7 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (mPickImageView == v) {
-            IHandlerCallBack iHandlerCallBack = new IHandlerCallBack() {
-                @Override
-                public void onStart() {
-                }
+            SimplePickHandlerCallBack iHandlerCallBack = new SimplePickHandlerCallBack() {
 
                 @Override
                 public void onSuccess(List<String> photoList) {
@@ -132,18 +129,6 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
 
                         mPhotoPath = photoPath;
                     }
-                }
-
-                @Override
-                public void onCancel() {
-                }
-
-                @Override
-                public void onFinish() {
-                }
-
-                @Override
-                public void onError() {
                 }
             };
             GalleryConfig galleryConfig = new GalleryConfig.Builder()

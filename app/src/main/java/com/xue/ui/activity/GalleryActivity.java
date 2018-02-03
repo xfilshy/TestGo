@@ -18,9 +18,9 @@ import com.xue.adapter.GalleryGridAdapter;
 import com.xue.oss.OssManager;
 import com.xue.support.view.GridItemDecoration;
 import com.xue.tools.GlideImageLoader;
+import com.xue.tools.SimplePickHandlerCallBack;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
-import com.yancy.gallerypick.inter.IHandlerCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,11 +95,7 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void goPickPhoto() {
-        IHandlerCallBack iHandlerCallBack = new IHandlerCallBack() {
-            @Override
-            public void onStart() {
-                Log.e("xue", "去选择了");
-            }
+        SimplePickHandlerCallBack iHandlerCallBack = new SimplePickHandlerCallBack() {
 
             @Override
             public void onSuccess(List<String> photoList) {
@@ -111,21 +107,6 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
 
                 OssManager.get().setCallback(GalleryActivity.this);
                 OssManager.get().upload(photoList);
-            }
-
-            @Override
-            public void onCancel() {
-                Log.e("xue", "取消了");
-            }
-
-            @Override
-            public void onFinish() {
-                Log.e("xue", "完成了");
-            }
-
-            @Override
-            public void onError() {
-                Log.e("xue", "错误了");
             }
         };
         GalleryConfig galleryConfig = new GalleryConfig.Builder()

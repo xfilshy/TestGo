@@ -14,9 +14,9 @@ import com.elianshang.tools.UITool;
 import com.xue.R;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.tools.GlideImageLoader;
+import com.xue.tools.SimplePickHandlerCallBack;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
-import com.yancy.gallerypick.inter.IHandlerCallBack;
 
 import java.util.List;
 
@@ -62,11 +62,7 @@ public class WorkCardCertifyActivity extends BaseActivity implements View.OnClic
     }
 
     public void goPickWorkCard(View view) {
-        IHandlerCallBack iHandlerCallBack = new IHandlerCallBack() {
-            @Override
-            public void onStart() {
-                Log.e("xue", "去选择了");
-            }
+        SimplePickHandlerCallBack iHandlerCallBack = new SimplePickHandlerCallBack() {
 
             @Override
             public void onSuccess(List<String> photoList) {
@@ -75,21 +71,6 @@ public class WorkCardCertifyActivity extends BaseActivity implements View.OnClic
                     String photoPath = photoList.get(0);
                     ImageCacheMannager.loadImage(WorkCardCertifyActivity.this, photoPath, mPhotoImageView, false);
                 }
-            }
-
-            @Override
-            public void onCancel() {
-                Log.e("xue", "取消了");
-            }
-
-            @Override
-            public void onFinish() {
-                Log.e("xue", "完成了");
-            }
-
-            @Override
-            public void onError() {
-                Log.e("xue", "错误了");
             }
         };
         GalleryConfig galleryConfig = new GalleryConfig.Builder()

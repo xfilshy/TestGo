@@ -9,7 +9,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xue.BaseApplication;
 import com.xue.R;
+import com.xue.bean.User;
+import com.xue.bean.UserInfoDetail;
 import com.xue.imagecache.ImageCacheMannager;
 
 public class BaseInfoActivity extends BaseActivity implements View.OnClickListener {
@@ -25,6 +28,14 @@ public class BaseInfoActivity extends BaseActivity implements View.OnClickListen
 
     private ImageView mPhotoImageView;
 
+    private TextView mRealNameTextView;
+
+    private TextView mGenderTextView;
+
+    private TextView mUidTextView;
+
+    private TextView mCellphoneTextView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +43,12 @@ public class BaseInfoActivity extends BaseActivity implements View.OnClickListen
 
         initActionBar();
         findView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
     }
 
     private void initActionBar() {
@@ -49,8 +66,25 @@ public class BaseInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void findView() {
         mPhotoImageView = findViewById(R.id.photo);
+        mRealNameTextView = findViewById(R.id.realName);
+        mGenderTextView = findViewById(R.id.gender);
+        mUidTextView = findViewById(R.id.uid);
+        mCellphoneTextView = findViewById(R.id.cellphone);
+
+    }
+
+    private void init() {
+        User user = BaseApplication.get().getUser();
 
         ImageCacheMannager.loadImage(this, R.drawable.photo_test, mPhotoImageView, true);
+        mUidTextView.setText(user.getUserBase().getUid());
+        mCellphoneTextView.setText(user.getUserBase().getCellphone());
+
+        UserInfoDetail userInfoDetail = user.getUserInfoDetail();
+        if (userInfoDetail != null) {
+            mRealNameTextView.setText(userInfoDetail.getRealName());
+            mGenderTextView.setText(userInfoDetail.getGenderName());
+        }
     }
 
     public void goModifyName(View view) {
