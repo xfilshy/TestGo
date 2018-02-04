@@ -105,8 +105,7 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
                 Log.e("xue", "mImageList == " + mImageList);
                 mAdapter.notifyDataSetChanged();
 
-                OssManager.get().setCallback(GalleryActivity.this);
-                OssManager.get().upload(photoList);
+                OssManager.get().upload(photoList , GalleryActivity.this);
             }
         };
         GalleryConfig galleryConfig = new GalleryConfig.Builder()

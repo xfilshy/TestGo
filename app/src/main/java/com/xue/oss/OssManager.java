@@ -29,8 +29,6 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
 
     private OssConfig mOssConfig;
 
-    private Callback mCallback;
-
     private static class OssManagerBuilder {
         private static OssManager instance = new OssManager();
     }
@@ -41,10 +39,6 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
 
     public static OssManager get() {
         return OssManagerBuilder.instance;
-    }
-
-    public void setCallback(Callback callback) {
-        this.mCallback = callback;
     }
 
     @Override
@@ -59,10 +53,10 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
         return null;
     }
 
-    private synchronized boolean init(List<String> filePaths) {
+    private synchronized boolean init(List<String> filePaths, OssManager.Callback callback) {
         if (mOSS == null) {
             if (mOssConfig == null) {
-                new OssConfigTask(filePaths).start();
+                new OssConfigTask(filePaths, callback).start();
                 return false;
             } else {
                 String endpoint = mOssConfig.getEndPoint();
@@ -80,22 +74,22 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
         return true;
     }
 
-    public void upload(List<String> filePaths) {
-        if (mCallback != null) {
-            mCallback.onInit();
+    public void upload(List<String> filePaths, OssManager.Callback callback) {
+        if (callback != null) {
+            callback.onInit();
         }
 
-        if (!init(filePaths)) {
+        if (!init(filePaths, callback)) {
             return;
         }
 
-        new UploadTask(mOSS, filePaths, mOssConfig.getBucketName(), mOssConfig.getUploadPath(), mCallback).start();
+        new UploadTask(mOSS, filePaths, mOssConfig.getBucketName(), mOssConfig.getUploadPath(), callback).start();
     }
 
-    public void upload(final String filePath) {
+    public void upload(final String filePath, OssManager.Callback callback) {
         List<String> filePaths = new ArrayList();
         filePaths.add(filePath);
-        this.upload(filePaths);
+        this.upload(filePaths, callback);
     }
 
 
@@ -196,6 +190,7 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
                 callback.onFinish();
             }
 
+            callback = null;
             return SUCCESS;
         }
     }
@@ -205,8 +200,11 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
 
         private List<String> filePaths;
 
-        OssConfigTask(List<String> filePaths) {
+        private OssManager.Callback callback;
+
+        OssConfigTask(List<String> filePaths, OssManager.Callback callback) {
             this.filePaths = filePaths;
+            this.callback = callback;
         }
 
         @Override
@@ -223,10 +221,14 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
         public void onPostExecute(OssConfig result) {
             if (result != null) {
                 mOssConfig = result;
-                upload(filePaths);
+                upload(filePaths, callback);
             } else {
-                if (mCallback != null) {
-                    mCallback.onInitFailure();
+                if (callback != null) {
+                    callback.onInitFailure();
+                }
+
+                if (callback != null) {
+                    callback.onFinish();
                 }
             }
         }

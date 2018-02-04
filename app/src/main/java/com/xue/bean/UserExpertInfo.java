@@ -6,16 +6,31 @@ public class UserExpertInfo implements BaseBean {
 
     private String signature;
 
+    /**
+     * 1 验证中
+     * 2 验证通过
+     * 3 验证失败
+     */
     private String status;
 
     private int serviceFee;
 
     private String workCardImg;
 
+    /**
+     * 1 验证中
+     * 2 验证通过
+     * 3 验证失败
+     */
     private String workCardAuth;
 
     private String businessCardImg;
 
+    /**
+     * 1 验证中
+     * 2 验证通过
+     * 3 验证失败
+     */
     private String businessCardAuth;
 
     public String getSignature() {

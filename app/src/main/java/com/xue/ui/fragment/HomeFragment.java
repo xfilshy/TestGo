@@ -29,8 +29,6 @@ public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
 
-//    private HomeGridAdapter mAdapter;
-
     private List<UserMinor> mDataList;
 
     private HomeFooterGridAdapter mAdapter;

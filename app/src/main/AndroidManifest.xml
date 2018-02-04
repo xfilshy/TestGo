@@ -244,6 +244,14 @@
             android:name=".ui.activity.CityActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.EducationListActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.WorkListActivity"
+            android:screenOrientation="portrait" />
+
 
         <!--图片选择器-->
         <!--图片选择器-->

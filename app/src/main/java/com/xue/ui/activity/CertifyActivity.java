@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xue.BaseApplication;
 import com.xue.R;
+import com.xue.bean.UserExpertInfo;
 
 public class CertifyActivity extends BaseActivity implements View.OnClickListener {
 
@@ -22,12 +25,23 @@ public class CertifyActivity extends BaseActivity implements View.OnClickListene
 
     private TextView mTitleTextView;
 
+    private TextView mWorkCardAuthTextView;
+
+    private TextView mBusinessCardAuthTextView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certify);
 
         initActionBar();
+        findView();
+        init();
+    }
+
+    private void findView() {
+        mWorkCardAuthTextView = findViewById(R.id.workCardAuth);
+        mBusinessCardAuthTextView = findViewById(R.id.businessCardAuth);
     }
 
     private void initActionBar() {
@@ -40,6 +54,31 @@ public class CertifyActivity extends BaseActivity implements View.OnClickListene
             mBackImageView.setOnClickListener(this);
 
             mTitleTextView.setText("申请认证");
+        }
+    }
+
+    private void init() {
+        UserExpertInfo userExpertInfo = BaseApplication.get().getUser().getUserExpertInfo();
+        if (userExpertInfo != null) {
+            if (TextUtils.equals("0", userExpertInfo.getBusinessCardAuth())) {
+                mBusinessCardAuthTextView.setText("未认证");
+            } else if (TextUtils.equals("1", userExpertInfo.getBusinessCardAuth())) {
+                mBusinessCardAuthTextView.setText("认证中");
+            } else if (TextUtils.equals("2", userExpertInfo.getBusinessCardAuth())) {
+                mBusinessCardAuthTextView.setText("认证通过");
+            } else if (TextUtils.equals("3", userExpertInfo.getBusinessCardAuth())) {
+                mBusinessCardAuthTextView.setText("认证失败");
+            }
+
+            if (TextUtils.equals("0", userExpertInfo.getWorkCardAuth())) {
+                mWorkCardAuthTextView.setText("未认证");
+            } else if (TextUtils.equals("1", userExpertInfo.getWorkCardAuth())) {
+                mWorkCardAuthTextView.setText("认证中");
+            } else if (TextUtils.equals("2", userExpertInfo.getWorkCardAuth())) {
+                mWorkCardAuthTextView.setText("认证通过");
+            } else if (TextUtils.equals("3", userExpertInfo.getWorkCardAuth())) {
+                mWorkCardAuthTextView.setText("认证失败");
+            }
         }
     }
 

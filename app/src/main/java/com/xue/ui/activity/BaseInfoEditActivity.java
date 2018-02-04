@@ -22,6 +22,7 @@ import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.oss.OssManager;
+import com.xue.oss.SimpleOssManagerCallback;
 import com.xue.tools.GlideImageLoader;
 import com.xue.tools.SimplePickHandlerCallBack;
 import com.yancy.gallerypick.config.GalleryConfig;
@@ -152,7 +153,7 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private class UpdateTask extends HttpAsyncTask<UserDetailInfo> implements OssManager.Callback {
+    private class UpdateTask extends HttpAsyncTask<UserDetailInfo> {
 
         private String realName;
 
@@ -165,8 +166,7 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
             this.realName = realName;
             this.gender = gender;
 
-            OssManager.get().setCallback(this);
-            OssManager.get().upload(photoPath);
+            OssManager.get().upload(photoPath , callback);
         }
 
         @Override
@@ -187,41 +187,23 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
             ToastTool.show(BaseInfoEditActivity.this, "保存失败，请重试");
         }
 
-        @Override
-        public void onInit() {
+        private OssManager.Callback callback = new SimpleOssManagerCallback() {
+            @Override
+            public void onSuccess(String file, String resultName) {
+                ToastTool.show(BaseInfoEditActivity.this, "上传头像成功");
+                resultPhotoPath = resultName;
+                start();
+            }
 
-        }
+            @Override
+            public void onInitFailure() {
+                ToastTool.show(BaseInfoEditActivity.this, "初始化上传头像失败");
+            }
 
-        @Override
-        public void onInitFailure() {
-            ToastTool.show(BaseInfoEditActivity.this, "初始化上传头像失败");
-        }
-
-        @Override
-        public void onStarted() {
-
-        }
-
-        @Override
-        public void onProgress(String file, float progress) {
-
-        }
-
-        @Override
-        public void onSuccess(String file, String resultName) {
-            ToastTool.show(BaseInfoEditActivity.this, "上传头像成功");
-            resultPhotoPath = resultName;
-            start();
-        }
-
-        @Override
-        public void onFailure(String file, int code) {
-            ToastTool.show(BaseInfoEditActivity.this, "上传头像失败");
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
+            @Override
+            public void onFailure(String file, int code) {
+                ToastTool.show(BaseInfoEditActivity.this, "上传头像失败");
+            }
+        };
     }
 }

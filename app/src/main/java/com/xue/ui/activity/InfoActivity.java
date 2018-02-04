@@ -21,6 +21,7 @@ import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.oss.OssManager;
+import com.xue.oss.SimpleOssManagerCallback;
 import com.xue.tools.GlideImageLoader;
 import com.xue.tools.SimplePickHandlerCallBack;
 import com.yancy.gallerypick.config.GalleryConfig;
@@ -121,11 +122,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void goWork(View view) {
-        WorkActivity.launch(this);
+        WorkListActivity.launch(this);
     }
 
     public void goEducation(View view) {
-        EducationActivity.launch(this);
+        EducationListActivity.launch(this);
     }
 
     public void getHomeTown(View view) {
@@ -172,15 +173,13 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
     }
 
-    private static class UploadTask extends HttpAsyncTask<UserDetailInfo> implements OssManager.Callback {
+    private static class UploadTask extends HttpAsyncTask<UserDetailInfo> {
 
         private String resultPath;
 
         public UploadTask(Context context, String photoPath) {
             super(context);
-
-            OssManager.get().setCallback(this);
-            OssManager.get().upload(photoPath);
+            OssManager.get().upload(photoPath, callback);
         }
 
         @Override
@@ -212,40 +211,24 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
             ToastTool.show(context, "封面上传失败");
         }
 
-        @Override
-        public void onInit() {
+        private OssManager.Callback callback = new SimpleOssManagerCallback() {
 
-        }
+            @Override
+            public void onSuccess(String file, String resultName) {
+                UploadTask.this.resultPath = resultName;
+                UploadTask.this.start();
+            }
 
-        @Override
-        public void onInitFailure() {
 
-        }
+            @Override
+            public void onInitFailure() {
+                ToastTool.show(context, "封面上传失败");
+            }
 
-        @Override
-        public void onStarted() {
-
-        }
-
-        @Override
-        public void onProgress(String file, float progress) {
-
-        }
-
-        @Override
-        public void onSuccess(String file, String resultName) {
-            this.resultPath = resultName;
-            start();
-        }
-
-        @Override
-        public void onFailure(String file, int code) {
-            ToastTool.show(context, "封面上传失败");
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
+            @Override
+            public void onFailure(String file, int code) {
+                ToastTool.show(context, "封面上传失败");
+            }
+        };
     }
 }

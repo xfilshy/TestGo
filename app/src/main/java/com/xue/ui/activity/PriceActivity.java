@@ -119,7 +119,7 @@ public class PriceActivity extends BaseActivity implements View.OnClickListener,
         mBubbleSeekBar.getConfigBuilder()
                 .min(mUserConfigInfo.getFeeMin())
                 .max(mUserConfigInfo.getFeeMax())
-                .sectionCount(4)
+                .sectionCount(mUserConfigInfo.getFeeMax() - mUserConfigInfo.getFeeMin())
                 .trackColor(ContextCompat.getColor(this, R.color.grey_dark))
                 .secondTrackColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .thumbColor(ContextCompat.getColor(this, R.color.colorAccent))
@@ -129,9 +129,9 @@ public class PriceActivity extends BaseActivity implements View.OnClickListener,
                 .touchToSeek()
                 .bubbleColor(ContextCompat.getColor(this, R.color.colorAccent))
                 .bubbleTextSize(18)
-                .showSectionMark()
+                .autoAdjustSectionMark()
                 .alwaysShowBubble()
-                .sectionTextPosition(BubbleSeekBar.TextPosition.BELOW_SECTION_MARK)
+                .sectionTextPosition(BubbleSeekBar.TextPosition.SIDES)
                 .build();
 
     }
