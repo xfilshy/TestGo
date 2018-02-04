@@ -17,7 +17,7 @@ import com.elianshang.tools.ToastTool;
 import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
@@ -152,7 +152,7 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private class UpdateTask extends HttpAsyncTask<UserInfoDetail> implements OssManager.Callback {
+    private class UpdateTask extends HttpAsyncTask<UserDetailInfo> implements OssManager.Callback {
 
         private String realName;
 
@@ -170,13 +170,13 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
         }
 
         @Override
-        public DataHull<UserInfoDetail> doInBackground() {
-            return HttpApi.updateUserInfoDetail(realName, String.valueOf(gender), null, resultPhotoPath, null, null);
+        public DataHull<UserDetailInfo> doInBackground() {
+            return HttpApi.updateUserDetailInfo(realName, String.valueOf(gender), null, resultPhotoPath, null, null);
         }
 
         @Override
-        public void onPostExecute(int updateId, UserInfoDetail result) {
-            BaseApplication.get().setUserInfoDetail(result);
+        public void onPostExecute(int updateId, UserDetailInfo result) {
+            BaseApplication.get().setUserDetailInfo(result);
             BaseInfoEditActivity.this.setResult(RESULT_OK);
             finish();
         }

@@ -6,7 +6,8 @@ import com.elianshang.tools.DeviceTool;
 import com.xue.BaseApplication;
 import com.xue.bean.CityList;
 import com.xue.bean.User;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
+import com.xue.bean.UserExpertInfo;
 import com.xue.bean.UserMinorList;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseHttpParameter;
@@ -20,7 +21,8 @@ import com.xue.oss.OssConfigParser;
 import com.xue.oss.SignConentParser;
 import com.xue.oss.SignContent;
 import com.xue.parsers.CityListParser;
-import com.xue.parsers.UserInfoDetailParser;
+import com.xue.parsers.UserDetailInfoParser;
+import com.xue.parsers.UserExpertInfoParser;
 import com.xue.parsers.UserMinorListParser;
 import com.xue.parsers.UserParser;
 import com.xue.tools.AppTool;
@@ -147,9 +149,9 @@ public class HttpApi {
     }
 
     /**
-     * 更新用户 UserInfoDetail
+     * 更新用户 UserDetailInfo
      */
-    private interface UpdateUserInfoDetailParameter {
+    private interface UpdateUserDetailInfoParameter {
         String _funcation = "/user/detail/update";
 
         String gender = "gender";
@@ -164,6 +166,23 @@ public class HttpApi {
 
         String intro = "intro";
     }
+
+    /**
+     * 更新用户 UserExpertInfo
+     */
+    private interface UpdateUserExpertInfoParameter {
+        String _funcation = "/user/expert/update";
+
+        String signature = "signature";
+
+        String service_fee = "service_fee";
+
+        String work_card_img = "work_card_img";
+
+        String busine_card_img = "busine_card_img";
+
+    }
+
 
     private interface RecommendListParameter {
         String _funcation = "/home/info/recommendlist";
@@ -359,20 +378,37 @@ public class HttpApi {
     }
 
     /**
-     * 更新UserInfoDetail
+     * 更新UserDetailInfo
      */
-    public static DataHull<UserInfoDetail> updateUserInfoDetail(String realName, String gender, String homeTown, String profile, String cover, String intro) {
-        String url = base_url + UpdateUserInfoDetailParameter._funcation;
+    public static DataHull<UserDetailInfo> updateUserDetailInfo(String realName, String gender, String homeTown, String profile, String cover, String intro) {
+        String url = base_url + UpdateUserDetailInfoParameter._funcation;
         List<BaseKVP> params = addParams(
-                new DefaultKVPBean(UpdateUserInfoDetailParameter.realname, realName),
-                new DefaultKVPBean(UpdateUserInfoDetailParameter.gender, gender),
-                new DefaultKVPBean(UpdateUserInfoDetailParameter.homeTown, homeTown),
-                new DefaultKVPBean(UpdateUserInfoDetailParameter.profile, profile),
-                new DefaultKVPBean(UpdateUserInfoDetailParameter.cover, cover),
-                new DefaultKVPBean(UpdateUserInfoDetailParameter.intro, intro)
+                new DefaultKVPBean(UpdateUserDetailInfoParameter.realname, realName),
+                new DefaultKVPBean(UpdateUserDetailInfoParameter.gender, gender),
+                new DefaultKVPBean(UpdateUserDetailInfoParameter.homeTown, homeTown),
+                new DefaultKVPBean(UpdateUserDetailInfoParameter.profile, profile),
+                new DefaultKVPBean(UpdateUserDetailInfoParameter.cover, cover),
+                new DefaultKVPBean(UpdateUserDetailInfoParameter.intro, intro)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserInfoDetailParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserInfoDetailParser(), 0, secretKey);
+        HttpDynamicParameter<UserDetailInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserDetailInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 更新UserExpertInfo
+     */
+    public static DataHull<UserExpertInfo> updateUserExpertInfo(String signature, String serviceFee, String workCardImg, String businessCardImg) {
+        String url = base_url + UpdateUserExpertInfoParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(UpdateUserExpertInfoParameter.signature, signature),
+                new DefaultKVPBean(UpdateUserExpertInfoParameter.service_fee, serviceFee),
+                new DefaultKVPBean(UpdateUserExpertInfoParameter.work_card_img, workCardImg),
+                new DefaultKVPBean(UpdateUserExpertInfoParameter.busine_card_img, businessCardImg)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserExpertInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserExpertInfoParser(), 0, secretKey);
 
         return request(parameter);
     }

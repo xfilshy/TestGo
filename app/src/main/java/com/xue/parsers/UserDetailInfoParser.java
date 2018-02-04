@@ -2,15 +2,15 @@ package com.xue.parsers;
 
 import android.text.TextUtils;
 
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserInfoDetailParser extends MasterParser<UserInfoDetail> {
+public class UserDetailInfoParser extends MasterParser<UserDetailInfo> {
 
     @Override
-    public UserInfoDetail parse(JSONObject data) throws Exception {
+    public UserDetailInfo parse(JSONObject data) throws Exception {
 
         if (has(data, "detail_info")) {
             return parseBase(optJSONObject(data, "detail_info"));
@@ -19,8 +19,8 @@ public class UserInfoDetailParser extends MasterParser<UserInfoDetail> {
         return null;
     }
 
-    public UserInfoDetail parseBase(JSONObject data) throws JSONException {
-        UserInfoDetail userInfoDetail = null;
+    public UserDetailInfo parseBase(JSONObject data) throws JSONException {
+        UserDetailInfo userDetailInfo = null;
         if (data != null) {
             String gender = optString(data, "gender");
             String genderName = optString(data, "gender_name");
@@ -32,17 +32,17 @@ public class UserInfoDetailParser extends MasterParser<UserInfoDetail> {
             String intro = optString(data, "intro");
 
             if (!TextUtils.isEmpty(realName) && !TextUtils.isEmpty(profile) && !TextUtils.isEmpty(genderName)) {
-                userInfoDetail = new UserInfoDetail();
-                userInfoDetail.setGender(gender);
-                userInfoDetail.setGenderName(genderName);
-                userInfoDetail.setHomeTown(hometown);
-                userInfoDetail.setHomeTownName(hometownName);
-                userInfoDetail.setRealName(realName);
-                userInfoDetail.setProfile(profile);
-                userInfoDetail.setCover(cover);
-                userInfoDetail.setIntro(intro);
+                userDetailInfo = new UserDetailInfo();
+                userDetailInfo.setGender(gender);
+                userDetailInfo.setGenderName(genderName);
+                userDetailInfo.setHomeTown(hometown);
+                userDetailInfo.setHomeTownName(hometownName);
+                userDetailInfo.setRealName(realName);
+                userDetailInfo.setProfile(profile);
+                userDetailInfo.setCover(cover);
+                userDetailInfo.setIntro(intro);
             }
         }
-        return userInfoDetail;
+        return userDetailInfo;
     }
 }

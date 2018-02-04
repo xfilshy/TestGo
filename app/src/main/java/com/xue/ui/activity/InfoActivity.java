@@ -16,7 +16,7 @@ import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.User;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
@@ -103,12 +103,12 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void init() {
-        UserInfoDetail userInfoDetail = mUser.getUserInfoDetail();
-        if (userInfoDetail != null) {
-            ImageCacheMannager.loadImage(this, userInfoDetail.getCover(), mCoverImageView, false);
-            ImageCacheMannager.loadImage(this, userInfoDetail.getProfile(), mPhotoImageView, true);
+        UserDetailInfo userDetailInfo = mUser.getUserDetailInfo();
+        if (userDetailInfo != null) {
+            ImageCacheMannager.loadImage(this, userDetailInfo.getCover(), mCoverImageView, false);
+            ImageCacheMannager.loadImage(this, userDetailInfo.getProfile(), mPhotoImageView, true);
 
-            mHomeTownTextView.setText(userInfoDetail.getHomeTownName());
+            mHomeTownTextView.setText(userDetailInfo.getHomeTownName());
         }
     }
 
@@ -172,7 +172,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
     }
 
-    private static class UploadTask extends HttpAsyncTask<UserInfoDetail> implements OssManager.Callback {
+    private static class UploadTask extends HttpAsyncTask<UserDetailInfo> implements OssManager.Callback {
 
         private String resultPath;
 
@@ -184,14 +184,14 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         }
 
         @Override
-        public DataHull<UserInfoDetail> doInBackground() {
-            return HttpApi.updateUserInfoDetail(null, null, null, null, resultPath, null);
+        public DataHull<UserDetailInfo> doInBackground() {
+            return HttpApi.updateUserDetailInfo(null, null, null, null, resultPath, null);
         }
 
         @Override
-        public void onPostExecute(int updateId, UserInfoDetail result) {
+        public void onPostExecute(int updateId, UserDetailInfo result) {
             ToastTool.show(context, "封面上传成功");
-            BaseApplication.get().setUserInfoDetail(result);
+            BaseApplication.get().setUserDetailInfo(result);
         }
 
         @Override

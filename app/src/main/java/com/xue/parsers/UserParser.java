@@ -2,7 +2,9 @@ package com.xue.parsers;
 
 import com.xue.bean.User;
 import com.xue.bean.UserBase;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserConfigInfo;
+import com.xue.bean.UserDetailInfo;
+import com.xue.bean.UserExpertInfo;
 
 import org.json.JSONObject;
 
@@ -13,11 +15,15 @@ public class UserParser extends MasterParser<User> {
         User user = null;
         if (data != null) {
             UserBase userBase = new UserBaseParser().parse(data);
-            UserInfoDetail userInfoDetail = new UserInfoDetailParser().parse(data);
+            UserDetailInfo userDetailInfo = new UserDetailInfoParser().parse(data);
+            UserConfigInfo userConfigInfo = new UserConfigInfoParser().parse(data);
+            UserExpertInfo userExpertInfo = new UserExpertInfoParser().parse(data);
 
             if (userBase != null) {
                 user = new User(userBase);
-                user.setUserInfoDetail(userInfoDetail);
+                user.setUserDetailInfo(userDetailInfo);
+                user.setUserConfigInfo(userConfigInfo);
+                user.setUserExpertInfo(userExpertInfo);
             }
         }
 

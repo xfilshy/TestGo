@@ -5,7 +5,7 @@ import com.xue.http.hook.BaseBean;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserInfoDetail implements BaseBean {
+public class UserDetailInfo implements BaseBean {
 
     /**
      * 性别 id

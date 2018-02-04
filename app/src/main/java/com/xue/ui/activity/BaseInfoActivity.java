@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.bean.User;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
 import com.xue.imagecache.ImageCacheMannager;
 
 public class BaseInfoActivity extends BaseActivity implements View.OnClickListener {
@@ -80,10 +80,10 @@ public class BaseInfoActivity extends BaseActivity implements View.OnClickListen
         mUidTextView.setText(user.getUserBase().getUid());
         mCellphoneTextView.setText(user.getUserBase().getCellphone());
 
-        UserInfoDetail userInfoDetail = user.getUserInfoDetail();
-        if (userInfoDetail != null) {
-            mRealNameTextView.setText(userInfoDetail.getRealName());
-            mGenderTextView.setText(userInfoDetail.getGenderName());
+        UserDetailInfo userDetailInfo = user.getUserDetailInfo();
+        if (userDetailInfo != null) {
+            mRealNameTextView.setText(userDetailInfo.getRealName());
+            mGenderTextView.setText(userDetailInfo.getGenderName());
         }
     }
 

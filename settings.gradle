@@ -6,5 +6,6 @@ include ':app',
         ':toolslib',
         ':gallerypick',
         ':ucrop',
-        'oss-android-sdk',
-        'sticky_recyclerview_lib'
+        ':oss-android-sdk',
+        ':sticky_recyclerview_lib',
+        ':bubbleseekbar_lib'

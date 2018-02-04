@@ -17,7 +17,7 @@ import com.elianshang.tools.EditTextTool;
 import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 
@@ -90,9 +90,9 @@ public class DescribeActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void init() {
-        UserInfoDetail userInfoDetail = BaseApplication.get().getUser().getUserInfoDetail();
-        if (userInfoDetail != null) {
-            mIntro = userInfoDetail.getIntro();
+        UserDetailInfo userDetailInfo = BaseApplication.get().getUser().getUserDetailInfo();
+        if (userDetailInfo != null) {
+            mIntro = userDetailInfo.getIntro();
             mIntroEditText.setText(mIntro);
             mIntroEditText.setSelection(mIntro.length());
         }
@@ -138,7 +138,7 @@ public class DescribeActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    private class UploadTask extends HttpAsyncTask<UserInfoDetail> {
+    private class UploadTask extends HttpAsyncTask<UserDetailInfo> {
 
         private String intro;
 
@@ -148,13 +148,13 @@ public class DescribeActivity extends BaseActivity implements View.OnClickListen
         }
 
         @Override
-        public DataHull<UserInfoDetail> doInBackground() {
-            return HttpApi.updateUserInfoDetail(null, null, null, null, null, intro);
+        public DataHull<UserDetailInfo> doInBackground() {
+            return HttpApi.updateUserDetailInfo(null, null, null, null, null, intro);
         }
 
         @Override
-        public void onPostExecute(int updateId, UserInfoDetail result) {
-            BaseApplication.get().setUserInfoDetail(result);
+        public void onPostExecute(int updateId, UserDetailInfo result) {
+            BaseApplication.get().setUserDetailInfo(result);
             DescribeActivity.this.finish();
         }
     }

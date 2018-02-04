@@ -17,7 +17,7 @@ import com.elianshang.tools.EditTextTool;
 import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 
@@ -83,9 +83,9 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
     }
 
     private void init() {
-        UserInfoDetail userInfoDetail = BaseApplication.get().getUser().getUserInfoDetail();
-        if (userInfoDetail != null) {
-            mRealName = userInfoDetail.getRealName();
+        UserDetailInfo userDetailInfo = BaseApplication.get().getUser().getUserDetailInfo();
+        if (userDetailInfo != null) {
+            mRealName = userDetailInfo.getRealName();
             mRealNameEditText.setText(mRealName);
             mRealNameEditText.setSelection(mRealName.length());
         }
@@ -121,7 +121,7 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    private class UploadTask extends HttpAsyncTask<UserInfoDetail> {
+    private class UploadTask extends HttpAsyncTask<UserDetailInfo> {
 
         private String realName;
 
@@ -131,13 +131,13 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
         }
 
         @Override
-        public DataHull<UserInfoDetail> doInBackground() {
-            return HttpApi.updateUserInfoDetail(realName, null, null, null, null, null);
+        public DataHull<UserDetailInfo> doInBackground() {
+            return HttpApi.updateUserDetailInfo(realName, null, null, null, null, null);
         }
 
         @Override
-        public void onPostExecute(int updateId, UserInfoDetail result) {
-            BaseApplication.get().setUserInfoDetail(result);
+        public void onPostExecute(int updateId, UserDetailInfo result) {
+            BaseApplication.get().setUserDetailInfo(result);
             ModifyNameActivity.this.finish();
         }
     }

@@ -11,7 +11,7 @@ import com.netease.nimlib.sdk.util.NIMUtil;
 import com.xue.asyns.UserSaveTask;
 import com.xue.bean.User;
 import com.xue.bean.UserBase;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
 import com.xue.netease.NimSDKOptionConfig;
 import com.xue.preference.PreferencesManager;
 
@@ -90,8 +90,8 @@ public class BaseApplication extends Application {
         return getUser().getUserBase().getNeteaseToken();
     }
 
-    public void setUserInfoDetail(UserInfoDetail userInfoDetail) {
-        getUser().setUserInfoDetail(userInfoDetail);
+    public void setUserDetailInfo(UserDetailInfo userDetailInfo) {
+        getUser().setUserDetailInfo(userDetailInfo);
         new UserSaveTask(mUser).start();
     }
 

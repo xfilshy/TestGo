@@ -18,7 +18,7 @@ import com.xue.R;
 import com.xue.adapter.CityListAdapter;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.CityList;
-import com.xue.bean.UserInfoDetail;
+import com.xue.bean.UserDetailInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.support.view.DividerItemDecoration;
@@ -60,7 +60,7 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
 
     private LinearLayoutManager mLinearLayoutManager;
 
-    private UserInfoDetail mUserInfoDetail;
+    private UserDetailInfo mUserDetailInfo;
 
     private CityList.City mCity;
 
@@ -117,10 +117,10 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
             mCityTitleTextView.setText("现居地：");
         }
 
-        mUserInfoDetail = BaseApplication.get().getUser().getUserInfoDetail();
+        mUserDetailInfo = BaseApplication.get().getUser().getUserDetailInfo();
 
-        if (!TextUtils.isEmpty(mUserInfoDetail.getHomeTownName())) {
-            mCityTextView.setText(mUserInfoDetail.getHomeTownName());
+        if (!TextUtils.isEmpty(mUserDetailInfo.getHomeTownName())) {
+            mCityTextView.setText(mUserDetailInfo.getHomeTownName());
         }
 
         mSideBar.setOnTouchingLetterChangedListener(this);
@@ -168,7 +168,7 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
     public void onItemClick(CityList.City city) {
         mCity = city;
         mCityTextView.setText(city.getShowName());
-        if (!TextUtils.equals(mUserInfoDetail.getHomeTown(), city.getId())) {
+        if (!TextUtils.equals(mUserDetailInfo.getHomeTown(), city.getId())) {
             mRightTextView.setVisibility(View.VISIBLE);
         } else {
             mRightTextView.setVisibility(View.GONE);
@@ -201,7 +201,7 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private class UploadTask extends HttpAsyncTask<UserInfoDetail> {
+    private class UploadTask extends HttpAsyncTask<UserDetailInfo> {
 
         private String homeTown;
 
@@ -214,13 +214,13 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         @Override
-        public DataHull<UserInfoDetail> doInBackground() {
-            return HttpApi.updateUserInfoDetail(null, null, homeTown, null, null, null);
+        public DataHull<UserDetailInfo> doInBackground() {
+            return HttpApi.updateUserDetailInfo(null, null, homeTown, null, null, null);
         }
 
         @Override
-        public void onPostExecute(int updateId, UserInfoDetail result) {
-            BaseApplication.get().setUserInfoDetail(result);
+        public void onPostExecute(int updateId, UserDetailInfo result) {
+            BaseApplication.get().setUserDetailInfo(result);
             CityActivity.this.finish();
         }
     }
