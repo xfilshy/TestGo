@@ -13,6 +13,7 @@ public class UserEducationParser extends MasterParser<UserEducationInfo.Educatio
         UserEducationInfo.Education education = null;
         if (data != null) {
 
+            String id = optString(data, "id");
             String schoolName = optString(data, "school_name");
             String majorName = optString(data, "major_name");
             String academicType = optString(data, "academic_type");
@@ -24,13 +25,14 @@ public class UserEducationParser extends MasterParser<UserEducationInfo.Educatio
                     && !TextUtils.isEmpty(beginAt) && !TextUtils.isEmpty(endAt)) {
                 education = new UserEducationInfo.Education();
 
+                education.setId(id);
                 education.setSchoolName(schoolName);
                 education.setMajorName(majorName);
                 education.setAcademicType(academicType);
                 education.setAcademicName(academicName);
                 education.setDescribe(describe);
                 education.setBeginAt(beginAt);
-                education.setBeginAt(endAt);
+                education.setEndAt(endAt);
             }
         }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.elianshang.tools.DeviceTool;
 import com.xue.BaseApplication;
+import com.xue.bean.AcademicList;
 import com.xue.bean.CityList;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
@@ -21,6 +22,7 @@ import com.xue.oss.OssConfig;
 import com.xue.oss.OssConfigParser;
 import com.xue.oss.SignConentParser;
 import com.xue.oss.SignContent;
+import com.xue.parsers.AcademicListParser;
 import com.xue.parsers.CityListParser;
 import com.xue.parsers.UserDetailInfoParser;
 import com.xue.parsers.UserEducationInfoParser;
@@ -203,6 +205,46 @@ public class HttpApi {
 
         String end_at = "end_at";
 
+    }
+
+    /**
+     * 更新用户 UserEducation
+     */
+    private interface UpdateUserEducationParameter {
+        String _funcation = "/user/education/update";
+
+        String id = "id";
+
+        String school_name = "school_name";
+
+        String major_name = "major_name";
+
+        String academic_type = "academic_type";
+
+        String describe = "describe";
+
+        String begin_at = "begin_at";
+
+        String end_at = "end_at";
+
+    }
+
+
+    /**
+     * 删除用户 UserEducation
+     */
+    private interface DeleteUserEducationParameter {
+        String _funcation = "/user/education/delete";
+
+        String id = "id";
+
+    }
+
+    /**
+     * 获取学历列表
+     */
+    private interface GetAcademicListParameter {
+        String _funcation = "/user/education/getacademiclist";
     }
 
     private interface RecommendListParameter {
@@ -435,7 +477,7 @@ public class HttpApi {
     }
 
     /**
-     * 更新UserExpertInfo
+     * 创建 一条 UserEducation
      */
     public static DataHull<UserEducationInfo> createUserEducation(String schoolName, String majorName, String academicType, String describe, String beginAt, String endAt) {
         String url = base_url + CreateUserEducationParameter._funcation;
@@ -449,6 +491,51 @@ public class HttpApi {
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<UserEducationInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 更新 一条 UserEducation
+     */
+    public static DataHull<UserEducationInfo> updateUserEducation(String id, String schoolName, String majorName, String academicType, String describe, String beginAt, String endAt) {
+        String url = base_url + UpdateUserEducationParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(UpdateUserEducationParameter.id, id),
+                new DefaultKVPBean(UpdateUserEducationParameter.school_name, schoolName),
+                new DefaultKVPBean(UpdateUserEducationParameter.major_name, majorName),
+                new DefaultKVPBean(UpdateUserEducationParameter.academic_type, academicType),
+                new DefaultKVPBean(UpdateUserEducationParameter.describe, describe),
+                new DefaultKVPBean(UpdateUserEducationParameter.begin_at, beginAt),
+                new DefaultKVPBean(UpdateUserEducationParameter.end_at, endAt)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserEducationInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 删除 一条 UserEducation
+     */
+    public static DataHull<UserEducationInfo> deleteUserEducation(String id) {
+        String url = base_url + DeleteUserEducationParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(DeleteUserEducationParameter.id, id)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserEducationInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取学历列表
+     */
+    public static DataHull<AcademicList> getAcademicList() {
+        String url = base_url + GetAcademicListParameter._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<AcademicListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new AcademicListParser(), 0, secretKey);
 
         return request(parameter);
     }

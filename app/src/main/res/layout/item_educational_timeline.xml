@@ -39,50 +39,50 @@
         android:paddingTop="10dp">
 
         <TextView
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:lines="1"
-            android:text="2014/10 - 2015/09"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/school"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="5dp"
             android:lines="1"
-            android:text="学校：北京大学"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/major"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="2dp"
             android:lines="1"
-            android:text="专业：计算机科学"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/academic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="2dp"
             android:lines="1"
-            android:text="学位：学士"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/describe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="2dp"
-            android:text="职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责"
             android:textColor="@color/black"
             android:textSize="14dp" />
 

@@ -252,6 +252,10 @@
             android:name=".ui.activity.WorkListActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.AcademicListActivity"
+            android:screenOrientation="portrait" />
+
 
         <!--图片选择器-->
         <!--图片选择器-->

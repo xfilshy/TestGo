@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
+import com.xue.bean.AcademicList;
 import com.xue.bean.UserEducationInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
@@ -63,6 +64,8 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
 
     private int mDescribeFlag = 0;
 
+    private AcademicList.Academic mAcademic;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,12 +82,24 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         bindWatcher();
+
+        if (mAcademic != null) {
+            mAcademicEditText.setText(mAcademic.getName());
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unBindWatcher();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            mAcademic = (AcademicList.Academic) data.getSerializableExtra("academic");
+        }
     }
 
     private void readExtra() {
@@ -115,6 +130,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         mDescribeEditText = findViewById(R.id.describe);
         mDeleteTextView = findViewById(R.id.delete);
 
+        mAcademicEditText.setOnClickListener(this);
         mBeginAtEditText.setOnClickListener(this);
         mEndAtEditText.setOnClickListener(this);
         mDeleteTextView.setOnClickListener(this);
@@ -165,17 +181,26 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         if (mRightTextView == v) {
             String school = mSchoolEditText.getText().toString();
             String major = mMajorEditText.getText().toString();
-            String academic = mAcademicEditText.getText().toString();
+            String academic;
+            if (mAcademic != null) {
+                academic = mAcademic.getId();
+            } else {
+                academic = mEducation.getAcademicType();
+            }
             String describe = mDescribeEditText.getText().toString();
             String beginAt = mBeginAtEditText.getText().toString();
             String endAt = mEndAtEditText.getText().toString();
             if (mEducation == null) {
                 new CreateTask(this, school, major, academic, describe, beginAt, endAt).start();
             } else {
-
+                new UpdateTask(this, mEducation.getId(), school, major, academic, describe, beginAt, endAt).start();
             }
         } else if (mDeleteTextView == v) {
-
+            if (mEducation != null) {
+                new DeleteTask(this, mEducation.getId()).start();
+            }
+        } else if (mAcademicEditText == v) {
+            AcademicListActivity.launch(this);
         } else if (mBeginAtEditText == v) {
             DatePicker datePicker = new DatePicker(this, 1970, 2018, false);
             datePicker.show();
@@ -332,4 +357,65 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    private class UpdateTask extends HttpAsyncTask<UserEducationInfo> {
+
+        private String id;
+
+        private String school;
+
+        private String major;
+
+        private String academic;
+
+        private String descirbe;
+
+        private String beginAt;
+
+        private String endAt;
+
+        public UpdateTask(Context context, String id, String school, String major, String academic, String descirbe, String beginAt, String endAt) {
+            super(context);
+
+            this.id = id;
+            this.school = school;
+            this.major = major;
+            this.academic = academic;
+            this.descirbe = descirbe;
+            this.beginAt = beginAt;
+            this.endAt = endAt;
+        }
+
+        @Override
+        public DataHull<UserEducationInfo> doInBackground() {
+            return HttpApi.updateUserEducation(id, school, major, academic, descirbe, beginAt, endAt);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, UserEducationInfo result) {
+            BaseApplication.get().getUser().setUserEducationInfo(result);
+            finish();
+        }
+    }
+
+    private class DeleteTask extends HttpAsyncTask<UserEducationInfo> {
+
+        private String id;
+
+        public DeleteTask(Context context, String id) {
+            super(context);
+
+            this.id = id;
+        }
+
+        @Override
+        public DataHull<UserEducationInfo> doInBackground() {
+            return HttpApi.deleteUserEducation(id);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, UserEducationInfo result) {
+            BaseApplication.get().getUser().setUserEducationInfo(result);
+            finish();
+        }
+    }
 }

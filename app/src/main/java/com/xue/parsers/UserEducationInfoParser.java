@@ -13,8 +13,8 @@ public class UserEducationInfoParser extends MasterParser<UserEducationInfo> {
         JSONArray array = optJSONArray(data, "education_list");
         int len = getLength(array);
 
+        userEducationInfo = new UserEducationInfo();
         if (len > 0) {
-            userEducationInfo = new UserEducationInfo();
             UserEducationParser userEducationParser = new UserEducationParser();
             for (int i = 0; i < len; i++) {
                 JSONObject object = optJSONObject(array, i);

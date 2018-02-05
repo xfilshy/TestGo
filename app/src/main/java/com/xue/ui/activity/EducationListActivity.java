@@ -15,6 +15,7 @@ import com.xue.R;
 import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.EducationFooterListAdapter;
 import com.xue.adapter.EducationListAdapter;
+import com.xue.bean.AcademicList;
 import com.xue.bean.UserEducationInfo;
 
 public class EducationListActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<UserEducationInfo.Education> {
@@ -36,6 +37,8 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
 
     private View mFooterView;
 
+    private AcademicList.Academic mAcademic;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +59,11 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void initActionBar() {
@@ -85,7 +93,7 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
     private void init() {
         UserEducationInfo userEducationInfo = BaseApplication.get().getUser().getUserEducationInfo();
 
-        if (userEducationInfo != null) {
+        if (userEducationInfo != null && userEducationInfo.size() > 0) {
             mRecyclerView.setVisibility(View.VISIBLE);
             mEmptyTextView.setVisibility(View.GONE);
 
@@ -100,16 +108,8 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
         if (mAdapter == null) {
             mAdapter = new EducationFooterListAdapter(new EducationListAdapter());
             mAdapter.setCallback(this);
+            mAdapter.addFooter(mFooterView);
             mRecyclerView.setAdapter(mAdapter);
-        }
-        if (userEducationInfo.size() > 0) {
-            if (mFooterView.getParent() == null) {
-                mAdapter.addFooter(mFooterView);
-            }
-        } else {
-            if (mFooterView.getParent() != null) {
-                mAdapter.removeFooter(mFooterView);
-            }
         }
 
         mAdapter.setDataList(userEducationInfo);
