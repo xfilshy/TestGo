@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.xue.BaseApplication;
 import com.xue.R;
+import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.CityListAdapter;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.CityList;
@@ -26,7 +27,7 @@ import com.xue.support.view.SideBar;
 
 import java.util.HashMap;
 
-public class CityActivity extends BaseActivity implements View.OnClickListener, CityListAdapter.OnItemClickCallback, SideBar.OnTouchingLetterChangedListener {
+public class CityActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<CityList.City>, SideBar.OnTouchingLetterChangedListener {
 
     public static final int HomeTown = 1;
 

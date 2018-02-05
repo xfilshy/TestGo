@@ -10,11 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.xue.BaseApplication;
 import com.xue.R;
+import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.EducationFooterListAdapter;
 import com.xue.adapter.EducationListAdapter;
+import com.xue.bean.UserEducationInfo;
 
-public class EducationListActivity extends BaseActivity implements View.OnClickListener {
+public class EducationListActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<UserEducationInfo.Education> {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, EducationListActivity.class);
@@ -22,6 +25,10 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
     }
 
     private TextView mTitleTextView;
+
+    private TextView mRightTextView;
+
+    private TextView mEmptyTextView;
 
     private RecyclerView mRecyclerView;
 
@@ -38,8 +45,17 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
         initActionBar();
         findView();
         init();
+    }
 
-        fillList();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     private void initActionBar() {
@@ -48,12 +64,18 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
             actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
             mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
+            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
+
+            mRightTextView.setVisibility(View.VISIBLE);
+            mRightTextView.setOnClickListener(this);
 
             mTitleTextView.setText("教育经历");
+            mRightTextView.setText("添加");
         }
     }
 
     private void findView() {
+        mEmptyTextView = findViewById(R.id.empty);
         mRecyclerView = findViewById(R.id.recyclerView);
         mFooterView = View.inflate(this, R.layout.footer_educationa_work, null);
 
@@ -61,18 +83,48 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
     }
 
     private void init() {
+        UserEducationInfo userEducationInfo = BaseApplication.get().getUser().getUserEducationInfo();
 
+        if (userEducationInfo != null) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyTextView.setVisibility(View.GONE);
+
+            fillList(userEducationInfo);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyTextView.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void fillList() {
+    private void fillList(UserEducationInfo userEducationInfo) {
         if (mAdapter == null) {
             mAdapter = new EducationFooterListAdapter(new EducationListAdapter());
-            mAdapter.addFooter(mFooterView);
+            mAdapter.setCallback(this);
             mRecyclerView.setAdapter(mAdapter);
         }
+        if (userEducationInfo.size() > 0) {
+            if (mFooterView.getParent() == null) {
+                mAdapter.addFooter(mFooterView);
+            }
+        } else {
+            if (mFooterView.getParent() != null) {
+                mAdapter.removeFooter(mFooterView);
+            }
+        }
+
+        mAdapter.setDataList(userEducationInfo);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClick(View v) {
+        if (mRightTextView == v) {
+            EducationActivity.launch(this, null);
+        }
+    }
+
+    @Override
+    public void onItemClick(UserEducationInfo.Education education) {
+        EducationActivity.launch(this, education);
     }
 }

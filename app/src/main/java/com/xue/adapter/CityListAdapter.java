@@ -12,11 +12,11 @@ import com.xue.bean.CityList;
 
 import java.util.HashMap;
 
-public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
+public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter {
 
     private CityList mDataList;
 
-    private OnItemClickCallback mCallback;
+    private AdapterOnItemClickCallback<CityList.City> callback;
 
     private HashMap<String, Integer> ids = new HashMap();
 
@@ -49,22 +49,23 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHo
         ids.put("Z", 26);
     }
 
-    public void setCallback(OnItemClickCallback callback) {
-        this.mCallback = callback;
-    }
 
     public void setDataList(CityList dataList) {
         this.mDataList = dataList;
     }
 
+    public void setCallback(AdapterOnItemClickCallback<CityList.City> callback) {
+        this.callback = callback;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(parent, mCallback);
+        return new ViewHolder(parent);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.fill(mDataList.get(position));
+        holder.fill(mDataList.get(position), callback);
     }
 
     @Override
@@ -103,29 +104,22 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHo
 
         private TextView cityTextView;
 
-        private OnItemClickCallback clickCallback;
-
-        public ViewHolder(ViewGroup itemView, OnItemClickCallback callback) {
+        public ViewHolder(ViewGroup itemView) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_city_city, itemView, false));
-            this.clickCallback = callback;
             cityTextView = this.itemView.findViewById(R.id.city);
         }
 
-        public void fill(final CityList.City city) {
+        public void fill(final CityList.City city, final AdapterOnItemClickCallback<CityList.City> callback) {
             cityTextView.setText(city.getName());
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    if (clickCallback != null) {
-                        clickCallback.onItemClick(city);
+                    if (callback != null) {
+                        callback.onItemClick(city);
                     }
                 }
             });
         }
-    }
-
-    public interface OnItemClickCallback {
-        public void onItemClick(CityList.City city);
     }
 }

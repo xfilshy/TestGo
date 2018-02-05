@@ -15,6 +15,10 @@ public class User implements BaseBean {
 
     private UserConfigInfo userConfigInfo;
 
+    private UserEducationInfo userEducationInfo;
+
+    private UserWorkInfo userWorkInfo;
+
     public User(UserBase userBase) {
         this.userBase = userBase;
     }
@@ -49,6 +53,22 @@ public class User implements BaseBean {
 
     public void setUserConfigInfo(UserConfigInfo userConfigInfo) {
         this.userConfigInfo = userConfigInfo;
+    }
+
+    public UserEducationInfo getUserEducationInfo() {
+        return userEducationInfo;
+    }
+
+    public void setUserEducationInfo(UserEducationInfo userEducationInfo) {
+        this.userEducationInfo = userEducationInfo;
+    }
+
+    public UserWorkInfo getUserWorkInfo() {
+        return userWorkInfo;
+    }
+
+    public void setUserWorkInfo(UserWorkInfo userWorkInfo) {
+        this.userWorkInfo = userWorkInfo;
     }
 
     @Override
