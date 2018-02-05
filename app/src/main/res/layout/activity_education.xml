@@ -18,7 +18,7 @@
             android:background="@color/transparent"
             android:hint="学校"
             android:imeOptions="actionNext"
-            android:nextFocusDown="@id/speciality"
+            android:nextFocusDown="@id/major"
             android:padding="16dp"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -30,13 +30,13 @@
             android:background="@color/grey_light" />
 
         <EditText
-            android:id="@+id/speciality"
+            android:id="@+id/major"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:hint="专业"
             android:imeOptions="actionNext"
-            android:nextFocusDown="@id/degree"
+            android:nextFocusDown="@id/academic"
             android:padding="16dp"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -48,13 +48,12 @@
             android:background="@color/grey_light" />
 
         <EditText
-            android:id="@+id/degree"
+            android:id="@+id/academic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:hint="学位"
-            android:imeOptions="actionNext"
-            android:nextFocusDown="@id/startYear"
+            android:hint="学历"
+            android:imeOptions="actionDone"
             android:padding="16dp"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -71,60 +70,23 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/startLayout"
+            <EditText
+                android:id="@+id/beginAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/startYear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/transparent"
-                    android:hint="1987"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:nextFocusRight="@id/startMonth"
-                    android:paddingBottom="16dp"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:paddingTop="16dp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="年" />
-
-                <EditText
-                    android:id="@+id/startMonth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:hint="12"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="2"
-                    android:nextFocusRight="@id/endYear"
-                    android:paddingBottom="16dp"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:paddingTop="16dp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="月" />
-            </LinearLayout>
-
+                android:layout_marginLeft="10dp"
+                android:background="@color/transparent"
+                android:clickable="true"
+                android:focusableInTouchMode="false"
+                android:hint="1900/01"
+                android:nextFocusDown="@id/describe"
+                android:paddingBottom="16dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -133,66 +95,24 @@
                 android:layout_marginRight="4dp"
                 android:text="至" />
 
-            <LinearLayout
-                android:id="@+id/endLayout"
+            <EditText
+                android:id="@+id/endAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/endYear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:hint="1987"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:nextFocusRight="@id/endMonth"
-                    android:paddingBottom="16dp"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:paddingTop="16dp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="年" />
-
-                <EditText
-                    android:id="@+id/endMonth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:hint="12"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="2"
-                    android:nextFocusDown="@id/describe"
-                    android:paddingBottom="16dp"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:paddingTop="16dp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="月" />
-            </LinearLayout>
+                android:background="@color/transparent"
+                android:clickable="true"
+                android:focusableInTouchMode="false"
+                android:hint="1900/01"
+                android:nextFocusDown="@id/describe"
+                android:paddingBottom="16dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
 
 
-            <CheckBox
-                android:id="@+id/since"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="至今" />
         </LinearLayout>
 
         <View

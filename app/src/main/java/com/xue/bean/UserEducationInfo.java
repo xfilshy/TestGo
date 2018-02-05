@@ -27,23 +27,37 @@ public class UserEducationInfo extends ArrayList<UserEducationInfo.Education> im
         /**
          * 学校
          */
-        private String school;
+        private String schoolName;
 
         /**
          * 专业
          */
-        private String speciality;
+        private String majorName;
 
         /**
-         * 学位
+         * 学历id
          */
-        private String degree;
+        private String academicType;
+
+        /**
+         * 学历名
+         */
+        private String academicName;
+
+        /**
+         * 开始时间
+         */
+        private String beginAt;
+
+        /**
+         * 结束时间
+         */
+        private String endAt;
 
         /**
          * 描述
          */
         private String describe;
-
 
         public String getId() {
             return id;
@@ -53,28 +67,52 @@ public class UserEducationInfo extends ArrayList<UserEducationInfo.Education> im
             this.id = id;
         }
 
-        public String getSchool() {
-            return school;
+        public String getSchoolName() {
+            return schoolName;
         }
 
-        public void setSchool(String school) {
-            this.school = school;
+        public void setSchoolName(String schoolName) {
+            this.schoolName = schoolName;
         }
 
-        public String getSpeciality() {
-            return speciality;
+        public String getMajorName() {
+            return majorName;
         }
 
-        public void setSpeciality(String speciality) {
-            this.speciality = speciality;
+        public void setMajorName(String majorName) {
+            this.majorName = majorName;
         }
 
-        public String getDegree() {
-            return degree;
+        public String getAcademicType() {
+            return academicType;
         }
 
-        public void setDegree(String degree) {
-            this.degree = degree;
+        public void setAcademicType(String academicType) {
+            this.academicType = academicType;
+        }
+
+        public String getAcademicName() {
+            return academicName;
+        }
+
+        public void setAcademicName(String academicName) {
+            this.academicName = academicName;
+        }
+
+        public String getBeginAt() {
+            return beginAt;
+        }
+
+        public void setBeginAt(String beginAt) {
+            this.beginAt = beginAt;
+        }
+
+        public String getEndAt() {
+            return endAt;
+        }
+
+        public void setEndAt(String endAt) {
+            this.endAt = endAt;
         }
 
         public String getDescribe() {

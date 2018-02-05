@@ -7,6 +7,7 @@ import com.xue.BaseApplication;
 import com.xue.bean.CityList;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
+import com.xue.bean.UserEducationInfo;
 import com.xue.bean.UserExpertInfo;
 import com.xue.bean.UserMinorList;
 import com.xue.http.hook.BaseBean;
@@ -22,6 +23,7 @@ import com.xue.oss.SignConentParser;
 import com.xue.oss.SignContent;
 import com.xue.parsers.CityListParser;
 import com.xue.parsers.UserDetailInfoParser;
+import com.xue.parsers.UserEducationInfoParser;
 import com.xue.parsers.UserExpertInfoParser;
 import com.xue.parsers.UserMinorListParser;
 import com.xue.parsers.UserParser;
@@ -183,6 +185,25 @@ public class HttpApi {
 
     }
 
+    /**
+     * 创建用户 UserEducation
+     */
+    private interface CreateUserEducationParameter {
+        String _funcation = "/user/education/create";
+
+        String school_name = "school_name";
+
+        String major_name = "major_name";
+
+        String academic_type = "academic_type";
+
+        String describe = "describe";
+
+        String begin_at = "begin_at";
+
+        String end_at = "end_at";
+
+    }
 
     private interface RecommendListParameter {
         String _funcation = "/home/info/recommendlist";
@@ -409,6 +430,25 @@ public class HttpApi {
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<UserExpertInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserExpertInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 更新UserExpertInfo
+     */
+    public static DataHull<UserEducationInfo> createUserEducation(String schoolName, String majorName, String academicType, String describe, String beginAt, String endAt) {
+        String url = base_url + CreateUserEducationParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(CreateUserEducationParameter.school_name, schoolName),
+                new DefaultKVPBean(CreateUserEducationParameter.major_name, majorName),
+                new DefaultKVPBean(CreateUserEducationParameter.academic_type, academicType),
+                new DefaultKVPBean(CreateUserEducationParameter.describe, describe),
+                new DefaultKVPBean(CreateUserEducationParameter.begin_at, beginAt),
+                new DefaultKVPBean(CreateUserEducationParameter.end_at, endAt)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserEducationInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
