@@ -162,8 +162,6 @@ public class BasePhotoFragment extends Fragment {
         // 非动画进入的Fragment，默认背景为黑色
         if (!isTransPhoto) {
             rootView.setBackgroundColor(Color.BLACK);
-        } else {
-            imageView.setMinimumScale(0.6f);
         }
         if (isSingleFling) {
             imageView.setOnViewTapListener(new OnViewTapListener() {

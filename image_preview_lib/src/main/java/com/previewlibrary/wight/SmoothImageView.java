@@ -103,6 +103,7 @@ public class SmoothImageView extends PhotoView {
             mPaint.setAlpha(animTransform.alpha);
             canvas.drawPaint(mPaint);
             int saveCount = canvas.getSaveCount();
+
             matrix.setScale(animTransform.scale, animTransform.scale);
             float translateX = -(bitmapWidth * animTransform.scale - animTransform.width) / 2;
             float translateY = -(bitmapHeight * animTransform.scale - animTransform.height) / 2;
@@ -174,7 +175,7 @@ public class SmoothImageView extends PhotoView {
                     if (s) {
                         return super.dispatchTouchEvent(event);
                     } else {
-                        if (isDrag){
+                        if (isDrag) {
                             return super.dispatchTouchEvent(event);
                         }
                         // 一指滑动时，才对图片进行移动缩放处理
@@ -366,8 +367,8 @@ public class SmoothImageView extends PhotoView {
             public void onAnimationEnd(Animator animation) {
                 /*
                  * 如果是进入的话，当然是希望最后停留在center_crop的区域。但是如果是out的话，就不应该是center_crop的位置了
-				 * ， 而应该是最后变化的位置，因为当out的时候结束时，不回复视图是Normal，要不然会有一个突然闪动回去的bug
-				 */
+                 * ， 而应该是最后变化的位置，因为当out的时候结束时，不回复视图是Normal，要不然会有一个突然闪动回去的bug
+                 */
                 if (onTransformListener != null) {
                     onTransformListener.onTransformCompleted(mStatus);
                 }
@@ -429,11 +430,27 @@ public class SmoothImageView extends PhotoView {
             bitmapWidth = mBitmap.getWidth();
             bitmapHeight = mBitmap.getHeight();
         } else {
-            Bitmap mBitmap = Bitmap.createBitmap(getDrawable().getIntrinsicWidth(),
-                    getDrawable().getIntrinsicHeight(), Bitmap.Config.RGB_565);
+            Bitmap mBitmap = Bitmap.createBitmap(getDrawable().getIntrinsicWidth(), getDrawable().getIntrinsicHeight(), Bitmap.Config.RGB_565);
             bitmapWidth = mBitmap.getWidth();
             bitmapHeight = mBitmap.getHeight();
         }
+
+        int viewWidth = getWidth();
+        int viewHeight = getHeight();
+        float s1 = (float) viewWidth / viewHeight;
+        float s2 = (float) bitmapWidth / bitmapHeight;
+        if (s1 > s2) {
+            float tmpF = s1 / s2;
+            setMaximumScale(tmpF * 2);
+            setMediumScale(tmpF);
+            setMinimumScale(0.6F);
+        } else if (s1 < s2) {
+            float tmpF = s2 / s1;
+            setMaximumScale(tmpF * 2);
+            setMediumScale(tmpF);
+            setMinimumScale(0.6F);
+        }
+
         startTransform = new Transform();
         startTransform.alpha = 0;
         if (thumbRect == null) {
