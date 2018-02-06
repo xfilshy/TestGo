@@ -12,6 +12,7 @@ import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserEducationInfo;
 import com.xue.bean.UserExpertInfo;
 import com.xue.bean.UserMinorList;
+import com.xue.bean.UserTagInfo;
 import com.xue.bean.UserWorkInfo;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseHttpParameter;
@@ -32,6 +33,7 @@ import com.xue.parsers.UserEducationInfoParser;
 import com.xue.parsers.UserExpertInfoParser;
 import com.xue.parsers.UserMinorListParser;
 import com.xue.parsers.UserParser;
+import com.xue.parsers.UserTagInfoParser;
 import com.xue.parsers.UserWorkInfoParser;
 import com.xue.tools.AppTool;
 import com.xue.tools.ConfigTool;
@@ -305,6 +307,41 @@ public class HttpApi {
     }
 
     /**
+     * 创建用户 UserTag 一条
+     */
+    private interface CreateUserTagParameter {
+
+        String _funcation = "/user/tag/create";
+
+        String tag_name = "tag_name";
+
+    }
+
+    /**
+     * 更新用户 UserTag 一条
+     */
+    private interface UpdateUserTagParameter {
+
+        String _funcation = "/user/tag/replace";
+
+        String tag_id = "tag_id";
+
+        String tag_name = "tag_name";
+
+    }
+
+    /**
+     * 删除用户 UserTag 一条
+     */
+    private interface DeleteUserTagParameter {
+
+        String _funcation = "/user/tag/delete";
+
+        String tag_id = "tag_id";
+
+    }
+
+    /**
      * 获取学历列表
      */
     private interface GetAcademicListParameter {
@@ -315,7 +352,7 @@ public class HttpApi {
      * 获取行业列表
      */
     private interface GetIndustryListParameter {
-        String _funcation = "/user/education/getindustrylist";
+        String _funcation = "/user/work/getindustrylist";
     }
 
     private interface RecommendListParameter {
@@ -643,7 +680,7 @@ public class HttpApi {
     }
 
     /**
-     * 创建 一条 UserEducation
+     * 删除 一条 UserEducation
      */
     public static DataHull<UserWorkInfo> deleteUserWork(String id) {
         String url = base_url + DeleteUserWorkParameter._funcation;
@@ -652,6 +689,50 @@ public class HttpApi {
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<UserWorkInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 删除 一条 UserEducation
+     */
+    public static DataHull<UserTagInfo> createUserTag(String tagName) {
+        String url = base_url + CreateUserTagParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(CreateUserTagParameter.tag_name, tagName)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserTagInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 删除 一条 UserEducation
+     */
+    public static DataHull<UserTagInfo> updateUserTag(String tagId, String tagName) {
+        String url = base_url + UpdateUserTagParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(UpdateUserTagParameter.tag_id, tagId),
+                new DefaultKVPBean(UpdateUserTagParameter.tag_name, tagName)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserTagInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+
+    /**
+     * 删除 一条 UserEducation
+     */
+    public static DataHull<UserTagInfo> deleteUserTag(String tagId) {
+        String url = base_url + DeleteUserTagParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(DeleteUserTagParameter.tag_id, tagId)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserTagInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
 
         return request(parameter);
     }

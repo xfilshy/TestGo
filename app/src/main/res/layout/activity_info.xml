@@ -314,58 +314,17 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/primary_shape"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="5dp"
-                    android:text="PHP"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/primary_shape"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="5dp"
-                    android:text="国际化"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/primary_shape"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="5dp"
-                    android:text="视频方向"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-            </LinearLayout>
+            <com.xue.support.view.TagGroup
+                android:id="@+id/tagGroup"
+                style="@style/TagGroup"
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
                 android:gravity="center"
+                android:onClick="getTag"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 android:text="+ 添加标签"

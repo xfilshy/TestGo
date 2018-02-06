@@ -9,21 +9,21 @@ public class UserWorkInfoParser extends MasterParser<UserWorkInfo> {
 
     @Override
     public UserWorkInfo parse(JSONObject data) throws Exception {
-        UserWorkInfo workInfo = null;
+        UserWorkInfo userWorkInfo = null;
         JSONArray array = optJSONArray(data, "work_list");
         int len = getLength(array);
 
-        workInfo = new UserWorkInfo();
+        userWorkInfo = new UserWorkInfo();
         if (len > 0) {
             UserWorkParser userWorkParser = new UserWorkParser();
             for (int i = 0; i < len; i++) {
                 JSONObject object = optJSONObject(array, i);
                 UserWorkInfo.Work work = userWorkParser.parse(object);
                 if (work != null) {
-                    workInfo.add(work);
+                    userWorkInfo.add(work);
                 }
             }
         }
-        return workInfo;
+        return userWorkInfo;
     }
 }

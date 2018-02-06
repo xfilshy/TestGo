@@ -17,11 +17,13 @@ import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
+import com.xue.bean.UserTagInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.oss.OssManager;
 import com.xue.oss.SimpleOssManagerCallback;
+import com.xue.support.view.TagGroup;
 import com.xue.tools.GlideImageLoader;
 import com.xue.tools.SimplePickHandlerCallBack;
 import com.yancy.gallerypick.config.GalleryConfig;
@@ -29,7 +31,7 @@ import com.yancy.gallerypick.config.GalleryPick;
 
 import java.util.List;
 
-public class InfoActivity extends BaseActivity implements View.OnClickListener {
+public class InfoActivity extends BaseActivity implements View.OnClickListener, TagGroup.OnTagClickListener {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, InfoActivity.class);
@@ -52,6 +54,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView mHomeTownTextView;
 
+    private TagGroup mTagGroup;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +65,12 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
         initActionBar();
         findView();
-        init();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        init();
     }
 
     @Override
@@ -98,9 +102,12 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
         mHomeTownTextView = findViewById(R.id.homeTown);
 
+        mTagGroup = findViewById(R.id.tagGroup);
+
         UITool.zoomViewByWidth(320, 320, mCoverImageView);
 
         mCoverRelativeLayout.setOnClickListener(this);
+        mTagGroup.setOnTagClickListener(this);
     }
 
     private void init() {
@@ -110,6 +117,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
             ImageCacheMannager.loadImage(this, userDetailInfo.getProfile(), mPhotoImageView, true);
 
             mHomeTownTextView.setText(userDetailInfo.getHomeTownName());
+        }
+
+        UserTagInfo userTagInfo = mUser.getUserTagInfo();
+        if (userTagInfo != null && userTagInfo.size() > 0) {
+            mTagGroup.setTags(userTagInfo.toStringArray());
         }
     }
 
@@ -135,6 +147,10 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     public void getLocation(View view) {
         CityListActivity.launch(this, CityListActivity.Location);
+    }
+
+    public void getTag(View view) {
+        TagActivity.launch(this, null);
     }
 
     @Override
@@ -171,6 +187,12 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
                 .build();
 
         GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
+    }
+
+    @Override
+    public void onTagClick(String tag) {
+        UserTagInfo userTagInfo = mUser.getUserTagInfo();
+        TagActivity.launch(this, userTagInfo.findTagByName(tag));
     }
 
     private static class UploadTask extends HttpAsyncTask<UserDetailInfo> {

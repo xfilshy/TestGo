@@ -12,8 +12,12 @@ import com.previewlibrary.ZoomMediaLoader;
 import com.xue.asyns.UserSaveTask;
 import com.xue.bean.User;
 import com.xue.bean.UserBase;
+import com.xue.bean.UserConfigInfo;
 import com.xue.bean.UserDetailInfo;
+import com.xue.bean.UserEducationInfo;
 import com.xue.bean.UserExpertInfo;
+import com.xue.bean.UserTagInfo;
+import com.xue.bean.UserWorkInfo;
 import com.xue.netease.NimSDKOptionConfig;
 import com.xue.preference.PreferencesManager;
 import com.xue.tools.PreviewImageLoader;
@@ -103,6 +107,22 @@ public class BaseApplication extends Application {
 
     public void setUserExpertInfo(UserExpertInfo userExpertInfo) {
         getUser().setUserExpertInfo(userExpertInfo);
+    }
+
+    public void setUserExpertInfo(UserEducationInfo userEducationInfo) {
+        getUser().setUserEducationInfo(userEducationInfo);
+    }
+
+    public void setUserWorkInfo(UserWorkInfo userWorkInfo) {
+        getUser().setUserWorkInfo(userWorkInfo);
+    }
+
+    public void setUserTagInfo(UserTagInfo userTagInfo) {
+        getUser().setUserTagInfo(userTagInfo);
+    }
+
+    public void setUserConfigInfo(UserConfigInfo userConfigInfo) {
+        getUser().setUserConfigInfo(userConfigInfo);
     }
 
     public String getDeviceId() {

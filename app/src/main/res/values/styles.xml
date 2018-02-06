@@ -50,4 +50,26 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TagGroup">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="atg_isAppendMode">false</item>
+        <item name="atg_borderColor">@color/colorPrimary</item>
+        <item name="atg_textColor">@color/white</item>
+        <item name="atg_backgroundColor">@color/colorPrimary</item>
+        <item name="atg_dashBorderColor">@color/colorPrimary</item>
+        <item name="atg_inputHintColor">@color/white</item>
+        <item name="atg_inputTextColor">@color/white</item>
+        <item name="atg_checkedBorderColor">@color/colorPrimary</item>
+        <item name="atg_checkedTextColor">@color/white</item>
+        <item name="atg_checkedMarkerColor">@color/colorPrimary</item>
+        <item name="atg_checkedBackgroundColor">@color/colorPrimary</item>
+        <item name="atg_pressedBackgroundColor">@color/colorPrimary</item>
+        <item name="atg_borderStrokeWidth">0.5dp</item>
+        <item name="atg_textSize">14dp</item>
+        <item name="atg_horizontalSpacing">10dp</item>
+        <item name="atg_verticalSpacing">4dp</item>
+        <item name="atg_horizontalPadding">16dp</item>
+        <item name="atg_verticalPadding">5dp</item>
+    </style>
 </resources>

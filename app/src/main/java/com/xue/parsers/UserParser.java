@@ -6,6 +6,8 @@ import com.xue.bean.UserConfigInfo;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserEducationInfo;
 import com.xue.bean.UserExpertInfo;
+import com.xue.bean.UserTagInfo;
+import com.xue.bean.UserWorkInfo;
 
 import org.json.JSONObject;
 
@@ -20,6 +22,8 @@ public class UserParser extends MasterParser<User> {
             UserConfigInfo userConfigInfo = new UserConfigInfoParser().parse(data);
             UserExpertInfo userExpertInfo = new UserExpertInfoParser().parse(data);
             UserEducationInfo userEducationInfo = new UserEducationInfoParser().parse(data);
+            UserWorkInfo userWorkInfo = new UserWorkInfoParser().parse(data);
+            UserTagInfo userTagInfo = new UserTagInfoParser().parse(data);
 
             if (userBase != null) {
                 user = new User(userBase);
@@ -27,6 +31,8 @@ public class UserParser extends MasterParser<User> {
                 user.setUserConfigInfo(userConfigInfo);
                 user.setUserExpertInfo(userExpertInfo);
                 user.setUserEducationInfo(userEducationInfo);
+                user.setUserWorkInfo(userWorkInfo);
+                user.setUserTagInfo(userTagInfo);
             }
         }
 

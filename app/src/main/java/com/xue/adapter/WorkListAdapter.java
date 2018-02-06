@@ -72,10 +72,10 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
 
         private void fillData(final UserWorkInfo.Work work, final AdapterOnItemClickCallback<UserWorkInfo.Work> callback) {
             date.setText(work.getBeginAt() + " - " + work.getEndAt());
-            company.setText(work.getCompanyName());
-            industry.setText(work.getIndustryName());
-            position.setText(work.getPositionName());
-            direction.setText(work.getDirectionName());
+            company.setText("公司：" + work.getCompanyName());
+            industry.setText("行业：" + work.getIndustryName());
+            position.setText("职位：" + work.getPositionName());
+            direction.setText("职位方向" + work.getDirectionName());
 
             if (!TextUtils.isEmpty(work.getDescribe())) {
                 describe.setVisibility(View.VISIBLE);
@@ -87,7 +87,7 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (callback != null) {
-                        callback.onItemClick(work , itemView);
+                        callback.onItemClick(work, itemView);
                     }
                 }
             });

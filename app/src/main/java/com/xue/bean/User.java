@@ -19,6 +19,8 @@ public class User implements BaseBean {
 
     private UserWorkInfo userWorkInfo;
 
+    private UserTagInfo userTagInfo;
+
     public User(UserBase userBase) {
         this.userBase = userBase;
     }
@@ -69,6 +71,14 @@ public class User implements BaseBean {
 
     public void setUserWorkInfo(UserWorkInfo userWorkInfo) {
         this.userWorkInfo = userWorkInfo;
+    }
+
+    public UserTagInfo getUserTagInfo() {
+        return userTagInfo;
+    }
+
+    public void setUserTagInfo(UserTagInfo userTagInfo) {
+        this.userTagInfo = userTagInfo;
     }
 
     @Override
