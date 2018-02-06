@@ -8,6 +8,7 @@ import android.util.Log;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.util.NIMUtil;
+import com.previewlibrary.ZoomMediaLoader;
 import com.xue.asyns.UserSaveTask;
 import com.xue.bean.User;
 import com.xue.bean.UserBase;
@@ -15,6 +16,7 @@ import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserExpertInfo;
 import com.xue.netease.NimSDKOptionConfig;
 import com.xue.preference.PreferencesManager;
+import com.xue.tools.PreviewImageLoader;
 
 /**
  * Created by xfilshy on 2018/1/17.
@@ -49,7 +51,10 @@ public class BaseApplication extends Application {
         NIMClient.init(this, new LoginInfo(getUserId(), getNeteaseToken()), NimSDKOptionConfig.getSDKOptions(this));
 
         if (NIMUtil.isMainProcess(this)) {
-
+            /**
+             * 初始化查看图片
+             * */
+            ZoomMediaLoader.getInstance().init(new PreviewImageLoader());
         }
     }
 

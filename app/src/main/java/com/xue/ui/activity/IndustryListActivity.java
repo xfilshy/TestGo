@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xue.R;
@@ -72,7 +73,7 @@ public class IndustryListActivity extends BaseActivity implements AdapterOnItemC
     }
 
     @Override
-    public void onItemClick(IndustryList.Industry industry) {
+    public void onItemClick(IndustryList.Industry industry , View view) {
         Intent intent = new Intent();
         intent.putExtra("industry", industry);
         setResult(RESULT_OK, intent);

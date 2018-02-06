@@ -83,7 +83,7 @@ public class EducationListAdapter extends RecyclerView.Adapter<EducationListAdap
                 @Override
                 public void onClick(View v) {
                     if (callback != null) {
-                        callback.onItemClick(education);
+                        callback.onItemClick(education , itemView);
                     }
                 }
             });

@@ -8,4 +8,6 @@ include ':app',
         ':ucrop',
         ':oss-android-sdk',
         ':sticky_recyclerview_lib',
-        ':bubbleseekbar_lib'
+        ':bubbleseekbar_lib',
+        ':image_preview_lib',
+        ':photoview_lib'

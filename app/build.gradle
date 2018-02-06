@@ -81,6 +81,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':http_lib')
     api project(':image_cache_lib')
+    api project(':image_preview_lib')
     api project(':threadpoollib')
     api project(':toolslib')
     api project(':support_lib')

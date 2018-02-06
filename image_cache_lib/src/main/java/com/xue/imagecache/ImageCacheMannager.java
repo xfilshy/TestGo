@@ -13,6 +13,7 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
 
@@ -161,5 +162,17 @@ public class ImageCacheMannager {
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .listener(listener)
                 .into(imageView);
+    }
+
+    /**
+     * 加载图片
+     */
+    public static void loadImage(RequestManager requestManager, Object model, int placeholder, int error, final Target target) {
+        RequestOptions requestOptions = RequestOptions.placeholderOf(placeholder).error(error).centerCrop();
+
+        requestManager.load(model)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(target);
     }
 }

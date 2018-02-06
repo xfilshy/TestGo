@@ -2,6 +2,7 @@ package com.xue.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -13,8 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elianshang.tools.UITool;
+import com.previewlibrary.GPreviewBuilder;
 import com.xue.R;
+import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.GalleryGridAdapter;
+import com.xue.bean.Gallery;
+import com.xue.bean.PreviewPicture;
 import com.xue.oss.OssManager;
 import com.xue.support.view.GridItemDecoration;
 import com.xue.tools.GlideImageLoader;
@@ -25,7 +30,7 @@ import com.yancy.gallerypick.config.GalleryPick;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryActivity extends BaseActivity implements View.OnClickListener, GalleryGridAdapter.AddCallBack, OssManager.Callback {
+public class GalleryActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<Gallery.Picture>, OssManager.Callback {
 
 
     public static void launch(Context context) {
@@ -43,7 +48,7 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
 
     private GalleryGridAdapter mAdapter;
 
-    private ArrayList<String> mImageList = new ArrayList();
+    private Gallery mGallery = new Gallery();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,10 +83,11 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
         mRecyclerView.addItemDecoration(new GridItemDecoration(UITool.dipToPx(this, 3)));
 
         if (mAdapter == null) {
-            mAdapter = new GalleryGridAdapter(this);
+            mAdapter = new GalleryGridAdapter();
 
             mRecyclerView.setAdapter(mAdapter);
-            mAdapter.setDataList(mImageList);
+            mAdapter.setDataList(mGallery);
+            mAdapter.setCallback(this);
         }
 
         mAdapter.notifyDataSetChanged();
@@ -100,12 +106,17 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(List<String> photoList) {
                 Log.e("xue", "成功了" + photoList);
-                mImageList.clear();
-                mImageList.addAll(photoList);
-                Log.e("xue", "mImageList == " + mImageList);
+                Gallery gallery = new Gallery();
+                for (String path : photoList) {
+                    Gallery.Picture picture = new Gallery.Picture();
+                    picture.setUrl(path);
+                    gallery.add(picture);
+                }
+                mGallery.removeAll(gallery);
+                mGallery.addAll(gallery);
                 mAdapter.notifyDataSetChanged();
 
-                OssManager.get().upload(photoList , GalleryActivity.this);
+                OssManager.get().upload(photoList, GalleryActivity.this);
             }
         };
         GalleryConfig galleryConfig = new GalleryConfig.Builder()
@@ -113,17 +124,12 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
                 .iHandlerCallBack(iHandlerCallBack)
                 .provider("com.xue.fileprovider")
                 .multiSelect(true, 9)
-                .pathList((List<String>) mImageList.clone())
+//                .pathList((List<String>) mImageList.clone())
                 .isShowCamera(true)
                 .filePath("/Gallery/Pictures")
                 .build();
 
         GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
-    }
-
-    @Override
-    public void onClickAdd() {
-        goPickPhoto();
     }
 
     @Override
@@ -160,4 +166,33 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
     public void onFinish() {
         Log.e("xue", "批量上传  完成");
     }
+
+    @Override
+    public void onItemClick(Gallery.Picture picture, View view) {
+        if (picture == null) {
+            goPickPhoto();
+        } else {
+            int i = mGallery.indexOf(picture);
+            GPreviewBuilder.from(this)
+                    .setData(getPreviewPictures(view))
+                    .setCurrentIndex(i)
+                    .setDrag(true)
+                    .setType(GPreviewBuilder.IndicatorType.Number)
+                    .start();
+        }
+    }
+
+    private ArrayList<PreviewPicture> getPreviewPictures(View view) {
+        ArrayList<PreviewPicture> mThumbViewInfoList = new ArrayList<>();
+        for (int i = 0; i < mGallery.size(); i++) {
+            PreviewPicture previewPicture = new PreviewPicture(mGallery.get(i).getUrl());
+            Rect bounds = new Rect();
+            view.getGlobalVisibleRect(bounds);
+            previewPicture.setBounds(bounds);
+
+            mThumbViewInfoList.add(previewPicture);
+        }
+        return mThumbViewInfoList;
+    }
+
 }

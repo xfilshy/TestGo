@@ -1,7 +1,6 @@
 package com.xue.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,8 @@ import android.widget.ImageView;
 
 import com.elianshang.tools.UITool;
 import com.xue.R;
+import com.xue.bean.Gallery;
 import com.xue.imagecache.ImageCacheMannager;
-
-import java.util.List;
 
 public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.BaseViewHolder> {
 
@@ -19,18 +17,18 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
 
     private final int TYPE_ADD = 2;
 
-    private List<String> mDataList;
+    private Gallery mDataList;
 
     private int imageWidth;
 
-    private AddCallBack mAddCallBack;
+    private AdapterOnItemClickCallback<Gallery.Picture> callback;
 
-    public GalleryGridAdapter(AddCallBack addCallBack) {
-        this.mAddCallBack = addCallBack;
+    public void setDataList(Gallery dataList) {
+        this.mDataList = dataList;
     }
 
-    public void setDataList(List<String> dataList) {
-        this.mDataList = dataList;
+    public void setCallback(AdapterOnItemClickCallback<Gallery.Picture> callback) {
+        this.callback = callback;
     }
 
     @Override
@@ -58,7 +56,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         if (viewType == TYPE_PHOTO) {
             return new PhotoViewHolder(parent, imageWidth);
         } else if (viewType == TYPE_ADD) {
-            return new AddViewHolder(parent, imageWidth, mAddCallBack);
+            return new AddViewHolder(parent, imageWidth);
         }
 
         return null;
@@ -66,8 +64,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        Log.e("xue", "position == " + position);
-        holder.fillData(position < mDataList.size() ? mDataList.get(position) : null);
+        holder.fillData(position < mDataList.size() ? mDataList.get(position) : null, callback);
     }
 
     @Override
@@ -76,16 +73,13 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
             return 1;
         }
 
-        return mDataList.size() < 9 ? mDataList.size() + 1 : mDataList.size();
+        return mDataList.size() + 1;
     }
 
     public static class AddViewHolder extends BaseViewHolder {
 
-        private AddCallBack addCallBack;
-
-        public AddViewHolder(ViewGroup itemView, int imageWidth, final AddCallBack addCallBack) {
+        public AddViewHolder(ViewGroup itemView, int imageWidth) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_gallery_add, itemView, false), imageWidth);
-            this.addCallBack = addCallBack;
         }
 
         @Override
@@ -95,13 +89,12 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         }
 
         @Override
-        public void fillData(String imageUri) {
-            super.fillData(imageUri);
+        public void fillData(Gallery.Picture picture, final AdapterOnItemClickCallback<Gallery.Picture> callback) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (addCallBack != null) {
-                        addCallBack.onClickAdd();
+                    if (callback != null) {
+                        callback.onItemClick(null , itemView);
                     }
                 }
             });
@@ -124,13 +117,21 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         }
 
         @Override
-        public void fillData(String imageUri) {
-            Log.e("xue", "imageUri = " + imageUri);
-            ImageCacheMannager.loadImage(itemView.getContext(), imageUri, photo, false);
+        public void fillData(final Gallery.Picture picture, final AdapterOnItemClickCallback<Gallery.Picture> callback) {
+            ImageCacheMannager.loadImage(itemView.getContext(), picture.getUrl(), photo, false);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (callback != null) {
+                        callback.onItemClick(picture , photo);
+                    }
+                }
+            });
         }
     }
 
-    public static class BaseViewHolder extends RecyclerView.ViewHolder {
+    public static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
 
         public BaseViewHolder(View itemView, int imageWidth) {
             super(itemView);
@@ -140,11 +141,6 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         protected void findView(int imageWidth) {
         }
 
-        public void fillData(String imageUri) {
-        }
-    }
-
-    public interface AddCallBack {
-        public void onClickAdd();
+        public abstract void fillData(Gallery.Picture picture, AdapterOnItemClickCallback<Gallery.Picture> callback);
     }
 }

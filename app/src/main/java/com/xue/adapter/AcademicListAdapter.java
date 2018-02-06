@@ -60,7 +60,7 @@ public class AcademicListAdapter extends RecyclerView.Adapter<AcademicListAdapte
                 @Override
                 public void onClick(View v) {
                     if (callback != null) {
-                        callback.onItemClick(academic);
+                        callback.onItemClick(academic , itemView);
                     }
                 }
             });

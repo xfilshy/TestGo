@@ -112,7 +112,7 @@ public class WorkListActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onItemClick(UserWorkInfo.Work work) {
+    public void onItemClick(UserWorkInfo.Work work , View view) {
         WorkActivity.launch(this, work);
     }
 }

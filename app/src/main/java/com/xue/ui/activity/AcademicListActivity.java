@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xue.R;
@@ -72,7 +73,7 @@ public class AcademicListActivity extends BaseActivity implements AdapterOnItemC
     }
 
     @Override
-    public void onItemClick(AcademicList.Academic academic) {
+    public void onItemClick(AcademicList.Academic academic , View view) {
         Intent intent = new Intent();
         intent.putExtra("academic", academic);
         setResult(RESULT_OK , intent);

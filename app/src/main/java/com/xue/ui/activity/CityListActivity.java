@@ -166,7 +166,7 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onItemClick(CityList.City city) {
+    public void onItemClick(CityList.City city , View view) {
         mCity = city;
         mCityTextView.setText(city.getShowName());
         if (!TextUtils.equals(mUserDetailInfo.getHomeTown(), city.getId())) {

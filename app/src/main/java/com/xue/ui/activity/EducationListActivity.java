@@ -119,7 +119,7 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void onItemClick(UserEducationInfo.Education education) {
+    public void onItemClick(UserEducationInfo.Education education , View view) {
         EducationActivity.launch(this, education);
     }
 }

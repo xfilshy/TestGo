@@ -87,7 +87,7 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (callback != null) {
-                        callback.onItemClick(work);
+                        callback.onItemClick(work , itemView);
                     }
                 }
             });

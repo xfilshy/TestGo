@@ -60,7 +60,7 @@ public class IndustryListAdapter extends RecyclerView.Adapter<IndustryListAdapte
                 @Override
                 public void onClick(View v) {
                     if (callback != null) {
-                        callback.onItemClick(industry);
+                        callback.onItemClick(industry , itemView);
                     }
                 }
             });

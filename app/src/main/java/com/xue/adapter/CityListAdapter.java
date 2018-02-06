@@ -116,7 +116,7 @@ public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (callback != null) {
-                        callback.onItemClick(city);
+                        callback.onItemClick(city , itemView);
                     }
                 }
             });
