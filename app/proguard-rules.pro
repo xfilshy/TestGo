@@ -76,19 +76,28 @@
 -keep class org.apache.lucene.** {*;}
 
 #友盟
--keep class com.umeng.**{*;}
--keep class u.aly.**{*;}
+#-keep class com.umeng.**{*;}
+#-keep class u.aly.**{*;}
 
-#okhttp
--keep class com.squareup.** { *; }
+#Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+# for DexGuard only
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 #okio
--keep class okio.** { *; }
+#okhttp
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 
-#SO库 接口文件
--keep public class com.elianshang.yougong.tool.SecretTool { *; }
+#ImageCacheManager
 -keep public class com.xue.imagecache.okhttp.OkHttpGlideModule { *; }
--keepnames public class com.elianshang.yougong.tool.SecretTool
 
 #支付宝
 -keep class com.alipay.android.app.IAlixPay{*;}

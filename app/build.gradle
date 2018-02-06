@@ -20,6 +20,18 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
+    /**
+     * 签名配置
+     * */
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'goodluck'
+            keyPassword 'meetdaniu'
+            storeFile file('./daniu')
+            storePassword 'meetdaniu'
+        }
+    }
+
     buildTypes {
         /**
          * 调试模式
@@ -29,24 +41,34 @@ android {
             /**
              * 打印Log
              * */
-//            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "LOG_DEBUG", "true"
 
             debuggable true
 
             /**
              * 压缩安装包
              * */
-//            zipAlignEnabled true
+            zipAlignEnabled true
 
             /**
              * 移除无用的resource文件
              * */
-//            shrinkResources true
+            shrinkResources true
 
             /**
              * 是否进行混淆
              * */
-            minifyEnabled false
+            minifyEnabled true
+
+            /**
+             * 混淆文件的位置，前一部分是系统默认的混淆声明，后一部分是自定义的混淆声明
+             * */
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            /**
+             * 签名配置
+             * */
+            signingConfig signingConfigs.releaseConfig
         }
 
         release {
