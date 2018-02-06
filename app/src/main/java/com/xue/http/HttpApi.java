@@ -6,11 +6,13 @@ import com.elianshang.tools.DeviceTool;
 import com.xue.BaseApplication;
 import com.xue.bean.AcademicList;
 import com.xue.bean.CityList;
+import com.xue.bean.IndustryList;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserEducationInfo;
 import com.xue.bean.UserExpertInfo;
 import com.xue.bean.UserMinorList;
+import com.xue.bean.UserWorkInfo;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseHttpParameter;
 import com.xue.http.hook.BaseKVP;
@@ -24,11 +26,13 @@ import com.xue.oss.SignConentParser;
 import com.xue.oss.SignContent;
 import com.xue.parsers.AcademicListParser;
 import com.xue.parsers.CityListParser;
+import com.xue.parsers.IndustryListParser;
 import com.xue.parsers.UserDetailInfoParser;
 import com.xue.parsers.UserEducationInfoParser;
 import com.xue.parsers.UserExpertInfoParser;
 import com.xue.parsers.UserMinorListParser;
 import com.xue.parsers.UserParser;
+import com.xue.parsers.UserWorkInfoParser;
 import com.xue.tools.AppTool;
 import com.xue.tools.ConfigTool;
 import com.xue.tools.SecretTool;
@@ -188,7 +192,7 @@ public class HttpApi {
     }
 
     /**
-     * 创建用户 UserEducation
+     * 创建用户 UserEducation 一条
      */
     private interface CreateUserEducationParameter {
         String _funcation = "/user/education/create";
@@ -208,7 +212,7 @@ public class HttpApi {
     }
 
     /**
-     * 更新用户 UserEducation
+     * 更新用户 UserEducation 一条
      */
     private interface UpdateUserEducationParameter {
         String _funcation = "/user/education/update";
@@ -229,12 +233,72 @@ public class HttpApi {
 
     }
 
-
     /**
-     * 删除用户 UserEducation
+     * 删除用户 UserEducation 一条
      */
     private interface DeleteUserEducationParameter {
         String _funcation = "/user/education/delete";
+
+        String id = "id";
+
+    }
+
+    /**
+     * 创建用户 UserWork 一条
+     */
+    private interface CreateUserWorkParameter {
+
+        String _funcation = "/user/work/create";
+
+        String company_name = "company_name";
+
+        String industry_id = "industry_id";
+
+        String direction_name = "direction_name";
+
+        String position_name = "position_name";
+
+        String describe = "describe";
+
+        String begin_at = "begin_at";
+
+        String end_at = "end_at";
+
+    }
+
+
+    /**
+     * 更新用户 UserWork 一条
+     */
+    private interface UpdateUserWorkParameter {
+
+        String _funcation = "/user/work/update";
+
+        String id = "id";
+
+        String company_name = "company_name";
+
+        String industry_id = "industry_id";
+
+        String direction_name = "direction_name";
+
+        String position_name = "position_name";
+
+        String describe = "describe";
+
+        String begin_at = "begin_at";
+
+        String end_at = "end_at";
+
+    }
+
+
+    /**
+     * 删除用户 UserWork 一条
+     */
+    private interface DeleteUserWorkParameter {
+
+        String _funcation = "/user/work/delete";
 
         String id = "id";
 
@@ -245,6 +309,13 @@ public class HttpApi {
      */
     private interface GetAcademicListParameter {
         String _funcation = "/user/education/getacademiclist";
+    }
+
+    /**
+     * 获取行业列表
+     */
+    private interface GetIndustryListParameter {
+        String _funcation = "/user/education/getindustrylist";
     }
 
     private interface RecommendListParameter {
@@ -529,6 +600,62 @@ public class HttpApi {
         return request(parameter);
     }
 
+
+    /**
+     * 创建 一条 UserEducation
+     */
+    public static DataHull<UserWorkInfo> createUserWork(String companyName, String industryId, String positionName, String directionName, String describe, String beginAt, String endAt) {
+        String url = base_url + CreateUserWorkParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(CreateUserWorkParameter.company_name, companyName),
+                new DefaultKVPBean(CreateUserWorkParameter.industry_id, industryId),
+                new DefaultKVPBean(CreateUserWorkParameter.position_name, positionName),
+                new DefaultKVPBean(CreateUserWorkParameter.direction_name, directionName),
+                new DefaultKVPBean(CreateUserWorkParameter.describe, describe),
+                new DefaultKVPBean(CreateUserWorkParameter.begin_at, beginAt),
+                new DefaultKVPBean(CreateUserWorkParameter.end_at, endAt)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserWorkInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 更新 一条 UserEducation
+     */
+    public static DataHull<UserWorkInfo> updateUserWork(String id, String companyName, String industryId, String positionName, String directionName, String describe, String beginAt, String endAt) {
+        String url = base_url + UpdateUserWorkParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(UpdateUserWorkParameter.id, id),
+                new DefaultKVPBean(UpdateUserWorkParameter.company_name, companyName),
+                new DefaultKVPBean(UpdateUserWorkParameter.industry_id, industryId),
+                new DefaultKVPBean(UpdateUserWorkParameter.position_name, positionName),
+                new DefaultKVPBean(UpdateUserWorkParameter.direction_name, directionName),
+                new DefaultKVPBean(UpdateUserWorkParameter.describe, describe),
+                new DefaultKVPBean(UpdateUserWorkParameter.begin_at, beginAt),
+                new DefaultKVPBean(UpdateUserWorkParameter.end_at, endAt)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserWorkInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 创建 一条 UserEducation
+     */
+    public static DataHull<UserWorkInfo> deleteUserWork(String id) {
+        String url = base_url + DeleteUserWorkParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(DeleteUserWorkParameter.id, id)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<UserWorkInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
     /**
      * 获取学历列表
      */
@@ -536,6 +663,18 @@ public class HttpApi {
         String url = base_url + GetAcademicListParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
         HttpDynamicParameter<AcademicListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new AcademicListParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+
+    /**
+     * 获取行业列表
+     */
+    public static DataHull<IndustryList> getIndustryList() {
+        String url = base_url + GetIndustryListParameter._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<IndustryListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new IndustryListParser(), 0, secretKey);
 
         return request(parameter);
     }

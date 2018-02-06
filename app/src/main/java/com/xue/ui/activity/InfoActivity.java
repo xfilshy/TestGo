@@ -130,11 +130,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void getHomeTown(View view) {
-        CityActivity.launch(this, CityActivity.HomeTown);
+        CityListActivity.launch(this, CityListActivity.HomeTown);
     }
 
     public void getLocation(View view) {
-        CityActivity.launch(this, CityActivity.Location);
+        CityListActivity.launch(this, CityListActivity.Location);
     }
 
     @Override

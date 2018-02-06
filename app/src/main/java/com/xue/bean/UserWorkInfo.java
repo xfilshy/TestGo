@@ -17,7 +17,7 @@ public class UserWorkInfo extends ArrayList<UserWorkInfo.Work> implements BaseBe
         return null;
     }
 
-    public static class Work {
+    public static class Work implements BaseBean {
 
         /**
          * id
@@ -27,27 +27,42 @@ public class UserWorkInfo extends ArrayList<UserWorkInfo.Work> implements BaseBe
         /**
          * 公司
          */
-        private String company;
+        private String companyName;
 
         /**
          * 行业
          */
-        private String industry;
+        private String industryName;
+
+        /**
+         * 行业id
+         */
+        private String industryId;
 
         /**
          * 方向
          */
-        private String direction;
+        private String directionName;
 
         /**
          * 职位
          */
-        private String position;
+        private String positionName;
 
         /**
          * 描述
          */
         private String describe;
+
+        /**
+         * 开始时间
+         */
+        private String beginAt;
+
+        /**
+         * 结束时间
+         */
+        private String endAt;
 
         public String getId() {
             return id;
@@ -57,36 +72,44 @@ public class UserWorkInfo extends ArrayList<UserWorkInfo.Work> implements BaseBe
             this.id = id;
         }
 
-        public String getCompany() {
-            return company;
+        public String getCompanyName() {
+            return companyName;
         }
 
-        public void setCompany(String company) {
-            this.company = company;
+        public void setCompanyName(String companyName) {
+            this.companyName = companyName;
         }
 
-        public String getIndustry() {
-            return industry;
+        public String getIndustryName() {
+            return industryName;
         }
 
-        public void setIndustry(String industry) {
-            this.industry = industry;
+        public void setIndustryName(String industryName) {
+            this.industryName = industryName;
         }
 
-        public String getDirection() {
-            return direction;
+        public String getIndustryId() {
+            return industryId;
         }
 
-        public void setDirection(String direction) {
-            this.direction = direction;
+        public void setIndustryId(String industryId) {
+            this.industryId = industryId;
         }
 
-        public String getPosition() {
-            return position;
+        public String getDirectionName() {
+            return directionName;
         }
 
-        public void setPosition(String position) {
-            this.position = position;
+        public void setDirectionName(String directionName) {
+            this.directionName = directionName;
+        }
+
+        public String getPositionName() {
+            return positionName;
+        }
+
+        public void setPositionName(String positionName) {
+            this.positionName = positionName;
         }
 
         public String getDescribe() {
@@ -95,6 +118,32 @@ public class UserWorkInfo extends ArrayList<UserWorkInfo.Work> implements BaseBe
 
         public void setDescribe(String describe) {
             this.describe = describe;
+        }
+
+        public String getBeginAt() {
+            return beginAt;
+        }
+
+        public void setBeginAt(String beginAt) {
+            this.beginAt = beginAt;
+        }
+
+        public String getEndAt() {
+            return endAt;
+        }
+
+        public void setEndAt(String endAt) {
+            this.endAt = endAt;
+        }
+
+        @Override
+        public void setDataKey(String dataKey) {
+
+        }
+
+        @Override
+        public String getDataKey() {
+            return null;
         }
     }
 }

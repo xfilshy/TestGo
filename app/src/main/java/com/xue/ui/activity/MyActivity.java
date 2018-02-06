@@ -131,7 +131,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void goPrice(View view) {
-        PriceActivity.launch(this);
+        FeeSettingActivity.launch(this);
     }
 
     public void goInfo(View view) {

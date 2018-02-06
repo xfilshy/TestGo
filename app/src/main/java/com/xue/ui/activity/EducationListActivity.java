@@ -15,7 +15,6 @@ import com.xue.R;
 import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.EducationFooterListAdapter;
 import com.xue.adapter.EducationListAdapter;
-import com.xue.bean.AcademicList;
 import com.xue.bean.UserEducationInfo;
 
 public class EducationListActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<UserEducationInfo.Education> {
@@ -37,9 +36,6 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
 
     private View mFooterView;
 
-    private AcademicList.Academic mAcademic;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +43,6 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
 
         initActionBar();
         findView();
-        init();
     }
 
     @Override

@@ -111,6 +111,7 @@
             android:name="android.max_aspect"
             android:value="2.1" />
 
+        <!--欢迎页-->
         <activity
             android:name=".ui.activity.WelcomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|fontScale|smallestScreenSize|density|touchscreen|keyboard|layoutDirection|locale|navigation"
@@ -123,139 +124,176 @@
             </intent-filter>
         </activity>
 
+        <!--手机登陆页-->
         <activity
             android:name=".ui.activity.PhoneLoginActivity"
             android:theme="@style/WhiteAppTheme" />
 
+        <!--主页面父容器-->
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label=""
             android:launchMode="singleTask"
             android:logo="@drawable/red_oval" />
 
+        <!--音视频聊天页-->
         <activity
             android:name=".ui.activity.AVChatActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
 
+        <!--IM聊天页-->
         <activity
             android:name=".ui.activity.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
+        <!--我的页-->
         <activity
             android:name=".ui.activity.MyActivity"
             android:theme="@style/Transparent80FullscreenTheme" />
 
+        <!--用户详细信息页-->
         <activity
             android:name=".ui.activity.DetailActivity"
             android:theme="@style/TransparentTitleTheme"></activity>
 
+        <!--购买钻石页-->
         <activity
             android:name=".ui.activity.RechargeActivity"
             android:screenOrientation="portrait" />
 
+        <!--支付页-->
         <activity
             android:name=".ui.activity.PayActivity"
             android:screenOrientation="portrait" />
 
+        <!--充值记录页-->
         <activity
             android:name=".ui.activity.RechargeHistoryActivity"
             android:screenOrientation="portrait" />
 
+        <!--我的收益页-->
         <activity
             android:name=".ui.activity.PaymentsActivity"
             android:screenOrientation="portrait" />
 
+        <!--收支记录页-->
         <activity
             android:name=".ui.activity.PaymentsHistoryActivity"
             android:screenOrientation="portrait" />
 
+        <!--牛币购买钻石页-->
         <activity
             android:name=".ui.activity.RechargeNiubiActivity"
             android:screenOrientation="portrait" />
 
+        <!--提现页-->
         <activity
             android:name=".ui.activity.WithdrawalsActivity"
             android:screenOrientation="portrait" />
 
+        <!--支付宝绑定页-->
         <activity
             android:name=".ui.activity.BindZhifubaoActivity"
             android:screenOrientation="portrait" />
 
+        <!--用户信息页-->
         <activity
             android:name=".ui.activity.InfoActivity"
             android:screenOrientation="portrait" />
 
+        <!--设置页-->
         <activity
             android:name=".ui.activity.SettingActivity"
             android:screenOrientation="portrait" />
 
+        <!--基础用户信息页-->
         <activity
             android:name=".ui.activity.BaseInfoActivity"
             android:screenOrientation="portrait" />
 
+        <!--修改名字页-->
         <activity
             android:name=".ui.activity.ModifyNameActivity"
             android:screenOrientation="portrait" />
 
+        <!--用户协议页-->
         <activity
             android:name=".ui.activity.AgreementActivity"
             android:screenOrientation="portrait" />
 
+        <!--认证列表页-->
         <activity
             android:name=".ui.activity.CertifyActivity"
             android:screenOrientation="portrait" />
 
+        <!--名片认证页-->
         <activity
             android:name=".ui.activity.BusinessCardCertifyActivity"
             android:screenOrientation="portrait" />
 
+        <!--工牌认证页-->
         <activity
             android:name=".ui.activity.WorkCardCertifyActivity"
             android:screenOrientation="portrait" />
 
+        <!--独白页-->
         <activity
             android:name=".ui.activity.DescribeActivity"
             android:screenOrientation="portrait" />
 
+        <!--价格设置页-->
         <activity
-            android:name=".ui.activity.WorkActivity"
+            android:name=".ui.activity.FeeSettingActivity"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".ui.activity.EducationActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".ui.activity.PriceActivity"
-            android:screenOrientation="portrait" />
-
+        <!--相册页-->
         <activity
             android:name=".ui.activity.GalleryActivity"
             android:screenOrientation="portrait" />
 
+        <!--基础信息编辑页-->
         <activity
             android:name=".ui.activity.BaseInfoEditActivity"
             android:screenOrientation="portrait" />
 
+        <!--城市列表页-->
         <activity
-            android:name=".ui.activity.CityActivity"
+            android:name=".ui.activity.CityListActivity"
             android:screenOrientation="portrait" />
 
+        <!--学习背景列表页-->
         <activity
             android:name=".ui.activity.EducationListActivity"
             android:screenOrientation="portrait" />
 
+        <!--学习背景编辑页-->
+        <activity
+            android:name=".ui.activity.EducationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+        <!--工作背景列表页-->
         <activity
             android:name=".ui.activity.WorkListActivity"
             android:screenOrientation="portrait" />
 
+        <!--工作背景编辑页-->
+        <activity
+            android:name=".ui.activity.WorkActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+        <!--学历列表页-->
         <activity
             android:name=".ui.activity.AcademicListActivity"
             android:screenOrientation="portrait" />
 
+        <!--行业列表页-->
+        <activity
+            android:name=".ui.activity.IndustryListActivity"
+            android:screenOrientation="portrait" />
 
         <!--图片选择器-->
         <!--图片选择器-->

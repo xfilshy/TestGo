@@ -27,14 +27,14 @@ import com.xue.support.view.SideBar;
 
 import java.util.HashMap;
 
-public class CityActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<CityList.City>, SideBar.OnTouchingLetterChangedListener {
+public class CityListActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<CityList.City>, SideBar.OnTouchingLetterChangedListener {
 
     public static final int HomeTown = 1;
 
     public static final int Location = 2;
 
     public static void launch(Context context, int type) {
-        Intent intent = new Intent(context, CityActivity.class);
+        Intent intent = new Intent(context, CityListActivity.class);
         intent.putExtra("type", type);
         context.startActivity(intent);
     }
@@ -70,7 +70,7 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_city);
+        setContentView(R.layout.activity_city_list);
 
         readExtra();
         initActionBar();
@@ -222,7 +222,7 @@ public class CityActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onPostExecute(int updateId, UserDetailInfo result) {
             BaseApplication.get().setUserDetailInfo(result);
-            CityActivity.this.finish();
+            CityListActivity.this.finish();
         }
     }
 }

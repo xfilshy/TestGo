@@ -34,65 +34,64 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
         android:paddingRight="16dp"
         android:paddingTop="10dp">
 
         <TextView
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:lines="1"
-            android:text="2014/10 - 2015/09"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="5dp"
             android:lines="1"
-            android:text="公司：百度"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/industry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="2dp"
             android:lines="1"
-            android:text="行业：IT/互联网"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="2dp"
             android:lines="1"
-            android:text="方向：国际化"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/direction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="2dp"
             android:lines="1"
-            android:text="职位：资深产品经理"
             android:textColor="@color/black"
             android:textSize="14dp" />
 
         <TextView
+            android:id="@+id/describe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="2dp"
-            android:text="职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责职责"
             android:textColor="@color/black"
             android:textSize="14dp" />
 

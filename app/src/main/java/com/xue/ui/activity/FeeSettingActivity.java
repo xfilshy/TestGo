@@ -23,11 +23,11 @@ import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xw.repo.BubbleSeekBar;
 
-public class PriceActivity extends BaseActivity implements View.OnClickListener, BubbleSeekBar.OnProgressChangedListener, TextWatcher {
+public class FeeSettingActivity extends BaseActivity implements View.OnClickListener, BubbleSeekBar.OnProgressChangedListener, TextWatcher {
 
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, PriceActivity.class);
+        Intent intent = new Intent(context, FeeSettingActivity.class);
         context.startActivity(intent);
     }
 
@@ -52,7 +52,7 @@ public class PriceActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_price);
+        setContentView(R.layout.activity_fee_setting);
 
         initActionBar();
         findView();
