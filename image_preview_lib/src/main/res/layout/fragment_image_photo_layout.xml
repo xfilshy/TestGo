@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.previewlibrary.wight.SmoothImageView
-        android:background="@android:color/transparent"
+        android:background="#ff00"
         android:id="@+id/photoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
