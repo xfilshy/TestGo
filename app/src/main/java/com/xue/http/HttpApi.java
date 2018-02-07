@@ -12,7 +12,7 @@ import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserEducationInfo;
 import com.xue.bean.UserExpertInfo;
-import com.xue.bean.UserMinorList;
+import com.xue.bean.UserList;
 import com.xue.bean.UserTagInfo;
 import com.xue.bean.UserWorkInfo;
 import com.xue.http.hook.BaseBean;
@@ -34,10 +34,10 @@ import com.xue.parsers.MomentInfoParser;
 import com.xue.parsers.UserDetailInfoParser;
 import com.xue.parsers.UserEducationInfoParser;
 import com.xue.parsers.UserExpertInfoParser;
-import com.xue.parsers.UserMinorListParser;
 import com.xue.parsers.UserParser;
 import com.xue.parsers.UserTagInfoParser;
 import com.xue.parsers.UserWorkInfoParser;
+import com.xue.parsers.UsetListParser;
 import com.xue.tools.AppTool;
 import com.xue.tools.ConfigTool;
 import com.xue.tools.SecretTool;
@@ -889,10 +889,10 @@ public class HttpApi {
     /**
      * 首页推荐列表
      */
-    public static DataHull<UserMinorList> recommendList() {
+    public static DataHull<UserList> recommendList() {
         String url = base_url + RecommendListParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<UserMinorListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new UserMinorListParser(), 0, secretKey);
+        HttpDynamicParameter<UsetListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new UsetListParser(), 0, secretKey);
 
         return request(parameter);
     }

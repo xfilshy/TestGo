@@ -9,11 +9,10 @@ import android.widget.TextView;
 
 import com.elianshang.tools.UITool;
 import com.xue.R;
-import com.xue.bean.UserMinor;
+import com.xue.bean.User;
+import com.xue.bean.UserDetailInfo;
+import com.xue.bean.UserList;
 import com.xue.imagecache.ImageCacheMannager;
-import com.xue.ui.activity.DetailActivity;
-
-import java.util.List;
 
 /**
  * Created by xfilshy on 2018/1/17.
@@ -21,18 +20,13 @@ import java.util.List;
 
 public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHolder> {
 
-    private List<UserMinor> dataList = null;
+    private UserList dataList = null;
 
     private int imageWidth = 0;
 
-    public HomeGridAdapter() {
-    }
+    private AdapterOnItemClickCallback<User> callback;
 
-    public HomeGridAdapter(List<UserMinor> dataList) {
-        this.dataList = dataList;
-    }
-
-    public void setDataList(List<UserMinor> dataList) {
+    public void setDataList(UserList dataList) {
         this.dataList = dataList;
     }
 
@@ -57,7 +51,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.fill(dataList.get(position));
+        holder.fill(dataList.get(position), callback);
     }
 
     @Override
@@ -95,20 +89,27 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
             vip = itemView.findViewById(R.id.vip);
         }
 
-        protected void fill(final UserMinor userMinor) {
-            name.setText(userMinor.getUserBase().getCellphone());
-            ImageCacheMannager.loadImage(photo.getContext(), R.drawable.photo_test, photo, false);
+        protected void fill(final User user, final AdapterOnItemClickCallback<User> callback) {
+            UserDetailInfo userDetailInfo = user.getUserDetailInfo();
+            if (userDetailInfo != null) {
+                name.setText(userDetailInfo.getRealName());
+                ImageCacheMannager.loadImage(photo.getContext(), userDetailInfo.getProfile(), photo, false);
+            } else {
+                name.setText("信息不全");
+                ImageCacheMannager.loadImage(photo.getContext(), null, photo, false);
 
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
-                    if (userMinor != null) {
-                        DetailActivity.launch(view.getContext(), userMinor.getUserBase().getUid());
+                    if (callback != null) {
+                        callback.onItemClick(user, view);
                     }
                 }
             });
+
         }
     }
 }

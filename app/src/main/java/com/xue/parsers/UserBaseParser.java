@@ -31,7 +31,7 @@ public class UserBaseParser extends MasterParser<UserBase> {
             String neteaseToken = optString(data, "netease_token");
             String status = optString(data, "status");
 
-            if (!TextUtils.isEmpty(uid) && !TextUtils.isEmpty(token) && !TextUtils.isEmpty(neteaseToken)) {
+            if (!TextUtils.isEmpty(uid)) {
                 userBase = new UserBase();
                 userBase.setUid(uid);
                 userBase.setToken(token);

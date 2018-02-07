@@ -14,13 +14,10 @@ import com.xue.R;
 import com.xue.adapter.HomeFooterGridAdapter;
 import com.xue.adapter.HomeGridAdapter;
 import com.xue.asyns.HttpAsyncTask;
-import com.xue.bean.UserMinor;
-import com.xue.bean.UserMinorList;
+import com.xue.bean.UserList;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.support.view.GridItemDecoration;
-
-import java.util.List;
 
 /**
  * Created by xfilshy on 2018/1/17.
@@ -29,7 +26,7 @@ public class HomeFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
 
-    private List<UserMinor> mDataList;
+    private UserList mDataList;
 
     private HomeFooterGridAdapter mAdapter;
 
@@ -79,19 +76,19 @@ public class HomeFragment extends BaseFragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    private class ListTask extends HttpAsyncTask<UserMinorList> {
+    private class ListTask extends HttpAsyncTask<UserList> {
 
         public ListTask(Context context) {
             super(context);
         }
 
         @Override
-        public DataHull<UserMinorList> doInBackground() {
+        public DataHull<UserList> doInBackground() {
             return HttpApi.recommendList();
         }
 
         @Override
-        public void onPostExecute(int updateId, UserMinorList result) {
+        public void onPostExecute(int updateId, UserList result) {
             mDataList = result;
             fillRecyclerView();
         }
