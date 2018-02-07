@@ -246,9 +246,9 @@ public class GalleryPickActivity extends BaseActivity {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 if (id == LOADER_ALL) {
-                    return new CursorLoader(mActivity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_PROJECTION, null, null, IMAGE_PROJECTION[2] + " DESC");
+                    return new CursorLoader(mActivity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_PROJECTION, MediaStore.Images.Media.MIME_TYPE + " = \"image/jpeg\" or " + MediaStore.Images.Media.MIME_TYPE + " = \"image/png\"", null, IMAGE_PROJECTION[2] + " DESC");
                 } else if (id == LOADER_CATEGORY) {
-                    return new CursorLoader(mActivity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_PROJECTION, IMAGE_PROJECTION[0] + " like '%" + args.getString("path") + "%'", null, IMAGE_PROJECTION[2] + " DESC");
+                    return new CursorLoader(mActivity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_PROJECTION, MediaStore.Images.Media.MIME_TYPE + " = \"image/jpeg\" or " + MediaStore.Images.Media.MIME_TYPE + " = \"image/png\" " + IMAGE_PROJECTION[0] + " like '%" + args.getString("path") + "%'", null, IMAGE_PROJECTION[2] + " DESC");
                 }
 
                 return null;

@@ -809,6 +809,7 @@ public class TagGroup extends ViewGroup {
             setGravity(Gravity.CENTER);
             setText(text);
             setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+            setLines(1);
 
             mState = state;
 
