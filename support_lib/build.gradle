@@ -34,4 +34,5 @@ dependencies {
     api 'com.android.support:appcompat-v7:27.0.2'
     api 'com.android.support:recyclerview-v7:27.0.2'
     api 'com.android.support:support-v4:27.0.2'
+    api 'com.android.support:multidex:1.0.1'
 }

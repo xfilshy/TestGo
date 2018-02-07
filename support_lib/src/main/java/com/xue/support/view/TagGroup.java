@@ -319,22 +319,41 @@ public class TagGroup extends ViewGroup {
         int rowMaxHeight = 0;
 
         final int count = getChildCount();
+
+        ArrayList<View> tmpChilds = new ArrayList();
         for (int i = 0; i < count; i++) {
+            int tmpSpac = 0;
             final View child = getChildAt(i);
             final int width = child.getMeasuredWidth();
             final int height = child.getMeasuredHeight();
-
             if (child.getVisibility() != GONE) {
                 if (childLeft + width > parentRight) { // Next line
+                    tmpSpac = (parentRight - childLeft) / tmpChilds.size() / 2;
                     childLeft = parentLeft;
+                    for (View tmp : tmpChilds) {
+                        tmp.layout(childLeft + tmpSpac, childTop, childLeft + tmp.getMeasuredWidth() + tmpSpac, childTop + tmp.getMeasuredHeight());
+                        childLeft += tmp.getMeasuredWidth() + horizontalSpacing + tmpSpac + tmpSpac;
+                    }
+
+                    tmpChilds.clear();
+                    tmpChilds.add(child);
+                    childLeft = parentLeft;
+                    childLeft += width + horizontalSpacing;
                     childTop += rowMaxHeight + verticalSpacing;
                     rowMaxHeight = height;
                 } else {
+                    tmpChilds.add(child);
                     rowMaxHeight = Math.max(rowMaxHeight, height);
+                    childLeft += width + horizontalSpacing;
                 }
-                child.layout(childLeft, childTop, childLeft + width, childTop + height);
+            }
+        }
 
-                childLeft += width + horizontalSpacing;
+        if (!tmpChilds.isEmpty()) {
+            childLeft = parentLeft;
+            for (View tmp : tmpChilds) {
+                tmp.layout(childLeft, childTop, childLeft + tmp.getMeasuredWidth(), childTop + tmp.getMeasuredHeight());
+                childLeft += tmp.getMeasuredWidth() + horizontalSpacing;
             }
         }
     }

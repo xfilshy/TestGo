@@ -2,6 +2,7 @@ package com.xue;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -43,6 +44,7 @@ public class BaseApplication extends Application {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
+        MultiDex.install(this);
     }
 
     @Override
