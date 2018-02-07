@@ -25,6 +25,8 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
 
     private AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback;
 
+    private AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> longClickCallback;
+
     public void setDataList(List<MomentInfoList.MomentRes> dataList) {
         this.mDataList = dataList;
     }
@@ -33,9 +35,14 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         this.callback = callback;
     }
 
+    public void setLongClickCallback(AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> longClickCallback) {
+        this.longClickCallback = longClickCallback;
+    }
+
     @Override
     public int getItemViewType(int position) {
-        if (position < mDataList.size()) {
+        int size = mDataList == null ? 0 : mDataList.size();
+        if (position < size) {
             return TYPE_PHOTO;
         } else {
             return TYPE_ADD;
@@ -66,7 +73,8 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.fillData(position < mDataList.size() ? mDataList.get(position) : null, callback);
+        int size = mDataList == null ? 0 : mDataList.size();
+        holder.fillData(position < size ? mDataList.get(position) : null, callback, longClickCallback);
     }
 
     @Override
@@ -75,7 +83,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
             return 1;
         }
 
-        return mDataList.size() + 1;
+        return mDataList.size() < 9 ? mDataList.size() + 1 : mDataList.size();
     }
 
     public static class AddViewHolder extends BaseViewHolder {
@@ -91,7 +99,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         }
 
         @Override
-        public void fillData(MomentInfoList.MomentRes momentRes, final AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback) {
+        public void fillData(MomentInfoList.MomentRes momentRes, final AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback, AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> longClickCallback) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,7 +127,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         }
 
         @Override
-        public void fillData(final MomentInfoList.MomentRes momentRes, final AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback) {
+        public void fillData(final MomentInfoList.MomentRes momentRes, final AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback, final AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> longClickCallback) {
             ImageCacheMannager.loadImage(itemView.getContext(), momentRes.getUrl(), photo, false);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +136,16 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
                     if (callback != null) {
                         callback.onItemClick(momentRes, photo);
                     }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (longClickCallback != null) {
+                        longClickCallback.onItemLongClick(momentRes, photo);
+                    }
+                    return true;
                 }
             });
         }
@@ -143,6 +161,6 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         protected void findView(int imageWidth) {
         }
 
-        public abstract void fillData(MomentInfoList.MomentRes momentRes, AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback);
+        public abstract void fillData(MomentInfoList.MomentRes momentRes, AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback, AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> longClickCallback);
     }
 }

@@ -408,7 +408,7 @@ public class HttpApi {
 
         String text = "text";
 
-        String res_list = "attach_list";
+        String res_list = "res_list";
     }
 
 
@@ -419,11 +419,11 @@ public class HttpApi {
 
         String _funcation = "/moment/info/update";
 
-        String moment_id = "moment_id";
+        String id = "id";
 
         String text = "text";
 
-        String res_list = "attach_list";
+        String res_list = "res_list";
     }
 
 
@@ -434,7 +434,7 @@ public class HttpApi {
 
         String _funcation = "/moment/info/delete";
 
-        String moment_id = "moment_id";
+        String id = "id";
     }
 
 
@@ -802,12 +802,12 @@ public class HttpApi {
 
 
     /**
-     * 创建 一条 MomentInfo
+     * 获取 一条 MomentInfoList
      */
-    public static DataHull<MomentInfoList> get(String text, String page, String pageSize, String order) {
+    public static DataHull<MomentInfoList> getMomentInfoList(String uid, String page, String pageSize, String order) {
         String url = base_url + GetMomentInfoList._funcation;
         List<BaseKVP> params = addParams(
-                new DefaultKVPBean(GetMomentInfoList.uid, text),
+                new DefaultKVPBean(GetMomentInfoList.uid, uid),
                 new DefaultKVPBean(GetMomentInfoList.page, page),
                 new DefaultKVPBean(GetMomentInfoList.page_size, pageSize),
                 new DefaultKVPBean(GetMomentInfoList.order, order)
@@ -836,10 +836,11 @@ public class HttpApi {
     /**
      * 更新 一条 MomentInfo
      */
-    public static DataHull<MomentInfoList.MomentInfo> updateMomentInfo(String momentId, String resList) {
+    public static DataHull<MomentInfoList.MomentInfo> updateMomentInfo(String id, String text, String resList) {
         String url = base_url + UpdateMomentInfo._funcation;
         List<BaseKVP> params = addParams(
-                new DefaultKVPBean(UpdateMomentInfo.moment_id, momentId),
+                new DefaultKVPBean(UpdateMomentInfo.id, id),
+                new DefaultKVPBean(UpdateMomentInfo.text, text),
                 new DefaultKVPBean(UpdateMomentInfo.res_list, resList)
         );
         int type = BaseHttpParameter.Type.POST;
@@ -851,10 +852,10 @@ public class HttpApi {
     /**
      * 删除 一条 MomentInfo
      */
-    public static DataHull<MomentInfoList.MomentInfo> deleteMomentInfo(String momentId) {
+    public static DataHull<MomentInfoList.MomentInfo> deleteMomentInfo(String id) {
         String url = base_url + DeleteMomentInfo._funcation;
         List<BaseKVP> params = addParams(
-                new DefaultKVPBean(DeleteMomentInfo.moment_id, momentId)
+                new DefaultKVPBean(DeleteMomentInfo.id, id)
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<MomentInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);

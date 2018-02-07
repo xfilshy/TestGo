@@ -18,7 +18,7 @@ public class MomentInfoParser extends MasterParser<MomentInfoList.MomentInfo> {
         String text = optString(data, "type");
         String type = optString(data, "text");
 
-        JSONArray array = getJSONArray(data, "attach_list");
+        JSONArray array = getJSONArray(data, "res_list");
         int len = getLength(array);
         ArrayList<MomentInfoList.MomentRes> list = null;
         if (len > 0) {
@@ -28,8 +28,9 @@ public class MomentInfoParser extends MasterParser<MomentInfoList.MomentInfo> {
 
                 if (object != null) {
                     MomentInfoList.MomentRes momentRes = new MomentInfoList.MomentRes();
-                    momentRes.setUrl(optString(object, "type"));
-                    momentRes.setUrl(optString(object, "url"));
+                    momentRes.setType(optString(object, "type"));
+                    momentRes.setUrl(optString(object, "res_url"));
+                    momentRes.setResId(optString(object, "res_id"));
                     list.add(momentRes);
                 }
             }

@@ -73,7 +73,17 @@ public class MomentInfoList extends ArrayList<MomentInfoList.MomentInfo> impleme
 
         private String type;
 
+        private String resId;
+
         private String url;
+
+        public String getResId() {
+            return resId;
+        }
+
+        public void setResId(String resId) {
+            this.resId = resId;
+        }
 
         public String getType() {
             return type;

@@ -1,11 +1,13 @@
 package com.xue.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,6 +21,7 @@ import com.elianshang.tools.UITool;
 import com.previewlibrary.GPreviewBuilder;
 import com.xue.R;
 import com.xue.adapter.AdapterOnItemClickCallback;
+import com.xue.adapter.AdapterOnItemLongClickCallback;
 import com.xue.adapter.GalleryGridAdapter;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.MomentInfoList;
@@ -34,11 +37,13 @@ import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<MomentInfoList.MomentRes>, OssManager.Callback {
+public class GalleryActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<MomentInfoList.MomentRes>, AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> {
 
 
     public static void launch(Context context) {
@@ -56,7 +61,13 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
 
     private GalleryGridAdapter mAdapter;
 
-    private MomentInfoList.MomentInfo mMomentInfo = null;
+    private String mMomentId;
+
+    private int mOriginalSize;
+
+    private boolean mDeleteFlag;
+
+    private ArrayList<MomentInfoList.MomentRes> mMomentResList = new ArrayList();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +76,9 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
 
         initActionBar();
         findView();
+
+        fillData();
+        new GetTask(this).start();
     }
 
     private void initActionBar() {
@@ -77,7 +91,6 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
             mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
             mBackImageView.setOnClickListener(this);
             mRightTextView.setOnClickListener(this);
-            mRightTextView.setVisibility(View.VISIBLE);
 
             mTitleTextView.setText("相册");
             mRightTextView.setText("保存");
@@ -90,21 +103,36 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         mRecyclerView.addItemDecoration(new GridItemDecoration(UITool.dipToPx(this, 3)));
 
+    }
+
+    private void fillData() {
+        checkResChange();
+
         if (mAdapter == null) {
             mAdapter = new GalleryGridAdapter();
 
             mRecyclerView.setAdapter(mAdapter);
-            mAdapter.setDataList(mMomentInfo.getResList());
             mAdapter.setCallback(this);
+            mAdapter.setLongClickCallback(this);
         }
 
+        mAdapter.setDataList(mMomentResList);
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void checkResChange() {
+        if (mOriginalSize != mMomentResList.size() || mDeleteFlag) {
+            mRightTextView.setVisibility(View.VISIBLE);
+        } else {
+            mRightTextView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         if (mRightTextView == v) {
-            new CreateTask(this, null, mMomentInfo.getResList());
+            new SaveTask(this, mMomentId, null, mMomentResList);
         }
     }
 
@@ -113,7 +141,7 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
         if (momentRes == null) {
             goPickPhoto();
         } else {
-            int i = mMomentInfo.getResList().indexOf(momentRes);
+            int i = mMomentResList.indexOf(momentRes);
             GPreviewBuilder.from(this)
                     .setData(getPreviewPictures(view))
                     .setCurrentIndex(i)
@@ -123,10 +151,27 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+    @Override
+    public void onItemLongClick(final MomentInfoList.MomentRes momentRes, View view) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("确认删除图片")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDeleteFlag = true;
+                        mMomentResList.remove(momentRes);
+                        fillData();
+                    }
+                }).create();
+        alertDialog.show();
+    }
+
     private ArrayList<PreviewPicture> getPreviewPictures(View view) {
-        ArrayList<PreviewPicture> mThumbViewInfoList = new ArrayList<>();
-        for (int i = 0; i < mMomentInfo.getResList().size(); i++) {
-            PreviewPicture previewPicture = new PreviewPicture(mMomentInfo.getResList().get(i).getUrl());
+        ArrayList<PreviewPicture> mThumbViewInfoList = new ArrayList();
+        for (int i = 0; i < mMomentResList.size(); i++) {
+            PreviewPicture previewPicture = new PreviewPicture(mMomentResList.get(i).getUrl());
             Rect bounds = new Rect();
             view.getGlobalVisibleRect(bounds);
             previewPicture.setBounds(bounds);
@@ -142,25 +187,17 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(List<String> photoList) {
                 Log.e("xue", "成功了" + photoList);
-//                Gallery gallery = new Gallery();
-//                for (String path : photoList) {
-//                    Gallery.Picture picture = new Gallery.Picture();
-//                    picture.setUrl(path);
-//                    gallery.add(picture);
-//                }
-//                mGallery.removeAll(gallery);
-//                mGallery.addAll(gallery);
-                mAdapter.notifyDataSetChanged();
+                addToRes(photoList);
 
-                OssManager.get().upload(photoList, GalleryActivity.this);
+                fillData();
             }
         };
         GalleryConfig galleryConfig = new GalleryConfig.Builder()
                 .imageLoader(new GlideImageLoader())
                 .iHandlerCallBack(iHandlerCallBack)
                 .provider("com.xue.fileprovider")
-                .multiSelect(true, 9)
-//                .pathList((List<String>) mImageList.clone())
+                .multiSelect(true, 9 - mMomentResList.size())
+                .pathList(resToStringArray())
                 .isShowCamera(true)
                 .filePath("/Gallery/Pictures")
                 .build();
@@ -168,56 +205,69 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
         GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
     }
 
-    private void addPic(List<String> photoList){
-        ArrayList<MomentInfoList.MomentRes> list = mMomentInfo.getResList();
-        if(list == null){
-            list = new ArrayList();
-            mMomentInfo.setResList(list);
+    /**
+     * 将本地资源加入
+     */
+    private void addToRes(List<String> photoList) {
+        ArrayList<MomentInfoList.MomentRes> tmp = new ArrayList();
+
+        for (MomentInfoList.MomentRes res : mMomentResList) {
+            if (!TextUtils.isEmpty(res.getResId())) {
+                tmp.add(res);
+            }
         }
 
-        for(MomentInfoList.MomentRes res : list){
-            if(photoList.contains(res.getUrl())){
+        for (String s : photoList) {
+            MomentInfoList.MomentRes res = new MomentInfoList.MomentRes();
+            res.setUrl(s);
 
+            tmp.add(res);
+        }
+
+        mMomentResList.clear();
+        mMomentResList.addAll(tmp);
+        checkResChange();
+    }
+
+    private ArrayList<String> resToStringArray() {
+        ArrayList<String> stringList = new ArrayList();
+
+        for (MomentInfoList.MomentRes res : mMomentResList) {
+            if (TextUtils.isEmpty(res.getResId())) {
+                stringList.add(res.getUrl());
+            }
+        }
+
+        return stringList;
+    }
+
+
+    private class GetTask extends HttpAsyncTask<MomentInfoList> {
+
+        public GetTask(Context context) {
+            super(context);
+        }
+
+        @Override
+        public DataHull<MomentInfoList> doInBackground() {
+            return HttpApi.getMomentInfoList(null, "1", "1", null);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, MomentInfoList result) {
+            if (result.size() > 0) {
+                mMomentId = result.get(0).getId();
+                mMomentResList.clear();
+                mMomentResList.addAll(result.get(0).getResList());
+                mOriginalSize = result.get(0).getResList().size();
+                fillData();
             }
         }
     }
 
-    @Override
-    public void onInit() {
+    private class SaveTask extends HttpAsyncTask<MomentInfoList.MomentInfo> {
 
-    }
-
-    @Override
-    public void onInitFailure() {
-
-    }
-
-    @Override
-    public void onStarted() {
-
-    }
-
-    @Override
-    public void onProgress(String file, float progress) {
-
-    }
-
-    @Override
-    public void onSuccess(String file, String resultName) {
-        Log.e("xue", "批量上传  成功  " + file);
-    }
-
-    @Override
-    public void onFailure(String file, int code) {
-        Log.e("xue", "批量上传  失败  " + file);
-    }
-
-    @Override
-    public void onFinish() {
-        Log.e("xue", "批量上传  完成");
-    }
-
-    private class CreateTask extends HttpAsyncTask<MomentInfoList.MomentInfo> {
+        private String momentId;
 
         private String text;
 
@@ -225,13 +275,20 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
 
         private ArrayList<String> pics;
 
-        public CreateTask(Context context, String text, ArrayList<MomentInfoList.MomentRes> resList) {
+        public SaveTask(Context context, String momentId, String text, ArrayList<MomentInfoList.MomentRes> resList) {
             super(context);
+            this.momentId = momentId;
+            this.text = text;
+            this.resList = resList;
+            init();
 
+        }
+
+        private void init() {
             ArrayList<String> list = new ArrayList();
             if (resList != null && resList.size() > 0) {
                 for (MomentInfoList.MomentRes res : resList) {
-                    if (!TextUtils.isEmpty(res.getUrl()) && !res.getUrl().startsWith("http")) {
+                    if (TextUtils.isEmpty(res.getResId())) {
                         list.add(res.getUrl());
                     }
                 }
@@ -240,36 +297,71 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
             if (list.isEmpty()) {
                 start();
             } else {
-                OssManager.get().upload(pics, callback);
+                OssManager.get().upload(list, callback);
             }
         }
 
         @Override
         public DataHull<MomentInfoList.MomentInfo> doInBackground() {
+            if (TextUtils.isEmpty(mMomentId)) {
+                return HttpApi.createMomentInfo(text, toResListString());
+            } else {
+                return HttpApi.updateMomentInfo(momentId, text, toResListString());
+            }
+        }
+
+        private String toResListString() {
             String resListString = null;
             JSONArray jsonArray = new JSONArray();
-            for (String p : pics) {
-                jsonArray.put(p);
-            }
-            resListString = jsonArray.toString();
+            try {
+                if (resList != null) {
+                    for (MomentInfoList.MomentRes res : resList) {
+                        if (!TextUtils.isEmpty(res.getResId())) {
+                            JSONObject object = new JSONObject();
+                            object.put("type", res.getType());
+                            object.put("res_id", res.getResId());
 
-            return HttpApi.createMomentInfo(text, resListString);
+                            jsonArray.put(object);
+                        }
+                    }
+                }
+
+                if (pics != null) {
+                    for (String p : pics) {
+                        JSONObject object = new JSONObject();
+                        object.put("type", "1");
+                        object.put("res_id", p);
+
+                        jsonArray.put(object);
+                    }
+                }
+
+                resListString = jsonArray.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return resListString;
         }
 
         @Override
         public void onPostExecute(int updateId, MomentInfoList.MomentInfo result) {
+            mMomentId = result.getId();
+            mMomentResList.clear();
+            mMomentResList.addAll(result.getResList());
+            mOriginalSize = result.getResList().size();
+            fillData();
 
+            ToastTool.show(context, "上传成功");
         }
 
         private OssManager.Callback callback = new SimpleOssManagerCallback() {
 
-            private ArrayList<String> pics = new ArrayList();
-
             @Override
             public void onSuccess(String file, String resultName) {
                 if (pics == null) {
-                    pics.add(resultName);
+                    pics = new ArrayList();
                 }
+                pics.add(resultName);
             }
 
             @Override
@@ -285,9 +377,8 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onFinish() {
                 super.onFinish();
-                CreateTask.this.start();
+                start();
             }
         };
     }
-
 }
