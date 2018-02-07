@@ -349,6 +349,7 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
             mMomentResList.clear();
             mMomentResList.addAll(result.getResList());
             mOriginalSize = result.getResList().size();
+            mDeleteFlag = false ;
             fillData();
 
             ToastTool.show(context, "上传成功");
