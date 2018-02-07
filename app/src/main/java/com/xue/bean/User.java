@@ -7,6 +7,8 @@ import org.json.JSONObject;
 
 public class User implements BaseBean {
 
+    private long timeStamp = System.currentTimeMillis();
+
     private UserBase userBase;
 
     private UserDetailInfo userDetailInfo;
@@ -35,10 +37,12 @@ public class User implements BaseBean {
 
     public void setUserDetailInfo(UserDetailInfo userDetailInfo) {
         this.userDetailInfo = userDetailInfo;
+        this.timeStamp = System.currentTimeMillis();
     }
 
     public void setUserBase(UserBase userBase) {
         this.userBase = userBase;
+        this.timeStamp = System.currentTimeMillis();
     }
 
     public UserExpertInfo getUserExpertInfo() {
@@ -47,6 +51,7 @@ public class User implements BaseBean {
 
     public void setUserExpertInfo(UserExpertInfo userExpertInfo) {
         this.userExpertInfo = userExpertInfo;
+        this.timeStamp = System.currentTimeMillis();
     }
 
     public UserConfigInfo getUserConfigInfo() {
@@ -55,6 +60,7 @@ public class User implements BaseBean {
 
     public void setUserConfigInfo(UserConfigInfo userConfigInfo) {
         this.userConfigInfo = userConfigInfo;
+        this.timeStamp = System.currentTimeMillis();
     }
 
     public UserEducationInfo getUserEducationInfo() {
@@ -63,6 +69,7 @@ public class User implements BaseBean {
 
     public void setUserEducationInfo(UserEducationInfo userEducationInfo) {
         this.userEducationInfo = userEducationInfo;
+        this.timeStamp = System.currentTimeMillis();
     }
 
     public UserWorkInfo getUserWorkInfo() {
@@ -71,6 +78,7 @@ public class User implements BaseBean {
 
     public void setUserWorkInfo(UserWorkInfo userWorkInfo) {
         this.userWorkInfo = userWorkInfo;
+        this.timeStamp = System.currentTimeMillis();
     }
 
     public UserTagInfo getUserTagInfo() {
@@ -79,6 +87,11 @@ public class User implements BaseBean {
 
     public void setUserTagInfo(UserTagInfo userTagInfo) {
         this.userTagInfo = userTagInfo;
+        this.timeStamp = System.currentTimeMillis();
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
     }
 
     @Override

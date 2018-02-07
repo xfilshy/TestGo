@@ -36,8 +36,6 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         context.startActivity(intent);
     }
 
-    private User mUser;
-
     private ImageView mPhotoImageView;
 
     private TextView mRealNameTextView;
@@ -50,19 +48,20 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView mAuthTextView;
 
+    private long mUserTimeStamp;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        mUser = BaseApplication.get().getUser();
         findView();
         new UserInfoTask(this).start();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         init();
     }
 
@@ -86,48 +85,53 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void init() {
-        ImageCacheMannager.loadImage(this, mUser.getUserDetailInfo().getProfile(), mPhotoImageView, true);
-        mUidTextView.setText(mUser.getUserBase().getUid());
+        User user = BaseApplication.get().getUser();
+        if (mUserTimeStamp != user.getTimeStamp()) {
+            mUidTextView.setText(user.getUserBase().getUid());
 
-        UserDetailInfo userDetailInfo = mUser.getUserDetailInfo();
-        if (userDetailInfo != null) {
-            mRealNameTextView.setText(userDetailInfo.getRealName());
-        }
+            UserDetailInfo userDetailInfo = user.getUserDetailInfo();
+            if (userDetailInfo != null) {
+                ImageCacheMannager.loadImage(this, user.getUserDetailInfo().getProfile(), mPhotoImageView, true);
+                mRealNameTextView.setText(userDetailInfo.getRealName());
+            }
 
-        UserConfigInfo userConfigInfo = mUser.getUserConfigInfo();
-        if (userConfigInfo != null) {
-            mFeeTextView.setVisibility(View.VISIBLE);
-            mFeeTextView.setText(userConfigInfo.getFeeDefault() + "钻石/分钟");
-        }
+            UserConfigInfo userConfigInfo = user.getUserConfigInfo();
+            if (userConfigInfo != null) {
+                mFeeTextView.setVisibility(View.VISIBLE);
+                mFeeTextView.setText(userConfigInfo.getFeeDefault() + "钻石/分钟");
+            }
 
-        UserExpertInfo userExpertInfo = mUser.getUserExpertInfo();
-        if (userExpertInfo != null) {
-            if (!TextUtils.isEmpty(userExpertInfo.getSignature())) {
-                mSignatureTextView.setVisibility(View.VISIBLE);
-                mSignatureTextView.setText(userExpertInfo.getSignature());
+            UserExpertInfo userExpertInfo = user.getUserExpertInfo();
+            if (userExpertInfo != null) {
+                if (!TextUtils.isEmpty(userExpertInfo.getSignature())) {
+                    mSignatureTextView.setVisibility(View.VISIBLE);
+                    mSignatureTextView.setText(userExpertInfo.getSignature());
+                } else {
+                    mSignatureTextView.setVisibility(View.GONE);
+                }
+
+                if (userExpertInfo.getServiceFee() > 0) {
+                    mFeeTextView.setVisibility(View.VISIBLE);
+                    mFeeTextView.setText(userExpertInfo.getServiceFee() + "钻石/分钟");
+                } else {
+                    mFeeTextView.setVisibility(View.GONE);
+                }
+
+                if (TextUtils.equals("0", userExpertInfo.getStatus())) {
+                    mAuthTextView.setText("未认证");
+                } else if (TextUtils.equals("1", userExpertInfo.getStatus())) {
+                    mAuthTextView.setText("认证中");
+                } else if (TextUtils.equals("2", userExpertInfo.getStatus())) {
+                    mAuthTextView.setText("认证通过");
+                } else if (TextUtils.equals("3", userExpertInfo.getStatus())) {
+                    mAuthTextView.setText("认证失败");
+                }
             } else {
                 mSignatureTextView.setVisibility(View.GONE);
             }
-
-            if (userExpertInfo.getServiceFee() > 0) {
-                mFeeTextView.setVisibility(View.VISIBLE);
-                mFeeTextView.setText(userExpertInfo.getServiceFee() + "钻石/分钟");
-            } else {
-                mFeeTextView.setVisibility(View.GONE);
-            }
-
-            if (TextUtils.equals("0", userExpertInfo.getStatus())) {
-                mAuthTextView.setText("未认证");
-            } else if (TextUtils.equals("1", userExpertInfo.getStatus())) {
-                mAuthTextView.setText("认证中");
-            } else if (TextUtils.equals("2", userExpertInfo.getStatus())) {
-                mAuthTextView.setText("认证通过");
-            } else if (TextUtils.equals("3", userExpertInfo.getStatus())) {
-                mAuthTextView.setText("认证失败");
-            }
-        } else {
-            mSignatureTextView.setVisibility(View.GONE);
         }
+
+        mUserTimeStamp = user.getTimeStamp();
     }
 
     public void goPrice(View view) {
@@ -160,7 +164,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onSuccess(List<String> photoList) {
                 if (photoList != null && photoList.size() > 0) {
-                    String photoPath = photoList.get(0);
+                    final String photoPath = photoList.get(0);
                     ImageCacheMannager.loadImage(MyActivity.this, photoPath, mPhotoImageView, true);
 
                     new UploadTask(MyActivity.this, photoPath);
@@ -198,7 +202,6 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public void onPostExecute(int updateId, User result) {
             BaseApplication.get().setUser(result, false);
-            mUser = BaseApplication.get().getUser();
             init();
         }
     }

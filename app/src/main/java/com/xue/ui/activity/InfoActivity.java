@@ -38,7 +38,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         context.startActivity(intent);
     }
 
-    private User mUser;
+    private long mUserTimeStamp;
 
     private ImageView mBackImageView;
 
@@ -60,8 +60,6 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-
-        mUser = BaseApplication.get().getUser();
 
         initActionBar();
         findView();
@@ -111,18 +109,23 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void init() {
-        UserDetailInfo userDetailInfo = mUser.getUserDetailInfo();
-        if (userDetailInfo != null) {
-            ImageCacheMannager.loadImage(this, userDetailInfo.getCover(), mCoverImageView, false);
-            ImageCacheMannager.loadImage(this, userDetailInfo.getProfile(), mPhotoImageView, true);
+        User user = BaseApplication.get().getUser();
+        if (mUserTimeStamp != user.getTimeStamp()) {
+            UserDetailInfo userDetailInfo = user.getUserDetailInfo();
+            if (userDetailInfo != null) {
+                ImageCacheMannager.loadImage(this, userDetailInfo.getCover(), mCoverImageView, false);
+                ImageCacheMannager.loadImage(this, userDetailInfo.getProfile(), mPhotoImageView, true);
 
-            mHomeTownTextView.setText(userDetailInfo.getHomeTownName());
+                mHomeTownTextView.setText(userDetailInfo.getHomeTownName());
+            }
+
+            UserTagInfo userTagInfo = user.getUserTagInfo();
+            if (userTagInfo != null && userTagInfo.size() > 0) {
+                mTagGroup.setTags(userTagInfo.toStringArray());
+            }
         }
 
-        UserTagInfo userTagInfo = mUser.getUserTagInfo();
-        if (userTagInfo != null && userTagInfo.size() > 0) {
-            mTagGroup.setTags(userTagInfo.toStringArray());
-        }
+        mUserTimeStamp = user.getTimeStamp();
     }
 
     public void goDescribe(View view) {
@@ -191,7 +194,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onTagClick(String tag) {
-        UserTagInfo userTagInfo = mUser.getUserTagInfo();
+        UserTagInfo userTagInfo = BaseApplication.get().getUser().getUserTagInfo();
         TagActivity.launch(this, userTagInfo.findTagByName(tag));
     }
 

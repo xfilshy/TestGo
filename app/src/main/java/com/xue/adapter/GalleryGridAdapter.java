@@ -8,8 +8,10 @@ import android.widget.ImageView;
 
 import com.elianshang.tools.UITool;
 import com.xue.R;
-import com.xue.bean.Gallery;
+import com.xue.bean.MomentInfoList;
 import com.xue.imagecache.ImageCacheMannager;
+
+import java.util.List;
 
 public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.BaseViewHolder> {
 
@@ -17,17 +19,17 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
 
     private final int TYPE_ADD = 2;
 
-    private Gallery mDataList;
+    private List<MomentInfoList.MomentRes> mDataList;
 
     private int imageWidth;
 
-    private AdapterOnItemClickCallback<Gallery.Picture> callback;
+    private AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback;
 
-    public void setDataList(Gallery dataList) {
+    public void setDataList(List<MomentInfoList.MomentRes> dataList) {
         this.mDataList = dataList;
     }
 
-    public void setCallback(AdapterOnItemClickCallback<Gallery.Picture> callback) {
+    public void setCallback(AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback) {
         this.callback = callback;
     }
 
@@ -89,12 +91,12 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         }
 
         @Override
-        public void fillData(Gallery.Picture picture, final AdapterOnItemClickCallback<Gallery.Picture> callback) {
+        public void fillData(MomentInfoList.MomentRes momentRes, final AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (callback != null) {
-                        callback.onItemClick(null , itemView);
+                        callback.onItemClick(null, itemView);
                     }
                 }
             });
@@ -117,14 +119,14 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         }
 
         @Override
-        public void fillData(final Gallery.Picture picture, final AdapterOnItemClickCallback<Gallery.Picture> callback) {
-            ImageCacheMannager.loadImage(itemView.getContext(), picture.getUrl(), photo, false);
+        public void fillData(final MomentInfoList.MomentRes momentRes, final AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback) {
+            ImageCacheMannager.loadImage(itemView.getContext(), momentRes.getUrl(), photo, false);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (callback != null) {
-                        callback.onItemClick(picture , photo);
+                        callback.onItemClick(momentRes, photo);
                     }
                 }
             });
@@ -141,6 +143,6 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.
         protected void findView(int imageWidth) {
         }
 
-        public abstract void fillData(Gallery.Picture picture, AdapterOnItemClickCallback<Gallery.Picture> callback);
+        public abstract void fillData(MomentInfoList.MomentRes momentRes, AdapterOnItemClickCallback<MomentInfoList.MomentRes> callback);
     }
 }

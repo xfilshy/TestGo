@@ -7,6 +7,7 @@ import com.xue.BaseApplication;
 import com.xue.bean.AcademicList;
 import com.xue.bean.CityList;
 import com.xue.bean.IndustryList;
+import com.xue.bean.MomentInfoList;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserEducationInfo;
@@ -28,6 +29,8 @@ import com.xue.oss.SignContent;
 import com.xue.parsers.AcademicListParser;
 import com.xue.parsers.CityListParser;
 import com.xue.parsers.IndustryListParser;
+import com.xue.parsers.MomentInfoListParser;
+import com.xue.parsers.MomentInfoParser;
 import com.xue.parsers.UserDetailInfoParser;
 import com.xue.parsers.UserEducationInfoParser;
 import com.xue.parsers.UserExpertInfoParser;
@@ -369,11 +372,71 @@ public class HttpApi {
         String content = "content";
     }
 
+    /**
+     * 二级城市列表
+     */
     private interface ResCityParameter {
         String _funcation = "/res/city/getall";
 
         String content = "content";
     }
+
+    /**
+     * 获取朋友圈列表
+     */
+    private interface GetMomentInfoList {
+
+        String _funcation = "/moment/info/getlist";
+
+        String uid = "uid";
+
+        String page = "page";
+
+        String page_size = "page_size";
+
+        String order = "order";
+    }
+
+    /**
+     * 创建朋友圈 一条
+     */
+    private interface CreateMomentInfo {
+
+        String _funcation = "/moment/info/create";
+
+        String uid = "uid";
+
+        String text = "text";
+
+        String res_list = "attach_list";
+    }
+
+
+    /**
+     * 更新朋友圈 一条
+     */
+    private interface UpdateMomentInfo {
+
+        String _funcation = "/moment/info/update";
+
+        String moment_id = "moment_id";
+
+        String text = "text";
+
+        String res_list = "attach_list";
+    }
+
+
+    /**
+     * 删除朋友圈 一条
+     */
+    private interface DeleteMomentInfo {
+
+        String _funcation = "/moment/info/delete";
+
+        String moment_id = "moment_id";
+    }
+
 
     private static void build() {
         base_url = ConfigTool.getHttpBaseUrl();
@@ -733,6 +796,68 @@ public class HttpApi {
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<UserTagInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+
+    /**
+     * 创建 一条 MomentInfo
+     */
+    public static DataHull<MomentInfoList> get(String text, String page, String pageSize, String order) {
+        String url = base_url + GetMomentInfoList._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(GetMomentInfoList.uid, text),
+                new DefaultKVPBean(GetMomentInfoList.page, page),
+                new DefaultKVPBean(GetMomentInfoList.page_size, pageSize),
+                new DefaultKVPBean(GetMomentInfoList.order, order)
+        );
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<MomentInfoListParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new MomentInfoListParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 创建 一条 MomentInfo
+     */
+    public static DataHull<MomentInfoList.MomentInfo> createMomentInfo(String text, String resList) {
+        String url = base_url + CreateMomentInfo._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(CreateMomentInfo.text, text),
+                new DefaultKVPBean(CreateMomentInfo.res_list, resList)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<MomentInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 更新 一条 MomentInfo
+     */
+    public static DataHull<MomentInfoList.MomentInfo> updateMomentInfo(String momentId, String resList) {
+        String url = base_url + UpdateMomentInfo._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(UpdateMomentInfo.moment_id, momentId),
+                new DefaultKVPBean(UpdateMomentInfo.res_list, resList)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<MomentInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 删除 一条 MomentInfo
+     */
+    public static DataHull<MomentInfoList.MomentInfo> deleteMomentInfo(String momentId) {
+        String url = base_url + DeleteMomentInfo._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(DeleteMomentInfo.moment_id, momentId)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<MomentInfoParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
