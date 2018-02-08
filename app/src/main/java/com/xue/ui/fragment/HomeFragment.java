@@ -11,18 +11,21 @@ import android.view.ViewGroup;
 
 import com.elianshang.tools.UITool;
 import com.xue.R;
+import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.HomeFooterGridAdapter;
 import com.xue.adapter.HomeGridAdapter;
 import com.xue.asyns.HttpAsyncTask;
+import com.xue.bean.User;
 import com.xue.bean.UserList;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.support.view.GridItemDecoration;
+import com.xue.ui.activity.DetailActivity;
 
 /**
  * Created by xfilshy on 2018/1/17.
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements AdapterOnItemClickCallback<User> {
 
     private RecyclerView mRecyclerView;
 
@@ -52,13 +55,15 @@ public class HomeFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.addItemDecoration(new GridItemDecoration(UITool.dipToPx(getActivity(), 3)));
         mFooterView = View.inflate(getActivity(), R.layout.footer_home_grid, null);
+
         if (mAdapter == null) {
             mAdapter = new HomeFooterGridAdapter(new HomeGridAdapter(), gridLayoutManager, 2);
             mRecyclerView.setAdapter(mAdapter);
+            mAdapter.setCallback(this);
         }
     }
 
-    private void fillRecyclerView() {
+    private void fillData() {
         if (getActivity() == null) {
             return;
         }
@@ -72,8 +77,13 @@ public class HomeFragment extends BaseFragment {
                 mAdapter.removeFooter(mFooterView);
             }
         }
-        mAdapter.getWrappedAdapter().setDataList(mDataList);
+        mAdapter.setDataList(mDataList);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(User user, View view) {
+        DetailActivity.launch(getActivity(), user.getUserBase().getUid());
     }
 
     private class ListTask extends HttpAsyncTask<UserList> {
@@ -90,7 +100,7 @@ public class HomeFragment extends BaseFragment {
         @Override
         public void onPostExecute(int updateId, UserList result) {
             mDataList = result;
-            fillRecyclerView();
+            fillData();
         }
     }
 }

@@ -9,17 +9,17 @@
     android:paddingTop="10dp">
 
     <TextView
+        android:id="@+id/key"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:lines="1"
-        android:text="行业&#038;公司"
         android:textColor="@color/black_light"
         android:textSize="16dp" />
 
     <TextView
+        android:id="@+id/value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="IT/互联网/通讯  百度"
         android:textColor="@color/black"
         android:textSize="16dp" />
 

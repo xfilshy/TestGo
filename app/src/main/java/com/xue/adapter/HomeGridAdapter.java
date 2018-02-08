@@ -30,6 +30,10 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
         this.dataList = dataList;
     }
 
+    public void setCallback(AdapterOnItemClickCallback<User> callback) {
+        this.callback = callback;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType(position);

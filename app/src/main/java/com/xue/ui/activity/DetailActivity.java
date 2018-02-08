@@ -16,6 +16,13 @@ import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.adapter.DetailListAdapter;
+import com.xue.asyns.HttpAsyncTask;
+import com.xue.bean.DetailHelper;
+import com.xue.bean.User;
+import com.xue.bean.UserDetailInfo;
+import com.xue.bean.UserExpertInfo;
+import com.xue.http.HttpApi;
+import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.support.view.DividerItemDecoration;
 import com.xue.support.view.FloatingActionButton;
@@ -35,6 +42,10 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     private String mUid;
 
+    private DetailHelper mDetailHelper = new DetailHelper();
+
+    private User mUser;
+
     private AppBarLayout mAppBarLayout;
 
     private ImageView mActionLogoImageView;
@@ -53,6 +64,14 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     private ImageView mChatImageView;
 
+    private ImageView mCoverImageView;
+
+    private TextView mRealNameTextView;
+
+    private TextView mSignatureTextView;
+
+    private TextView mFeeTextView;
+
     private FloatingActionButton mCallFloatingButton;
 
     private RecyclerView mRecyclerView;
@@ -68,11 +87,11 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        readExtra();
         findView();
-
         initRecyclerView();
 
-        readExtra();
+        new DetailTask(this, mUid).start();
     }
 
     private void findView() {
@@ -83,6 +102,11 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         mVipTextView = findViewById(R.id.vip);
         mFavoriteImageView = findViewById(R.id.favorite);
         mChatImageView = findViewById(R.id.chat);
+
+        mCoverImageView = findViewById(R.id.cover);
+        mRealNameTextView = findViewById(R.id.realName);
+        mSignatureTextView = findViewById(R.id.signature);
+        mFeeTextView = findViewById(R.id.fee);
 
         mRecyclerView = findViewById(R.id.recyclerView);
 
@@ -109,17 +133,36 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         mActionFavoriteImageView = toolbar.findViewById(R.id.actionFavorite);
         mActionChatImageView = toolbar.findViewById(R.id.actionChat);
         setSupportActionBar(toolbar);
-
-        ImageCacheMannager.loadImage(this, R.drawable.photo_test, mActionLogoImageView, true);
     }
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL, 1, R.color.grey_light));
+
+    }
+
+    private void fillData() {
+        UserDetailInfo userDetailInfo = mUser.getUserDetailInfo();
+        if (userDetailInfo != null) {
+            ImageCacheMannager.loadImage(this, userDetailInfo.getCover(), mCoverImageView, false);
+            ImageCacheMannager.loadImage(this, userDetailInfo.getProfile(), mActionLogoImageView, true);
+            mActionTitleTextView.setText(userDetailInfo.getRealName());
+            mRealNameTextView.setText(userDetailInfo.getRealName());
+        }
+
+        UserExpertInfo userExpertInfo = mUser.getUserExpertInfo();
+        if (userExpertInfo != null) {
+            mSignatureTextView.setText(userExpertInfo.getSignature());
+            mFeeTextView.setText(userExpertInfo.getServiceFee() + "钻石/每分钟");
+        }
+
         if (mAdapter == null) {
             mAdapter = new DetailListAdapter();
+            mAdapter.setData(mDetailHelper);
             mRecyclerView.setAdapter(mAdapter);
         }
+
+        mAdapter.notifyDataSetChanged();
     }
 
     private void readExtra() {
@@ -182,5 +225,27 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
             AVChatActivity.launchVideoCall(this, mUid);
         }
 
+    }
+
+    private class DetailTask extends HttpAsyncTask<User> {
+
+        private String uid;
+
+        public DetailTask(Context context, String uid) {
+            super(context);
+            this.uid = uid;
+        }
+
+        @Override
+        public DataHull<User> doInBackground() {
+            return HttpApi.getDetailInfo(uid);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, User result) {
+            mUser = result;
+            mDetailHelper.setUser(mUser);
+            fillData();
+        }
     }
 }

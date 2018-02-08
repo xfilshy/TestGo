@@ -162,6 +162,16 @@ public class HttpApi {
     }
 
     /**
+     * 获取用户信息 他人的
+     */
+    private interface GetShowInfoParameter {
+
+        String _funcation = "/user/info/getshowinfo";
+
+        String uid = "uid";
+    }
+
+    /**
      * 更新用户 UserDetailInfo
      */
     private interface UpdateUserDetailInfoParameter {
@@ -601,12 +611,26 @@ public class HttpApi {
 
 
     /**
-     * 获取个人用户信息  全量
+     * 获取个人用户信息  自己的
      */
     public static DataHull<User> userInfo() {
         String url = base_url + UserInfoParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
         HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), null, type, new UserParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取个人用户信息  他人的
+     */
+    public static DataHull<User> getDetailInfo(String uid) {
+        String url = base_url + GetShowInfoParameter._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(GetShowInfoParameter.uid, uid)
+        );
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter<>(url, getDefaultHeaders(), params, type, new UserParser(), 0, secretKey);
 
         return request(parameter);
     }
