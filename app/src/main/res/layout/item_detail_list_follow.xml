@@ -7,13 +7,15 @@
     android:paddingLeft="20dp">
 
     <ImageView
+        android:id="@+id/follow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/icon_favorite_red" />
+        android:src="@drawable/red_follow_selector" />
 
     <TextView
+        android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2324人"

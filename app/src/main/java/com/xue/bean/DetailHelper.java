@@ -35,6 +35,8 @@ public class DetailHelper {
 
     private User mUser;
 
+    private MomentInfoList.MomentInfo mMomentInfo;
+
     private ArrayList<ItemType> mItemList;
 
     public DetailHelper() {
@@ -42,6 +44,11 @@ public class DetailHelper {
 
     public void setUser(User user) {
         mUser = user;
+        mTimeStamp = System.currentTimeMillis();
+    }
+
+    public void setMomentInfo(MomentInfoList.MomentInfo momentInfo) {
+        mMomentInfo = momentInfo;
         mTimeStamp = System.currentTimeMillis();
     }
 
@@ -56,13 +63,11 @@ public class DetailHelper {
             itemList.add(ItemType.Intro);
         }
 
-        if (!TextUtils.isEmpty(getFollow())) {
+        if (getFollow() != null) {
             itemList.add(ItemType.Follow);
         }
 
-        if (getGallery() != null) {
-            itemList.add(ItemType.Gallery);
-        }
+        itemList.add(ItemType.Gallery);
 
         boolean infoFlag = false;
         itemList.add(ItemType.InfoTitle);
@@ -105,11 +110,33 @@ public class DetailHelper {
         return null;
     }
 
-    public String getFollow() {
+    public UserFriendInfo getFollow() {
+        UserFriendInfo userFriendInfo = mUser.getUserFriendInfo();
+        if (userFriendInfo != null) {
+            return userFriendInfo;
+        }
         return null;
     }
 
     public String[] getGallery() {
+        if (mMomentInfo != null) {
+            String[] pics = new String[3];
+            int size = mMomentInfo.getResList().size();
+            if (size > 0) {
+                pics[0] = mMomentInfo.getResList().get(size - 1).getUrl();
+            }
+
+            if (size > 1) {
+                pics[1] = mMomentInfo.getResList().get(size - 2).getUrl();
+            }
+
+            if (size > 2) {
+                pics[2] = mMomentInfo.getResList().get(size - 3).getUrl();
+            }
+
+            return pics;
+        }
+
         return null;
     }
 

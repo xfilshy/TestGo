@@ -23,6 +23,8 @@ public class User implements BaseBean {
 
     private UserTagInfo userTagInfo;
 
+    private UserFriendInfo userFriendInfo;
+
     public User(UserBase userBase) {
         this.userBase = userBase;
     }
@@ -88,6 +90,14 @@ public class User implements BaseBean {
     public void setUserTagInfo(UserTagInfo userTagInfo) {
         this.userTagInfo = userTagInfo;
         this.timeStamp = System.currentTimeMillis();
+    }
+
+    public UserFriendInfo getUserFriendInfo() {
+        return userFriendInfo;
+    }
+
+    public void setUserFriendInfo(UserFriendInfo userFriendInfo) {
+        this.userFriendInfo = userFriendInfo;
     }
 
     public long getTimeStamp() {

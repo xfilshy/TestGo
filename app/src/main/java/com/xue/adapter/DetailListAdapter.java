@@ -1,6 +1,8 @@
 package com.xue.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import com.xue.R;
 import com.xue.bean.DetailHelper;
 import com.xue.bean.UserEducationInfo;
+import com.xue.bean.UserFriendInfo;
 import com.xue.bean.UserWorkInfo;
 import com.xue.imagecache.ImageCacheMannager;
 
@@ -52,14 +55,20 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
     private int TYPE_GALLERY = 7;
 
     /**
-     * 收藏
+     * 关注
      */
-    private int TYPE_FAVORITE = 8;
+    private int TYPE_FOLLOW = 8;
 
     private DetailHelper mData;
 
+    private AdapterOnItemClickCallback<DetailHelper.ItemType> callback;
+
     public void setData(DetailHelper data) {
         this.mData = data;
+    }
+
+    public void setCallback(AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
+        this.callback = callback;
     }
 
     @Override
@@ -69,8 +78,8 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             baseViewHolder = new DescribeViewHolder(parent);
         } else if (viewType == TYPE_GALLERY) {
             baseViewHolder = new GalleryViewHolder(parent);
-        } else if (viewType == TYPE_FAVORITE) {
-            baseViewHolder = new FavoriteiewHolder(parent);
+        } else if (viewType == TYPE_FOLLOW) {
+            baseViewHolder = new FollowViewHolder(parent);
         } else if (viewType == TYPE_TITLE) {
             baseViewHolder = new TitleViewHolder(parent);
         } else if (viewType == TYPE_INFO) {
@@ -91,7 +100,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
         if (mData.getItemType(position) == DetailHelper.ItemType.Intro) {
             return TYPE_DESCRIBE;
         } else if (mData.getItemType(position) == DetailHelper.ItemType.Follow) {
-            return TYPE_FAVORITE;
+            return TYPE_FOLLOW;
         } else if (mData.getItemType(position) == DetailHelper.ItemType.Gallery) {
             return TYPE_GALLERY;
         } else if (mData.getItemType(position) == DetailHelper.ItemType.InfoTitle) {
@@ -115,7 +124,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.fill(mData, mData.getItemType(position));
+        holder.fill(mData, mData.getItemType(position), callback);
     }
 
     @Override
@@ -132,7 +141,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             super(itemView);
         }
 
-        public abstract void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType);
+        public abstract void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback);
     }
 
     public static class DescribeViewHolder extends BaseViewHolder {
@@ -148,7 +157,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             intro = itemView.findViewById(R.id.intro);
         }
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType) {
+        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
             if (itemType == DetailHelper.ItemType.Intro) {
                 intro.setText(detailHelper.getIntro());
             }
@@ -157,27 +166,99 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
 
     public static class GalleryViewHolder extends BaseViewHolder {
 
+        private ImageView image1;
+
+        private ImageView image2;
+
+        private ImageView image3;
+
         public GalleryViewHolder(ViewGroup itemView) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_detail_list_gallery, itemView, false));
+            findView();
         }
 
         private void findView() {
+            image1 = itemView.findViewById(R.id.image1);
+            image2 = itemView.findViewById(R.id.image2);
+            image3 = itemView.findViewById(R.id.image3);
         }
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType) {
+        public void fill(DetailHelper detailHelper, final DetailHelper.ItemType itemType, final AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
+            String[] pics = detailHelper.getGallery();
+            if (pics == null) {
+                image1.setImageDrawable(null);
+                image2.setImageDrawable(null);
+                image3.setImageDrawable(null);
+                image1.setVisibility(View.GONE);
+                image2.setVisibility(View.GONE);
+                image3.setVisibility(View.GONE);
+            } else {
+                if (!TextUtils.isEmpty(pics[0])) {
+                    ImageCacheMannager.loadImage(itemView.getContext(), pics[0], image1, false);
+                    image1.setVisibility(View.VISIBLE);
+                } else {
+                    image1.setImageDrawable(null);
+                    image1.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(pics[1])) {
+                    ImageCacheMannager.loadImage(itemView.getContext(), pics[1], image2, false);
+                    image2.setVisibility(View.VISIBLE);
+                } else {
+                    image2.setImageDrawable(null);
+                    image2.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(pics[2])) {
+                    ImageCacheMannager.loadImage(itemView.getContext(), pics[2], image3, false);
+                    image3.setVisibility(View.VISIBLE);
+                } else {
+                    image3.setImageDrawable(null);
+                    image3.setVisibility(View.GONE);
+                }
+            }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (callback != null) {
+                        callback.onItemClick(itemType, v);
+                    }
+                }
+            });
         }
     }
 
-    public static class FavoriteiewHolder extends BaseViewHolder {
+    public static class FollowViewHolder extends BaseViewHolder {
 
-        public FavoriteiewHolder(ViewGroup itemView) {
-            super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_detail_list_favorite, itemView, false));
+        private ImageView follow;
+
+        private TextView count;
+
+        public FollowViewHolder(ViewGroup itemView) {
+            super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_detail_list_follow, itemView, false));
+            findView();
         }
 
         private void findView() {
+            follow = itemView.findViewById(R.id.follow);
+            count = itemView.findViewById(R.id.count);
         }
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType) {
+        public void fill(DetailHelper detailHelper, final DetailHelper.ItemType itemType, final AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
+            UserFriendInfo userFriendInfo = detailHelper.getFollow();
+            if (userFriendInfo != null) {
+                count.setText(userFriendInfo.getFansCount() + "人");
+                Log.e("xue", "follow == " + userFriendInfo.isFollow());
+                follow.setSelected(userFriendInfo.isFollow());
+            }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (callback != null) {
+                        callback.onItemClick(itemType, v);
+                    }
+                }
+            });
         }
     }
 
@@ -194,7 +275,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             title = itemView.findViewById(R.id.title);
         }
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType) {
+        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
             if (itemType == DetailHelper.ItemType.InfoTitle) {
                 title.setText("我的信息");
             }
@@ -217,7 +298,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             value = itemView.findViewById(R.id.value);
         }
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType) {
+        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
             if (itemType == DetailHelper.ItemType.Work) {
                 UserWorkInfo.Work work = detailHelper.getWork();
                 key.setText("工作经历");
@@ -242,7 +323,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
         private void findView() {
         }
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType) {
+        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
         }
     }
 
@@ -255,7 +336,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
         private void findView() {
         }
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType) {
+        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
         }
     }
 
@@ -272,7 +353,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             photo = itemView.findViewById(R.id.photo);
         }
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType) {
+        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
             ImageCacheMannager.loadImage(itemView.getContext(), R.drawable.photo_test, photo, true);
 
         }

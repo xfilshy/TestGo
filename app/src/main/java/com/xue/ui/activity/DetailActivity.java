@@ -15,9 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xue.R;
+import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.DetailListAdapter;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.DetailHelper;
+import com.xue.bean.FollowResult;
+import com.xue.bean.MomentInfoList;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserExpertInfo;
@@ -32,7 +35,7 @@ import com.xue.ui.views.FavoriteImageBehavior;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
-public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, AdapterOnItemClickCallback<DetailHelper.ItemType> {
 
     public static void launch(Context context, String uid) {
         Intent intent = new Intent(context, DetailActivity.class);
@@ -158,6 +161,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
         if (mAdapter == null) {
             mAdapter = new DetailListAdapter();
+            mAdapter.setCallback(this);
             mAdapter.setData(mDetailHelper);
             mRecyclerView.setAdapter(mAdapter);
         }
@@ -227,6 +231,20 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     }
 
+    @Override
+    public void onItemClick(DetailHelper.ItemType itemType, View view) {
+        if (itemType == DetailHelper.ItemType.Follow) {
+            boolean isFollow = mUser.getUserFriendInfo().isFollow();
+            if (isFollow) {
+                new DeleteFollow(this, mUid).start();
+            } else {
+                new CreateFollow(this, mUid).start();
+            }
+        } else if (itemType == DetailHelper.ItemType.Gallery) {
+
+        }
+    }
+
     private class DetailTask extends HttpAsyncTask<User> {
 
         private String uid;
@@ -245,6 +263,75 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         public void onPostExecute(int updateId, User result) {
             mUser = result;
             mDetailHelper.setUser(mUser);
+            fillData();
+
+            new GetLastMomentInfoTask(context, uid).start();
+        }
+    }
+
+    private class GetLastMomentInfoTask extends HttpAsyncTask<MomentInfoList.MomentInfo> {
+
+        private String uid;
+
+        public GetLastMomentInfoTask(Context context, String uid) {
+            super(context);
+            this.uid = uid;
+        }
+
+        @Override
+        public DataHull<MomentInfoList.MomentInfo> doInBackground() {
+            return HttpApi.getLastMomentInfo(uid);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, MomentInfoList.MomentInfo result) {
+            mDetailHelper.setMomentInfo(result);
+            fillData();
+        }
+    }
+
+    private class CreateFollow extends HttpAsyncTask<FollowResult> {
+
+        private String uid;
+
+        public CreateFollow(Context context, String uid) {
+            super(context);
+            this.uid = uid;
+        }
+
+        @Override
+        public DataHull<FollowResult> doInBackground() {
+            return HttpApi.createFollow(uid);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, FollowResult result) {
+            mUser.getUserFriendInfo().setFollow(true);
+            mUser.getUserFriendInfo().setFansCount(result.getFansCount());
+
+            fillData();
+        }
+    }
+
+    private class DeleteFollow extends HttpAsyncTask<FollowResult> {
+
+        private String uid;
+
+        public DeleteFollow(Context context, String uid) {
+            super(context);
+            this.uid = uid;
+        }
+
+        @Override
+        public DataHull<FollowResult> doInBackground() {
+            return HttpApi.deleteFollow(uid);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, FollowResult result) {
+            mUser.getUserFriendInfo().setFollow(false);
+            mUser.getUserFriendInfo().setFansCount(result.getFansCount());
+
             fillData();
         }
     }
