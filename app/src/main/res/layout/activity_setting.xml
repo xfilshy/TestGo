@@ -235,7 +235,8 @@
             android:gravity="center"
             android:text="退出登录"
             android:textColor="@color/black"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:onClick="logout"/>
 
         <View
             android:layout_width="match_parent"

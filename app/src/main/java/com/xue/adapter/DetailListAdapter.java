@@ -2,7 +2,6 @@ package com.xue.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -229,8 +228,6 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
 
     public static class FollowViewHolder extends BaseViewHolder {
 
-        private ImageView follow;
-
         private TextView count;
 
         public FollowViewHolder(ViewGroup itemView) {
@@ -239,7 +236,6 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
         }
 
         private void findView() {
-            follow = itemView.findViewById(R.id.follow);
             count = itemView.findViewById(R.id.count);
         }
 
@@ -247,8 +243,6 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             UserFriendInfo userFriendInfo = detailHelper.getFollow();
             if (userFriendInfo != null) {
                 count.setText(userFriendInfo.getFansCount() + "人");
-                Log.e("xue", "follow == " + userFriendInfo.isFollow());
-                follow.setSelected(userFriendInfo.isFollow());
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {

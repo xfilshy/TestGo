@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/red_follow_selector" />
+        android:src="@drawable/icon_follow_red" />
 
     <TextView
         android:id="@+id/count"

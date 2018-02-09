@@ -1,5 +1,6 @@
 package com.xue.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -20,6 +21,10 @@ import com.xue.ui.fragment.LoginFragment;
 
 public class WelcomeActivity extends BaseActivity {
 
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, WelcomeActivity.class);
+        context.startActivity(intent);
+    }
 
     private WeakReferenceHandler<WelcomeActivity> handler = new WeakReferenceHandler<WelcomeActivity>(this) {
         @Override

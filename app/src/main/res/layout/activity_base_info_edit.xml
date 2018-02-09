@@ -51,13 +51,13 @@
             android:id="@+id/male"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:text="男" />
+            android:layout_marginRight="30dp"
+            android:button="@drawable/male_selector" />
 
         <CheckBox
             android:id="@+id/female"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="女" />
+            android:button="@drawable/female_selector" />
     </LinearLayout>
 </LinearLayout>

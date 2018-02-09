@@ -40,6 +40,8 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView mRealNameTextView;
 
+    private ImageView mGenderImageView;
+
     private TextView mUidTextView;
 
     private TextView mSignatureTextView;
@@ -78,6 +80,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     private void findView() {
         mPhotoImageView = findViewById(R.id.photo);
         mRealNameTextView = findViewById(R.id.realName);
+        mGenderImageView = findViewById(R.id.gender);
         mUidTextView = findViewById(R.id.uid);
         mSignatureTextView = findViewById(R.id.signature);
         mFeeTextView = findViewById(R.id.fee);
@@ -93,6 +96,11 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
             if (userDetailInfo != null) {
                 ImageCacheMannager.loadImage(this, user.getUserDetailInfo().getProfile(), mPhotoImageView, true);
                 mRealNameTextView.setText(userDetailInfo.getRealName());
+                if (TextUtils.equals("1", userDetailInfo.getGender())) {
+                    ImageCacheMannager.loadImage(this, R.drawable.icon_male, mGenderImageView, false);
+                } else if (TextUtils.equals("2", userDetailInfo.getGender())) {
+                    ImageCacheMannager.loadImage(this, R.drawable.icon_female, mGenderImageView, false);
+                }
             }
 
             UserConfigInfo userConfigInfo = user.getUserConfigInfo();

@@ -24,6 +24,7 @@ import com.xue.bean.MomentInfoList;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserExpertInfo;
+import com.xue.bean.UserFriendInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
@@ -55,7 +56,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     private TextView mActionTitleTextView;
 
-    private ImageView mActionFavoriteImageView;
+    private ImageView mActionFollowImageView;
 
     private ImageView mActionChatImageView;
 
@@ -63,7 +64,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     private TextView mVipTextView;
 
-    private ImageView mFavoriteImageView;
+    private ImageView mFollowImageView;
 
     private ImageView mChatImageView;
 
@@ -103,7 +104,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
         mInfoLayout = findViewById(R.id.infoLayout);
         mVipTextView = findViewById(R.id.vip);
-        mFavoriteImageView = findViewById(R.id.favorite);
+        mFollowImageView = findViewById(R.id.favorite);
         mChatImageView = findViewById(R.id.chat);
 
         mCoverImageView = findViewById(R.id.cover);
@@ -115,12 +116,13 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
         mCallFloatingButton = findViewById(R.id.call);
 
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mFavoriteImageView.getLayoutParams();
-        layoutParams.setBehavior(new FavoriteImageBehavior(this, mActionFavoriteImageView, null));
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mFollowImageView.getLayoutParams();
+        layoutParams.setBehavior(new FavoriteImageBehavior(this, mActionFollowImageView, null));
 
         layoutParams = (CoordinatorLayout.LayoutParams) mChatImageView.getLayoutParams();
         layoutParams.setBehavior(new ChatImageBehavior(this, mActionChatImageView, null));
 
+        mFollowImageView.setOnClickListener(this);
         mCallFloatingButton.setOnClickListener(this);
     }
 
@@ -133,9 +135,11 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         Toolbar toolbar = findViewById(R.id.toolbar);
         mActionLogoImageView = toolbar.findViewById(R.id.logo);
         mActionTitleTextView = toolbar.findViewById(R.id.title);
-        mActionFavoriteImageView = toolbar.findViewById(R.id.actionFavorite);
+        mActionFollowImageView = toolbar.findViewById(R.id.actionFavorite);
         mActionChatImageView = toolbar.findViewById(R.id.actionChat);
         setSupportActionBar(toolbar);
+
+        mActionFollowImageView.setOnClickListener(this);
     }
 
     private void initRecyclerView() {
@@ -151,6 +155,12 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
             ImageCacheMannager.loadImage(this, userDetailInfo.getProfile(), mActionLogoImageView, true);
             mActionTitleTextView.setText(userDetailInfo.getRealName());
             mRealNameTextView.setText(userDetailInfo.getRealName());
+        }
+
+        UserFriendInfo userFriendInfo = mUser.getUserFriendInfo();
+        if (userFriendInfo != null) {
+            mFollowImageView.setSelected(userFriendInfo.isFollow());
+            mActionFollowImageView.setSelected(userFriendInfo.isFollow());
         }
 
         UserExpertInfo userExpertInfo = mUser.getUserExpertInfo();
@@ -227,20 +237,20 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     public void onClick(View v) {
         if (v == mCallFloatingButton) {
             AVChatActivity.launchVideoCall(this, mUid);
-        }
-
-    }
-
-    @Override
-    public void onItemClick(DetailHelper.ItemType itemType, View view) {
-        if (itemType == DetailHelper.ItemType.Follow) {
+        } else if (v == mActionFollowImageView) {
             boolean isFollow = mUser.getUserFriendInfo().isFollow();
             if (isFollow) {
                 new DeleteFollow(this, mUid).start();
             } else {
                 new CreateFollow(this, mUid).start();
             }
-        } else if (itemType == DetailHelper.ItemType.Gallery) {
+        }
+
+    }
+
+    @Override
+    public void onItemClick(DetailHelper.ItemType itemType, View view) {
+        if (itemType == DetailHelper.ItemType.Gallery) {
 
         }
     }
