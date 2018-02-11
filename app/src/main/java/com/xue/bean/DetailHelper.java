@@ -103,7 +103,7 @@ public class DetailHelper {
 
         itemList.add(ItemType.CommentTitle);
         if (getMark() != null) {
-            commentFlag = true;
+            markFlag = true;
             itemList.add(ItemType.Mark);
         }
 

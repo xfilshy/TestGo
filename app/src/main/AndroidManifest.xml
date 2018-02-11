@@ -299,6 +299,12 @@
         <activity
             android:name=".ui.activity.TagActivity"
             android:screenOrientation="portrait" />
+
+        <!--评论列表页-->
+        <activity
+            android:name=".ui.activity.CommentListActivity"
+            android:screenOrientation="portrait" />
+
         <!--图片选择器-->
         <!--图片选择器-->
         <!--图片选择器-->

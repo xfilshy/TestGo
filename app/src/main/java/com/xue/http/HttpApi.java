@@ -509,9 +509,9 @@ public class HttpApi {
 
         String uid = "uid";
 
-        String page = "page";
+        String offset = "offset";
 
-        String page_size = "page_size";
+        String limit = "limit";
     }
 
     /**
@@ -1030,12 +1030,12 @@ public class HttpApi {
     /**
      * 获取评论列表
      */
-    public static DataHull<OrderCommentInfo> getOrderCommentInfo(String uid, String page, String pageSize) {
+    public static DataHull<OrderCommentInfo> getOrderCommentInfo(String uid, String offset, String limit) {
         String url = base_url + GetOrderComment._funcation;
         List<BaseKVP> params = addParams(
                 new DefaultKVPBean(GetOrderComment.uid, uid),
-                new DefaultKVPBean(GetOrderComment.page, page),
-                new DefaultKVPBean(GetOrderComment.page_size, pageSize)
+                new DefaultKVPBean(GetOrderComment.offset, offset),
+                new DefaultKVPBean(GetOrderComment.limit, limit)
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<OrderCommentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentInfoParser(), 0, secretKey);

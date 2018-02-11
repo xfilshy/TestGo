@@ -10,6 +10,7 @@
     android:paddingTop="10dp">
 
     <TextView
+        android:id="@+id/avg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -40,13 +41,13 @@
                 android:textSize="10dp" />
 
             <com.xue.support.view.SimpleProgressBar
+                android:id="@+id/progress5"
                 android:layout_width="170dp"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@+id/text1"
                 app:sp_backgroundColor="@color/grey_light"
-                app:sp_progress="1"
                 app:sp_progressColor="@color/black" />
         </RelativeLayout>
 
@@ -65,13 +66,13 @@
                 android:textSize="10dp" />
 
             <com.xue.support.view.SimpleProgressBar
+                android:id="@+id/progress4"
                 android:layout_width="170dp"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@id/text2"
                 app:sp_backgroundColor="@color/grey_light"
-                app:sp_progress="0.2"
                 app:sp_progressColor="@color/black" />
         </RelativeLayout>
 
@@ -89,13 +90,13 @@
                 android:textSize="10dp" />
 
             <com.xue.support.view.SimpleProgressBar
+                android:id="@+id/progress3"
                 android:layout_width="170dp"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@id/text3"
                 app:sp_backgroundColor="@color/grey_light"
-                app:sp_progress="0.3"
                 app:sp_progressColor="@color/black" />
         </RelativeLayout>
 
@@ -114,13 +115,13 @@
                 android:textSize="10dp" />
 
             <com.xue.support.view.SimpleProgressBar
+                android:id="@+id/progress2"
                 android:layout_width="170dp"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@+id/text4"
                 app:sp_backgroundColor="@color/grey_light"
-                app:sp_progress="0.1"
                 app:sp_progressColor="@color/black" />
         </RelativeLayout>
 
@@ -139,17 +140,18 @@
                 android:textSize="10dp" />
 
             <com.xue.support.view.SimpleProgressBar
+                android:id="@+id/progress1"
                 android:layout_width="170dp"
                 android:layout_height="2dp"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@+id/text5"
                 app:sp_backgroundColor="@color/grey_light"
-                app:sp_progress="0.5"
                 app:sp_progressColor="@color/black" />
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"

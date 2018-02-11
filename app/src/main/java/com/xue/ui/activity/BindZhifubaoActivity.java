@@ -40,8 +40,6 @@ public class BindZhifubaoActivity extends BaseActivity implements View.OnClickLi
             mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
 
             mTitleTextView.setText("绑定提现支付宝");
-
-            mBackImageView.setOnClickListener(this);
         }
     }
 
@@ -51,8 +49,6 @@ public class BindZhifubaoActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (mBackImageView == v) {
-            finish();
-        }
+
     }
 }

@@ -6,14 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.bean.DetailHelper;
+import com.xue.bean.OrderCommentList;
+import com.xue.bean.OrderScoreMap;
 import com.xue.bean.UserEducationInfo;
 import com.xue.bean.UserFriendInfo;
 import com.xue.bean.UserWorkInfo;
 import com.xue.imagecache.ImageCacheMannager;
+import com.xue.support.view.SimpleProgressBar;
 
 
 public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.BaseViewHolder> {
@@ -244,15 +248,6 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             if (userFriendInfo != null) {
                 count.setText(userFriendInfo.getFansCount() + "人");
             }
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) {
-                        callback.onItemClick(itemType, v);
-                    }
-                }
-            });
         }
     }
 
@@ -314,29 +309,73 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_detail_list_comment_title, itemView, false));
         }
 
-        private void findView() {
-        }
+        public void fill(DetailHelper detailHelper, final DetailHelper.ItemType itemType, final AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
 
-        public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (callback != null) {
+                        callback.onItemClick(itemType, v);
+                    }
+                }
+            });
         }
     }
 
     public static class MarkViewHolder extends BaseViewHolder {
 
+        private TextView avg;
+
+        private TextView total;
+
+        private SimpleProgressBar progress1;
+
+        private SimpleProgressBar progress2;
+
+        private SimpleProgressBar progress3;
+
+        private SimpleProgressBar progress4;
+
+        private SimpleProgressBar progress5;
+
         public MarkViewHolder(ViewGroup itemView) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_detail_list_mark, itemView, false));
+            findView();
         }
 
         private void findView() {
+            avg = itemView.findViewById(R.id.avg);
+            total = itemView.findViewById(R.id.total);
+            progress1 = itemView.findViewById(R.id.progress1);
+            progress2 = itemView.findViewById(R.id.progress2);
+            progress3 = itemView.findViewById(R.id.progress3);
+            progress4 = itemView.findViewById(R.id.progress4);
+            progress5 = itemView.findViewById(R.id.progress5);
         }
 
         public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
+            OrderScoreMap orderScoreMap = detailHelper.getMark();
+            avg.setText(orderScoreMap.getAvgScore());
+            total.setText(orderScoreMap.getTotal() + "条评论");
+            progress1.setProgress((orderScoreMap.get("1") / (float) orderScoreMap.getTotal()));
+            progress2.setProgress((orderScoreMap.get("2") / (float) orderScoreMap.getTotal()));
+            progress3.setProgress((orderScoreMap.get("3") / (float) orderScoreMap.getTotal()));
+            progress4.setProgress((orderScoreMap.get("4") / (float) orderScoreMap.getTotal()));
+            progress5.setProgress((orderScoreMap.get("5") / (float) orderScoreMap.getTotal()));
         }
     }
 
     public static class CommentViewHolder extends BaseViewHolder {
 
-        private ImageView photo;
+        private ImageView profile;
+
+        private TextView userName;
+
+        private TextView content;
+
+        private TextView date;
+
+        private RatingBar score;
 
         public CommentViewHolder(ViewGroup itemView) {
             super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_detail_list_comment, itemView, false));
@@ -344,12 +383,20 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Ba
         }
 
         private void findView() {
-            photo = itemView.findViewById(R.id.photo);
+            profile = itemView.findViewById(R.id.profile);
+            userName = itemView.findViewById(R.id.userName);
+            content = itemView.findViewById(R.id.content);
+            date = itemView.findViewById(R.id.date);
+            score = itemView.findViewById(R.id.score);
         }
 
         public void fill(DetailHelper detailHelper, DetailHelper.ItemType itemType, AdapterOnItemClickCallback<DetailHelper.ItemType> callback) {
-            ImageCacheMannager.loadImage(itemView.getContext(), R.drawable.photo_test, photo, true);
-
+            OrderCommentList.Comment comment = detailHelper.getComment();
+            ImageCacheMannager.loadImage(itemView.getContext(), comment.getFromProfile(), profile, true);
+            userName.setText(comment.getFromUserName());
+            content.setText(comment.getContent());
+            date.setText(comment.getCreatedAt());
+            score.setRating(comment.getScore());
         }
     }
 }

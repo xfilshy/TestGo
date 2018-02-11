@@ -72,4 +72,13 @@
         <item name="atg_horizontalPadding">16dp</item>
         <item name="atg_verticalPadding">5dp</item>
     </style>
+
+
+    <style name="MyRatingBar" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:progressDrawable">@drawable/ratingbar</item>
+        <item name="android:indeterminateDrawable">@drawable/ratingbar</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
+
 </resources>

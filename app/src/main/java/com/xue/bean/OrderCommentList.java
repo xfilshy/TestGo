@@ -26,13 +26,15 @@ public class OrderCommentList extends ArrayList<OrderCommentList.Comment> implem
 
         private String fromUid;
 
-        private String fromRealName;
+        private String fromUserName;
 
         private String fromProfile;
 
-        private String score;
+        private float score;
 
         private String content;
+
+        private String createdAt;
 
         public String getId() {
             return id;
@@ -66,12 +68,12 @@ public class OrderCommentList extends ArrayList<OrderCommentList.Comment> implem
             this.fromUid = fromUid;
         }
 
-        public String getFromRealName() {
-            return fromRealName;
+        public String getFromUserName() {
+            return fromUserName;
         }
 
-        public void setFromRealName(String fromRealName) {
-            this.fromRealName = fromRealName;
+        public void setFromUserName(String fromUserName) {
+            this.fromUserName = fromUserName;
         }
 
         public String getFromProfile() {
@@ -82,11 +84,11 @@ public class OrderCommentList extends ArrayList<OrderCommentList.Comment> implem
             this.fromProfile = fromProfile;
         }
 
-        public String getScore() {
+        public float getScore() {
             return score;
         }
 
-        public void setScore(String score) {
+        public void setScore(float score) {
             this.score = score;
         }
 
@@ -96,6 +98,14 @@ public class OrderCommentList extends ArrayList<OrderCommentList.Comment> implem
 
         public void setContent(String content) {
             this.content = content;
+        }
+
+        public String getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
 
         @Override

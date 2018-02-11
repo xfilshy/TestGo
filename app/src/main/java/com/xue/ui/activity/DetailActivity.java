@@ -22,6 +22,7 @@ import com.xue.bean.DetailHelper;
 import com.xue.bean.FollowResult;
 import com.xue.bean.MomentInfoList;
 import com.xue.bean.OrderCommentInfo;
+import com.xue.bean.OrderCommentList;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserExpertInfo;
@@ -97,6 +98,9 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         initRecyclerView();
 
         new DetailTask(this, mUid).start();
+
+        //TODO 测试代码
+//        new CreateComment(this).start();
     }
 
     private void findView() {
@@ -238,7 +242,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     public void onClick(View v) {
         if (v == mCallFloatingButton) {
             AVChatActivity.launchVideoCall(this, mUid);
-        } else if (v == mActionFollowImageView) {
+        } else if (v == mActionFollowImageView || v == mFollowImageView) {
             boolean isFollow = mUser.getUserFriendInfo().isFollow();
             if (isFollow) {
                 new DeleteFollow(this, mUid).start();
@@ -253,6 +257,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     public void onItemClick(DetailHelper.ItemType itemType, View view) {
         if (itemType == DetailHelper.ItemType.Gallery) {
 
+        } else if (itemType == DetailHelper.ItemType.CommentTitle) {
+            CommentListActivity.launch(this, mUid);
         }
     }
 
@@ -366,6 +372,23 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         public void onPostExecute(int updateId, OrderCommentInfo result) {
             mDetailHelper.setOrderCommentInfo(result);
             fillData();
+        }
+    }
+
+    private class CreateComment extends HttpAsyncTask<OrderCommentList.Comment> {
+
+        public CreateComment(Context context) {
+            super(context);
+        }
+
+        @Override
+        public DataHull<OrderCommentList.Comment> doInBackground() {
+            return HttpApi.createOrderComment(mUid, "0", "5", "我就是看看，有没有用");
+        }
+
+        @Override
+        public void onPostExecute(int updateId, OrderCommentList.Comment result) {
+
         }
     }
 }

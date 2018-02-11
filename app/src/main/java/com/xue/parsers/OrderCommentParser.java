@@ -2,6 +2,7 @@ package com.xue.parsers;
 
 import android.text.TextUtils;
 
+import com.elianshang.tools.DateTool;
 import com.xue.bean.OrderCommentList;
 
 import org.json.JSONObject;
@@ -16,22 +17,25 @@ public class OrderCommentParser extends MasterParser<OrderCommentList.Comment> {
             String orderId = optString(data, "order_id");
             String uid = optString(data, "uid");
             String fromUid = optString(data, "from_uid");
-            String fromRealname = optString(data, "from_realname");
+            String fromUsername = optString(data, "from_username");
             String fromProfile = optString(data, "from_profile");
-            String score = optString(data, "score");
+            float score = optFloat(data, "score");
             String content = optString(data, "content");
+            long time = optLong(data, "created_at");
+            String createdAt = DateTool.longToString(time * 1000, "yyyy年MM月dd日 HH时mm分");
 
-            if (!TextUtils.isEmpty(fromUid) && !TextUtils.isEmpty(score)) {
+            if (!TextUtils.isEmpty(fromUid) && score > 0) {
                 comment = new OrderCommentList.Comment();
 
                 comment.setId(id);
                 comment.setUid(uid);
                 comment.setOrderId(orderId);
                 comment.setFromUid(fromUid);
-                comment.setFromRealName(fromRealname);
+                comment.setFromUserName(fromUsername);
                 comment.setFromProfile(fromProfile);
                 comment.setScore(score);
                 comment.setContent(content);
+                comment.setCreatedAt(createdAt);
             }
         }
 
