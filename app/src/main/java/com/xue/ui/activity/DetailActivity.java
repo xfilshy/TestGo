@@ -72,6 +72,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     private ImageView mCoverImageView;
 
+    private ImageView mProfileImageView ;
+
     private TextView mRealNameTextView;
 
     private TextView mSignatureTextView;
@@ -113,6 +115,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         mChatImageView = findViewById(R.id.chat);
 
         mCoverImageView = findViewById(R.id.cover);
+        mProfileImageView = findViewById(R.id.profile);
         mRealNameTextView = findViewById(R.id.realName);
         mSignatureTextView = findViewById(R.id.signature);
         mFeeTextView = findViewById(R.id.fee);
@@ -158,6 +161,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         if (userDetailInfo != null) {
             ImageCacheMannager.loadImage(this, userDetailInfo.getCover(), mCoverImageView, false);
             ImageCacheMannager.loadImage(this, userDetailInfo.getProfile(), mActionLogoImageView, true);
+            ImageCacheMannager.loadImage(this, userDetailInfo.getProfile(), mProfileImageView, true);
             mActionTitleTextView.setText(userDetailInfo.getRealName());
             mRealNameTextView.setText(userDetailInfo.getRealName());
         }

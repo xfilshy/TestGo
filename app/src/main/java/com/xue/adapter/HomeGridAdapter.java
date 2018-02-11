@@ -97,7 +97,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
             UserDetailInfo userDetailInfo = user.getUserDetailInfo();
             if (userDetailInfo != null) {
                 name.setText(userDetailInfo.getRealName());
-                ImageCacheMannager.loadImage(photo.getContext(), userDetailInfo.getProfile(), photo, false);
+                ImageCacheMannager.loadImage(photo.getContext(), userDetailInfo.getCover(), photo, false);
             } else {
                 name.setText("信息不全");
                 ImageCacheMannager.loadImage(photo.getContext(), null, photo, false);
