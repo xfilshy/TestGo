@@ -21,6 +21,7 @@ import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.DetailHelper;
 import com.xue.bean.FollowResult;
 import com.xue.bean.MomentInfoList;
+import com.xue.bean.OrderCommentInfo;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserExpertInfo;
@@ -276,6 +277,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
             fillData();
 
             new GetLastMomentInfoTask(context, uid).start();
+            new GetLastCommentTask(context, uid).start();
         }
     }
 
@@ -342,6 +344,27 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
             mUser.getUserFriendInfo().setFollow(false);
             mUser.getUserFriendInfo().setFansCount(result.getFansCount());
 
+            fillData();
+        }
+    }
+
+    private class GetLastCommentTask extends HttpAsyncTask<OrderCommentInfo> {
+
+        private String uid;
+
+        public GetLastCommentTask(Context context, String uid) {
+            super(context);
+            this.uid = uid;
+        }
+
+        @Override
+        public DataHull<OrderCommentInfo> doInBackground() {
+            return HttpApi.getLastOrderCommentInfo(uid);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, OrderCommentInfo result) {
+            mDetailHelper.setOrderCommentInfo(result);
             fillData();
         }
     }

@@ -9,6 +9,8 @@ import com.xue.bean.CityList;
 import com.xue.bean.FollowResult;
 import com.xue.bean.IndustryList;
 import com.xue.bean.MomentInfoList;
+import com.xue.bean.OrderCommentInfo;
+import com.xue.bean.OrderCommentList;
 import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.bean.UserEducationInfo;
@@ -33,6 +35,8 @@ import com.xue.parsers.FollowResultParser;
 import com.xue.parsers.IndustryListParser;
 import com.xue.parsers.MomentInfoListParser;
 import com.xue.parsers.MomentInfoParser;
+import com.xue.parsers.OrderCommentInfoParser;
+import com.xue.parsers.OrderCommentParser;
 import com.xue.parsers.UserDetailInfoParser;
 import com.xue.parsers.UserEducationInfoParser;
 import com.xue.parsers.UserExpertInfoParser;
@@ -478,6 +482,50 @@ public class HttpApi {
         String _funcation = "/friend/follow/delete";
 
         String uid = "uid";
+    }
+
+    /**
+     * 创建评论
+     */
+    private interface CreateOrderComment {
+
+        String _funcation = "/order/comment/create";
+
+        String order_id = "order_id";
+
+        String uid = "uid";
+
+        String score = "score";
+
+        String content = "content";
+    }
+
+    /**
+     * 获取用户评论列表
+     */
+    private interface GetOrderComment {
+
+        String _funcation = "/order/comment/getlist";
+
+        String uid = "uid";
+
+        String page = "page";
+
+        String page_size = "page_size";
+    }
+
+    /**
+     * 获取用户最近的一条评论
+     */
+    private interface GetLastOrderComment {
+
+        String _funcation = "/order/comment/getlastinfo";
+
+        String uid = "uid";
+
+        String page = "page";
+
+        String page_size = "page_size";
     }
 
     private static void build() {
@@ -957,6 +1005,54 @@ public class HttpApi {
         );
         int type = BaseHttpParameter.Type.POST;
         HttpDynamicParameter<FollowResultParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new FollowResultParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+
+    /**
+     * 创建关注
+     */
+    public static DataHull<OrderCommentList.Comment> createOrderComment(String uid, String orderId, String score, String content) {
+        String url = base_url + CreateOrderComment._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(CreateOrderComment.uid, uid),
+                new DefaultKVPBean(CreateOrderComment.order_id, orderId),
+                new DefaultKVPBean(CreateOrderComment.score, score),
+                new DefaultKVPBean(CreateOrderComment.content, content)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<OrderCommentParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取评论列表
+     */
+    public static DataHull<OrderCommentInfo> getOrderCommentInfo(String uid, String page, String pageSize) {
+        String url = base_url + GetOrderComment._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(GetOrderComment.uid, uid),
+                new DefaultKVPBean(GetOrderComment.page, page),
+                new DefaultKVPBean(GetOrderComment.page_size, pageSize)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<OrderCommentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentInfoParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取最近评论
+     */
+    public static DataHull<OrderCommentInfo> getLastOrderCommentInfo(String uid) {
+        String url = base_url + GetLastOrderComment._funcation;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(GetLastOrderComment.uid, uid)
+        );
+        int type = BaseHttpParameter.Type.POST;
+        HttpDynamicParameter<OrderCommentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentInfoParser(), 0, secretKey);
 
         return request(parameter);
     }

@@ -26,7 +26,7 @@ public class DetailHelper {
         //评分
         Mark,
         //评论
-        Comment,
+        Comment
     }
 
     private long mOldTimeStamp;
@@ -36,6 +36,8 @@ public class DetailHelper {
     private User mUser;
 
     private MomentInfoList.MomentInfo mMomentInfo;
+
+    private OrderCommentInfo mOrderCommentInfo;
 
     private ArrayList<ItemType> mItemList;
 
@@ -49,6 +51,11 @@ public class DetailHelper {
 
     public void setMomentInfo(MomentInfoList.MomentInfo momentInfo) {
         mMomentInfo = momentInfo;
+        mTimeStamp = System.currentTimeMillis();
+    }
+
+    public void setOrderCommentInfo(OrderCommentInfo orderCommentInfo) {
+        this.mOrderCommentInfo = orderCommentInfo;
         mTimeStamp = System.currentTimeMillis();
     }
 
@@ -89,6 +96,26 @@ public class DetailHelper {
 
         if (!infoFlag) {
             itemList.remove(ItemType.InfoTitle);
+        }
+
+        boolean markFlag = false;
+        boolean commentFlag = false;
+
+        itemList.add(ItemType.CommentTitle);
+        if (getMark() != null) {
+            commentFlag = true;
+            itemList.add(ItemType.Mark);
+        }
+
+        if (getComment() != null) {
+            commentFlag = true;
+            itemList.add(ItemType.Comment);
+        }
+
+        if (!markFlag || !commentFlag) {
+            itemList.remove(ItemType.Mark);
+            itemList.remove(ItemType.Comment);
+            itemList.remove(ItemType.CommentTitle);
         }
 
         mItemList = itemList;
@@ -166,6 +193,26 @@ public class DetailHelper {
         UserDetailInfo userDetailInfo = mUser.getUserDetailInfo();
         if (userDetailInfo != null) {
             return userDetailInfo.getHomeTownName();
+        }
+
+        return null;
+    }
+
+    public OrderScoreMap getMark() {
+        if (mOrderCommentInfo != null) {
+            return mOrderCommentInfo.getOrderScoreMap();
+        }
+
+        return null;
+    }
+
+    public OrderCommentList.Comment getComment() {
+        if (mOrderCommentInfo != null) {
+            OrderCommentList orderCommentList = mOrderCommentInfo.getOrderCommentList();
+
+            if (orderCommentList != null && orderCommentList.size() > 0) {
+                return orderCommentList.get(0);
+            }
         }
 
         return null;
