@@ -22,7 +22,7 @@ import com.previewlibrary.GPreviewBuilder;
 import com.xue.R;
 import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.AdapterOnItemLongClickCallback;
-import com.xue.adapter.GalleryGridAdapter;
+import com.xue.adapter.MyGalleryGridAdapter;
 import com.xue.asyns.HttpAsyncTask;
 import com.xue.bean.MomentInfoList;
 import com.xue.bean.PreviewPicture;
@@ -43,11 +43,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<MomentInfoList.MomentRes>, AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> {
+public class MyGalleryActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<MomentInfoList.MomentRes>, AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> {
 
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, GalleryActivity.class);
+        Intent intent = new Intent(context, MyGalleryActivity.class);
         context.startActivity(intent);
     }
 
@@ -59,7 +59,7 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
 
     private RecyclerView mRecyclerView;
 
-    private GalleryGridAdapter mAdapter;
+    private MyGalleryGridAdapter mAdapter;
 
     private String mMomentId;
 
@@ -72,7 +72,7 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery);
+        setContentView(R.layout.activity_my_gallery);
 
         initActionBar();
         findView();
@@ -109,7 +109,7 @@ public class GalleryActivity extends BaseActivity implements View.OnClickListene
         checkResChange();
 
         if (mAdapter == null) {
-            mAdapter = new GalleryGridAdapter();
+            mAdapter = new MyGalleryGridAdapter();
 
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.setCallback(this);

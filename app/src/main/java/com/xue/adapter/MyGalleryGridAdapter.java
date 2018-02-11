@@ -13,7 +13,7 @@ import com.xue.imagecache.ImageCacheMannager;
 
 import java.util.List;
 
-public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridAdapter.BaseViewHolder> {
+public class MyGalleryGridAdapter extends RecyclerView.Adapter<MyGalleryGridAdapter.BaseViewHolder> {
 
     private final int TYPE_PHOTO = 1;
 

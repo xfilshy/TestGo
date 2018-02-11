@@ -256,7 +256,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     @Override
     public void onItemClick(DetailHelper.ItemType itemType, View view) {
         if (itemType == DetailHelper.ItemType.Gallery) {
-
+            OtherGalleryActivity.launch(this, mDetailHelper.getOtherGallery());
         } else if (itemType == DetailHelper.ItemType.CommentTitle) {
             CommentListActivity.launch(this, mUid);
         }

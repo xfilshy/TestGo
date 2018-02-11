@@ -133,7 +133,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     public void goGallery(View view) {
-        GalleryActivity.launch(this);
+        MyGalleryActivity.launch(this);
     }
 
     public void goWork(View view) {

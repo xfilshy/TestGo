@@ -248,9 +248,14 @@
             android:name=".ui.activity.FeeSettingActivity"
             android:screenOrientation="portrait" />
 
-        <!--相册页-->
+        <!--我的相册页-->
         <activity
-            android:name=".ui.activity.GalleryActivity"
+            android:name=".ui.activity.MyGalleryActivity"
+            android:screenOrientation="portrait" />
+
+        <!--别人的相册页-->
+        <activity
+            android:name=".ui.activity.OtherGalleryActivity"
             android:screenOrientation="portrait" />
 
         <!--基础信息编辑页-->

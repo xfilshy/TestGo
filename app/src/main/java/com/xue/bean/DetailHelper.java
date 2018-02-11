@@ -2,6 +2,7 @@ package com.xue.bean;
 
 import android.text.TextUtils;
 
+
 import java.util.ArrayList;
 
 public class DetailHelper {
@@ -165,6 +166,32 @@ public class DetailHelper {
         }
 
         return null;
+    }
+
+    public ArrayList<String> getOtherGallery() {
+        ArrayList<String> pics = new ArrayList();
+        if (mMomentInfo != null) {
+            for (MomentInfoList.MomentRes res : mMomentInfo.getResList()) {
+                pics.add(res.getUrl());
+            }
+        }
+
+        UserExpertInfo userExpertInfo = mUser.getUserExpertInfo();
+        if (userExpertInfo != null) {
+            if (TextUtils.equals("2", userExpertInfo.getWorkCardAuth())) {
+                pics.add(userExpertInfo.getWorkCardImg());
+            }
+
+            if (TextUtils.equals("2", userExpertInfo.getBusinessCardAuth())) {
+                pics.add(userExpertInfo.getBusinessCardImg());
+            }
+        }
+
+        if (pics.size() == 0) {
+            pics = null;
+        }
+
+        return pics;
     }
 
     public UserWorkInfo.Work getWork() {
