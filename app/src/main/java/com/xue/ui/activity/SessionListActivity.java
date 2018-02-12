@@ -57,6 +57,16 @@ public class SessionListActivity extends BaseActivity implements AdapterOnItemCl
         init();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     private void findView() {
         mRecyclerView = findViewById(R.id.recyclerView);
 

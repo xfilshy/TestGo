@@ -41,7 +41,7 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
 
     @Override
     public void onBindViewHolder(SessionViewHolder holder, int position) {
-        holder.fill(mDataList.get(position), callback , longClickCallback);
+        holder.fill(mDataList.get(position), callback, longClickCallback);
     }
 
     @Override
@@ -55,6 +55,8 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
     public static class SessionViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView profile;
+
+        private TextView number;
 
         private TextView name;
 
@@ -70,6 +72,7 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
 
         private void findView() {
             profile = itemView.findViewById(R.id.profile);
+            number = itemView.findViewById(R.id.number);
             name = itemView.findViewById(R.id.name);
             message = itemView.findViewById(R.id.message);
             date = itemView.findViewById(R.id.date);
@@ -77,6 +80,21 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
 
         private void fill(final RecentContact recentContact, final AdapterOnItemClickCallback<RecentContact> callback, final AdapterOnItemLongClickCallback<RecentContact> longClickCallback) {
             name.setText(recentContact.getContactId());
+            int count = recentContact.getUnreadCount();
+            if (count > 0) {
+                String countString = count <= 99 ? String.valueOf(count) : "99+";
+                if (countString.length() == 1) {
+                    number.setTextSize(12);
+                } else if (countString.length() == 2) {
+                    number.setTextSize(11);
+                } else {
+                    number.setTextSize(9);
+                }
+                number.setText(countString);
+                number.setVisibility(View.VISIBLE);
+            } else {
+                number.setVisibility(View.INVISIBLE);
+            }
             message.setText(recentContact.getContent());
             try {
                 date.setText(DateTool.longToString(recentContact.getTime(), "HH:mm"));

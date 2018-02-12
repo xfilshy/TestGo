@@ -1,23 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="70dp"
     android:orientation="horizontal"
     android:paddingBottom="5dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="5dp">
 
-    <ImageView
-        android:id="@+id/profile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/photo_test" />
+    <RelativeLayout
+        android:layout_width="55dp"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/photo_test" />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/red_oval"
+            android:gravity="center"
+            android:maxLength="3"
+            android:text="99+"
+            android:textColor="@color/white"
+            android:textSize="10dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -27,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
-            android:text="薛力于"
             android:textColor="@color/black"
             android:textSize="16dp" />
 
@@ -37,7 +57,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
-            android:text="他给发送了一条信息"
             android:textColor="@color/grey_dark"
             android:textSize="14dp" />
     </LinearLayout>
@@ -46,7 +65,6 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="20:11"
         android:textColor="@color/grey_light"
         android:textSize="12dp" />
 </LinearLayout>

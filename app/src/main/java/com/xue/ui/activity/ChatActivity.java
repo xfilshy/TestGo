@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -33,6 +34,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         context.startActivity(intent);
     }
 
+    private TextView mTitleTextView ;
+
     private String mAccount;
 
     private RecyclerView mRecyclerView;
@@ -51,6 +54,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_chat);
 
         readExtra();
+        initActionBar();
         findView();
 
         NIMSDK.getMsgServiceObserve().observeReceiveMessage(mReceiveMessageObserver, true);
@@ -75,6 +79,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        NIMSDK.getMsgService().clearUnreadCount(mAccount, SessionTypeEnum.P2P);
+    }
+
     private void findView() {
         mTextEditText = findViewById(R.id.text);
         mSendTextView = findViewById(R.id.send);
@@ -88,17 +98,22 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mSendTextView.setOnClickListener(this);
     }
 
+    private void initActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
+            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
+            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
+
+            mTitleTextView.setText("聊天");
+        }
+    }
+
     private void fillMessageList() {
         if (mChatListAdapter == null) {
             mChatListAdapter = new ChatListAdapter();
             mRecyclerView.setAdapter(mChatListAdapter);
         }
-
-        for(IMMessage imMessage : mIMMessageList){
-            Log.e("xue" , "imMessage getFromAccount == " + imMessage.getFromAccount());
-            Log.e("xue" , "imMessage getContent == " + imMessage.getContent());
-        }
-
 
         mChatListAdapter.setDataList(mIMMessageList);
         mChatListAdapter.notifyDataSetChanged();
