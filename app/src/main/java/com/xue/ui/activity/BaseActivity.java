@@ -20,4 +20,8 @@ public class BaseActivity extends AppCompatActivity {
         MainActivity.closeAll(view.getContext());
         WelcomeActivity.launch(view.getContext());
     }
+
+    public void launchSessionListActivity(View view) {
+        SessionListActivity.launch(this);
+    }
 }

@@ -94,6 +94,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             mRecyclerView.setAdapter(mChatListAdapter);
         }
 
+        for(IMMessage imMessage : mIMMessageList){
+            Log.e("xue" , "imMessage getFromAccount == " + imMessage.getFromAccount());
+            Log.e("xue" , "imMessage getContent == " + imMessage.getContent());
+        }
+
+
         mChatListAdapter.setDataList(mIMMessageList);
         mChatListAdapter.notifyDataSetChanged();
     }
