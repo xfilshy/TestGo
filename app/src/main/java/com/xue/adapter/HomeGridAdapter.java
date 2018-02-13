@@ -1,6 +1,7 @@
 package com.xue.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import com.elianshang.tools.UITool;
 import com.xue.R;
 import com.xue.bean.User;
+import com.xue.bean.UserConfigInfo;
 import com.xue.bean.UserDetailInfo;
+import com.xue.bean.UserExpertInfo;
 import com.xue.bean.UserList;
 import com.xue.imagecache.ImageCacheMannager;
 
@@ -72,9 +75,9 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
 
         private ImageView photo;
 
-        private TextView position;
+        private TextView signature;
 
-        private TextView price;
+        private TextView fee;
 
         private TextView vip;
 
@@ -88,8 +91,8 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
 
             name = itemView.findViewById(R.id.name);
             photo = itemView.findViewById(R.id.photo);
-            position = itemView.findViewById(R.id.position);
-            price = itemView.findViewById(R.id.price);
+            signature = itemView.findViewById(R.id.signature);
+            fee = itemView.findViewById(R.id.fee);
             vip = itemView.findViewById(R.id.vip);
         }
 
@@ -97,11 +100,39 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
             UserDetailInfo userDetailInfo = user.getUserDetailInfo();
             if (userDetailInfo != null) {
                 name.setText(userDetailInfo.getRealName());
-                ImageCacheMannager.loadImage(photo.getContext(), userDetailInfo.getCover(), photo, false);
+                if (!TextUtils.isEmpty(userDetailInfo.getCover())) {
+                    ImageCacheMannager.loadImage(photo.getContext(), userDetailInfo.getCover(), photo, false);
+                } else if (!TextUtils.isEmpty(userDetailInfo.getProfile())) {
+                    ImageCacheMannager.loadImage(photo.getContext(), userDetailInfo.getProfile(), photo, false);
+                } else {
+                    ImageCacheMannager.loadImage(photo.getContext(), null, photo, false);
+                }
             } else {
                 name.setText("信息不全");
                 ImageCacheMannager.loadImage(photo.getContext(), null, photo, false);
+            }
 
+            UserConfigInfo userConfigInfo = user.getUserConfigInfo();
+            if (userConfigInfo != null) {
+                fee.setText(userConfigInfo.getFeeDefault() + "钻石/分钟");
+            }
+
+            UserExpertInfo userExpertInfo = user.getUserExpertInfo();
+            String signString = null;
+            String feeString = null;
+            if (userExpertInfo != null) {
+                signString = userExpertInfo.getSignature();
+                feeString = userExpertInfo.getServiceFee() > 0 ? userExpertInfo.getServiceFee() + "钻石/分钟" : null;
+            }
+
+            if (!TextUtils.isEmpty(signString)) {
+                signature.setText(signString);
+            } else {
+                signature.setText("TA很懒什么也没写");
+            }
+
+            if (!TextUtils.isEmpty(feeString)) {
+                fee.setText(feeString);
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {

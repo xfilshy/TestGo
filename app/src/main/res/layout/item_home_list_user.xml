@@ -17,8 +17,8 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/position"
-        android:layout_alignLeft="@id/position"
+        android:layout_above="@+id/signature"
+        android:layout_alignLeft="@id/signature"
         android:layout_marginBottom="3dp"
         android:layout_marginRight="5dp"
         android:lines="1"
@@ -40,7 +40,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@id/position"
+        android:id="@id/signature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -53,7 +53,7 @@
         android:textSize="10dp" />
 
     <TextView
-        android:id="@+id/price"
+        android:id="@+id/fee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
