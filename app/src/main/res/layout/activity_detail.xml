@@ -169,13 +169,27 @@
                         android:layout_marginRight="20dp"
                         android:src="@drawable/follow_selector" />
 
-                    <ImageView
+                    <FrameLayout
                         android:id="@+id/actionChat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:onClick="goChat"
-                        android:src="@drawable/icon_chat" />
+                        android:onClick="goChat">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_chat" />
+
+                        <View
+                            android:id="@+id/actionDot"
+                            android:layout_width="7dp"
+                            android:layout_height="7dp"
+                            android:layout_gravity="right|top"
+                            android:background="@drawable/red_oval"
+                            android:visibility="invisible" />
+                    </FrameLayout>
+
 
                     <ImageView
                         android:id="@+id/setting"
@@ -196,12 +210,26 @@
         android:layout_height="wrap_content"
         android:src="@drawable/follow_selector" />
 
-    <ImageView
+    <FrameLayout
         android:id="@+id/chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="goChat"
-        android:src="@drawable/icon_chat" />
+        android:onClick="goChat">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_chat" />
+
+        <View
+            android:id="@+id/dot"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_gravity="right|top"
+            android:background="@drawable/red_oval"
+            android:visibility="invisible" />
+    </FrameLayout>
+
 
     <include layout="@layout/content_detail" />
 

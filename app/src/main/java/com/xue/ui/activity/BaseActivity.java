@@ -17,8 +17,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void logout(View view) {
         BaseApplication.get().setUser(null, true);
-        MainActivity.closeAll(view.getContext());
-        WelcomeActivity.launch(view.getContext());
+        MainActivity.logout(view.getContext());
     }
 
     public void launchSessionListActivity(View view) {

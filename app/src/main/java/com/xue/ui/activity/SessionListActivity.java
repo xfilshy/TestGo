@@ -10,12 +10,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.netease.nimlib.sdk.InvocationFuture;
 import com.netease.nimlib.sdk.NIMSDK;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -24,6 +22,7 @@ import com.xue.R;
 import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.AdapterOnItemLongClickCallback;
 import com.xue.adapter.SessionListAdapter;
+import com.xue.netease.NeteaseUserInfoCache;
 import com.xue.support.view.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -53,18 +52,18 @@ public class SessionListActivity extends BaseActivity implements AdapterOnItemCl
         findView();
 
         fillData();
-
-        init();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        registerObserves();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        unRegisterObserves();
     }
 
     private void findView() {
@@ -74,45 +73,29 @@ public class SessionListActivity extends BaseActivity implements AdapterOnItemCl
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL, 1, R.color.grey_light));
     }
 
-    private void init() {
-        InvocationFuture<List<RecentContact>> invocationFuture = NIMSDK.getMsgService().queryRecentContacts();
-        invocationFuture.setCallback(new RequestCallback<List<RecentContact>>() {
 
-            @Override
-            public void onSuccess(List<RecentContact> recentContacts) {
-                Log.e("xue", "查询成功");
-                changeRecentContacts(recentContacts, false);
-                fillData();
+    private void registerObserves() {
+        NIMSDK.getMsgService().queryRecentContacts().setCallback(mQueryCallback);
+        NeteaseUserInfoCache.get().setCallback(mCacheChangeCallback);
+        NIMSDK.getMsgServiceObserve().observeRecentContact(mRecentContactObserver, true);
+    }
+
+    private void unRegisterObserves() {
+        NeteaseUserInfoCache.get().setCallback(null);
+        NIMSDK.getMsgServiceObserve().observeRecentContact(mRecentContactObserver, false);
+    }
+
+    private ArrayList<String> toAccounts() {
+        if (mRecentContacts != null) {
+            ArrayList<String> accounts = new ArrayList();
+            for (RecentContact recentContact : mRecentContacts) {
+                accounts.add(recentContact.getContactId());
             }
 
-            @Override
-            public void onFailed(int i) {
-            }
+            return accounts;
+        }
 
-            @Override
-            public void onException(Throwable throwable) {
-            }
-        });
-
-        NIMSDK.getMsgServiceObserve().observeRecentContactDeleted(new Observer<RecentContact>() {
-            @Override
-            public void onEvent(RecentContact recentContact) {
-                Log.e("xue", "删除监听");
-                if (mRecentContacts != null) {
-                    mRecentContacts.remove(recentContact);
-                }
-            }
-        }, true);
-
-        NIMSDK.getMsgServiceObserve().observeRecentContact(new Observer<List<RecentContact>>() {
-
-            @Override
-            public void onEvent(List<RecentContact> recentContacts) {
-                Log.e("xue", "最近联系人变化");
-                changeRecentContacts(recentContacts, true);
-                fillData();
-            }
-        }, true);
+        return null;
     }
 
     private synchronized void changeRecentContacts(List<RecentContact> recentContacts, boolean isChange) {
@@ -178,4 +161,41 @@ public class SessionListActivity extends BaseActivity implements AdapterOnItemCl
                 }).create();
         alertDialog.show();
     }
+
+
+    private NeteaseUserInfoCache.CacheChangeCallback mCacheChangeCallback = new NeteaseUserInfoCache.CacheChangeCallback() {
+
+        @Override
+        public void onChange() {
+            fillData();
+        }
+    };
+
+    private RequestCallback<List<RecentContact>> mQueryCallback = new RequestCallback<List<RecentContact>>() {
+
+        @Override
+        public void onSuccess(List<RecentContact> recentContacts) {
+            changeRecentContacts(recentContacts, false);
+            if (NeteaseUserInfoCache.get().update(toAccounts())) {
+                fillData();
+            }
+        }
+
+        @Override
+        public void onFailed(int i) {
+        }
+
+        @Override
+        public void onException(Throwable throwable) {
+        }
+    };
+
+    private Observer<List<RecentContact>> mRecentContactObserver = new Observer<List<RecentContact>>() {
+
+        @Override
+        public void onEvent(List<RecentContact> recentContacts) {
+            changeRecentContacts(recentContacts, true);
+            fillData();
+        }
+    };
 }

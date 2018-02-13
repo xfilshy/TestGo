@@ -1,17 +1,19 @@
 package com.xue.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.xue.BaseApplication;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.xue.R;
+import com.xue.imagecache.ImageCacheMannager;
+import com.xue.netease.NeteaseUserInfoCache;
 
 import java.util.List;
 
@@ -46,25 +48,25 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.BaseVi
     public int getItemViewType(int position) {
         IMMessage imMessage = mIMMessageList.get(position);
         if (imMessage.getMsgType().getValue() == MsgTypeEnum.text.getValue()) {
-            if (TextUtils.equals(imMessage.getFromAccount(), BaseApplication.get().getUserId())) {
+            if (imMessage.getDirect() == MsgDirectionEnum.Out) {
                 return TYPE_TEXT_MSG_RIGHT;
             } else {
                 return TYPE_TEXT_MSG_LEFT;
             }
         } else if (imMessage.getMsgType().getValue() == MsgTypeEnum.audio.getValue()) {
-            if (TextUtils.equals(imMessage.getFromAccount(), BaseApplication.get().getUserId())) {
+            if (imMessage.getDirect() == MsgDirectionEnum.Out) {
                 return TYPE_AUDIO_MSG_RIGHT;
             } else {
                 return TYPE_AUDIO_MSG_LEFT;
             }
         } else if (imMessage.getMsgType().getValue() == MsgTypeEnum.video.getValue()) {
-            if (TextUtils.equals(imMessage.getFromAccount(), BaseApplication.get().getUserId())) {
+            if (imMessage.getDirect() == MsgDirectionEnum.Out) {
                 return TYPE_VIDEO_MSG_RIGHT;
             } else {
                 return TYPE_VIDEO_MSG_LEFT;
             }
         } else if (imMessage.getMsgType().getValue() == MsgTypeEnum.avchat.getValue()) {
-            if (TextUtils.equals(imMessage.getFromAccount(), BaseApplication.get().getUserId())) {
+            if (imMessage.getDirect() == MsgDirectionEnum.Out) {
                 return TYPE_AVCHAT_MSG_RIGHT;
             } else {
                 return TYPE_AVCHAT_MSG_LEFT;
@@ -112,7 +114,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.BaseVi
 
     public static class TextMessageLeftViewHolder extends BaseViewHolder {
 
-        private ImageView photo;
+        private ImageView profile;
 
         private TextView account;
 
@@ -124,20 +126,25 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.BaseVi
         }
 
         private void findView() {
-            photo = itemView.findViewById(R.id.photo);
+            profile = itemView.findViewById(R.id.profile);
             account = itemView.findViewById(R.id.account);
             message = itemView.findViewById(R.id.message);
         }
 
         @Override
         public void fillData(IMMessage imMessage) {
+            NimUserInfo nimUserInfo = NeteaseUserInfoCache.get().getUserInfo(imMessage.getFromAccount());
+            if (nimUserInfo != null) {
+                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, false);
+            }
+            account.setText(imMessage.getFromNick());
             message.setText(imMessage.getContent());
         }
     }
 
     public static class TextMessageRightViewHolder extends BaseViewHolder {
 
-        private ImageView photo;
+        private ImageView profile;
 
         private TextView account;
 
@@ -149,13 +156,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.BaseVi
         }
 
         private void findView() {
-            photo = itemView.findViewById(R.id.photo);
+            profile = itemView.findViewById(R.id.profile);
             account = itemView.findViewById(R.id.account);
             message = itemView.findViewById(R.id.message);
         }
 
         @Override
         public void fillData(IMMessage imMessage) {
+            NimUserInfo nimUserInfo = NeteaseUserInfoCache.get().getUserInfo(imMessage.getFromAccount());
+            if (nimUserInfo != null) {
+                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, false);
+            }
+            account.setText(imMessage.getFromNick());
             message.setText(imMessage.getContent());
         }
     }

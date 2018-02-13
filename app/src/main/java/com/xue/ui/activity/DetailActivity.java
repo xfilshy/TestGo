@@ -8,12 +8,18 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.netease.nimlib.sdk.NIMSDK;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.xue.R;
 import com.xue.adapter.AdapterOnItemClickCallback;
 import com.xue.adapter.DetailListAdapter;
@@ -35,8 +41,11 @@ import com.xue.support.view.FloatingActionButton;
 import com.xue.ui.views.ChatImageBehavior;
 import com.xue.ui.views.FavoriteImageBehavior;
 
+import java.util.List;
+
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static android.view.View.GONE;
 
 public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, AdapterOnItemClickCallback<DetailHelper.ItemType> {
 
@@ -60,7 +69,9 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     private ImageView mActionFollowImageView;
 
-    private ImageView mActionChatImageView;
+    private FrameLayout mActionChatFrameLayout;
+
+    private View mActionDotView;
 
     private LinearLayout mInfoLayout;
 
@@ -68,11 +79,13 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
 
     private ImageView mFollowImageView;
 
-    private ImageView mChatImageView;
+    private FrameLayout mChatFrameLayout;
+
+    private View mDotView;
 
     private ImageView mCoverImageView;
 
-    private ImageView mProfileImageView ;
+    private ImageView mProfileImageView;
 
     private TextView mRealNameTextView;
 
@@ -100,9 +113,18 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         initRecyclerView();
 
         new DetailTask(this, mUid).start();
+    }
 
-        //TODO 测试代码
-//        new CreateComment(this).start();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerObserves();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unRegisterObserves();
     }
 
     private void findView() {
@@ -112,7 +134,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         mInfoLayout = findViewById(R.id.infoLayout);
         mVipTextView = findViewById(R.id.vip);
         mFollowImageView = findViewById(R.id.favorite);
-        mChatImageView = findViewById(R.id.chat);
+        mChatFrameLayout = findViewById(R.id.chat);
+        mDotView = findViewById(R.id.dot);
 
         mCoverImageView = findViewById(R.id.cover);
         mProfileImageView = findViewById(R.id.profile);
@@ -127,8 +150,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mFollowImageView.getLayoutParams();
         layoutParams.setBehavior(new FavoriteImageBehavior(this, mActionFollowImageView, null));
 
-        layoutParams = (CoordinatorLayout.LayoutParams) mChatImageView.getLayoutParams();
-        layoutParams.setBehavior(new ChatImageBehavior(this, mActionChatImageView, null));
+        layoutParams = (CoordinatorLayout.LayoutParams) mChatFrameLayout.getLayoutParams();
+        layoutParams.setBehavior(new ChatImageBehavior(this, mActionChatFrameLayout, null));
 
         mFollowImageView.setOnClickListener(this);
         mCallFloatingButton.setOnClickListener(this);
@@ -144,7 +167,8 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         mActionLogoImageView = toolbar.findViewById(R.id.logo);
         mActionTitleTextView = toolbar.findViewById(R.id.title);
         mActionFollowImageView = toolbar.findViewById(R.id.actionFavorite);
-        mActionChatImageView = toolbar.findViewById(R.id.actionChat);
+        mActionChatFrameLayout = toolbar.findViewById(R.id.actionChat);
+        mActionDotView = toolbar.findViewById(R.id.actionDot);
         setSupportActionBar(toolbar);
 
         mActionFollowImageView.setOnClickListener(this);
@@ -191,6 +215,34 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     private void readExtra() {
         Intent intent = getIntent();
         mUid = intent.getStringExtra("uid");
+    }
+
+    private void registerObserves() {
+        NIMSDK.getMsgService().queryRecentContacts().setCallback(mQueryCallback);
+        NIMSDK.getMsgServiceObserve().observeRecentContact(mRecentContactObserver, true);
+    }
+
+    private void unRegisterObserves() {
+        NIMSDK.getMsgServiceObserve().observeRecentContact(mRecentContactObserver, false);
+    }
+
+    private void checkUnread(List<RecentContact> recentContacts) {
+        if (recentContacts != null && recentContacts.size() > 0) {
+            for (RecentContact recentContact : recentContacts) {
+                if (TextUtils.equals(recentContact.getContactId(), mUid)) {
+                    int count = recentContact.getUnreadCount();
+                    if (count > 0) {
+                        mActionDotView.setVisibility(VISIBLE);
+                        mDotView.setVisibility(VISIBLE);
+                    } else {
+                        mActionDotView.setVisibility(INVISIBLE);
+                        mDotView.setVisibility(GONE);
+                    }
+                    break;
+                }
+            }
+        }
+
     }
 
     @Override
@@ -265,6 +317,30 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
             CommentListActivity.launch(this, mUid);
         }
     }
+
+    private RequestCallback<List<RecentContact>> mQueryCallback = new RequestCallback<List<RecentContact>>() {
+
+        @Override
+        public void onSuccess(List<RecentContact> recentContacts) {
+            checkUnread(recentContacts);
+        }
+
+        @Override
+        public void onFailed(int i) {
+        }
+
+        @Override
+        public void onException(Throwable throwable) {
+        }
+    };
+
+    private Observer<List<RecentContact>> mRecentContactObserver = new Observer<List<RecentContact>>() {
+
+        @Override
+        public void onEvent(List<RecentContact> recentContacts) {
+            checkUnread(recentContacts);
+        }
+    };
 
     private class DetailTask extends HttpAsyncTask<User> {
 

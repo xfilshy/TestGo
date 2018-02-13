@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import com.elianshang.tools.DateTool;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.xue.R;
+import com.xue.imagecache.ImageCacheMannager;
+import com.xue.netease.NeteaseUserInfoCache;
 
 import java.text.ParseException;
 import java.util.List;
@@ -79,7 +82,13 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         }
 
         private void fill(final RecentContact recentContact, final AdapterOnItemClickCallback<RecentContact> callback, final AdapterOnItemLongClickCallback<RecentContact> longClickCallback) {
-            name.setText(recentContact.getContactId());
+            final NimUserInfo nimUserInfo = NeteaseUserInfoCache.get().getUserInfo(recentContact.getContactId());
+
+            if (nimUserInfo != null) {
+                name.setText(nimUserInfo.getName());
+                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, false);
+            }
+
             int count = recentContact.getUnreadCount();
             if (count > 0) {
                 String countString = count <= 99 ? String.valueOf(count) : "99+";

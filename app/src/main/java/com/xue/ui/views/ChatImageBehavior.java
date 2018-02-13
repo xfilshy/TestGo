@@ -7,11 +7,11 @@ import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 
 import com.elianshang.tools.UITool;
 
-public class ChatImageBehavior extends CoordinatorLayout.Behavior<ImageView> {
+public class ChatImageBehavior extends CoordinatorLayout.Behavior<FrameLayout> {
     private int maxScrollDistance;
     private float maxChildWidth;
     private float minChildWidth;
@@ -21,9 +21,9 @@ public class ChatImageBehavior extends CoordinatorLayout.Behavior<ImageView> {
     private int appbarStartPoint;
     private int marginRight;
 
-    private ImageView mFinalView;
+    private View mFinalView;
 
-    public ChatImageBehavior(Context context, ImageView finalView, AttributeSet attrs) {
+    public ChatImageBehavior(Context context, View finalView, AttributeSet attrs) {
         super(context, attrs);
         //计算出头像的最小宽度
         minChildWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, context.getResources().getDisplayMetrics());
@@ -38,7 +38,7 @@ public class ChatImageBehavior extends CoordinatorLayout.Behavior<ImageView> {
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, ImageView child, View dependency) {
+    public boolean layoutDependsOn(CoordinatorLayout parent, FrameLayout child, View dependency) {
 //        Log.d(TAG, "layoutDependsOn");
         //确定依赖关系，这里我们用作头像的ImageButton相依赖的是AppBarLayout，也就是ImageButton跟着AppBarLayout的变化而变化。
         return dependency instanceof AppBarLayout;
@@ -48,7 +48,7 @@ public class ChatImageBehavior extends CoordinatorLayout.Behavior<ImageView> {
     private int startY;
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, ImageView child, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, FrameLayout child, View dependency) {
         //这里的dependency就是布局中的AppBarLayout，child即显示的头像
         if (maxScrollDistance == 0) {
             //也就是第一次进来时，计算出AppBarLayout的最大垂直变化距离
