@@ -173,13 +173,13 @@
                         android:id="@+id/actionChat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:onClick="goChat">
+                        android:layout_marginRight="20dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/icon_chat" />
+                            android:src="@drawable/icon_chat"
+                            android:onClick="goChat"/>
 
                         <View
                             android:id="@+id/actionDot"
@@ -213,13 +213,13 @@
     <FrameLayout
         android:id="@+id/chat"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="goChat">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_chat" />
+            android:src="@drawable/icon_chat"
+            android:onClick="goChat"/>
 
         <View
             android:id="@+id/dot"

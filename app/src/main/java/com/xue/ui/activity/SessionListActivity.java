@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -167,6 +168,7 @@ public class SessionListActivity extends BaseActivity implements AdapterOnItemCl
 
         @Override
         public void onChange() {
+            Log.e("xue" , "onChange ");
             fillData();
         }
     };

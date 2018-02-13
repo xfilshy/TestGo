@@ -21,6 +21,7 @@ import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
+import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.adapter.ChatListAdapter;
 
@@ -34,7 +35,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         context.startActivity(intent);
     }
 
-    private TextView mTitleTextView ;
+    private TextView mTitleTextView;
 
     private String mAccount;
 
@@ -61,11 +62,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         NIMSDK.getMsgServiceObserve().observeMsgStatus(mMsgStatusObserver, true);
 
         IMMessage emptyMessage = MessageBuilder.createEmptyMessage(mAccount, SessionTypeEnum.P2P, 0);
+        emptyMessage.setFromAccount(BaseApplication.get().getUserId());
         InvocationFuture<List<IMMessage>> invocationFuture = NIMSDK.getMsgService().queryMessageListEx(emptyMessage, QueryDirectionEnum.QUERY_NEW, 100, true);
         invocationFuture.setCallback(new RequestCallback<List<IMMessage>>() {
             @Override
             public void onSuccess(List<IMMessage> imMessages) {
                 mIMMessageList = imMessages;
+
                 fillMessageList();
             }
 

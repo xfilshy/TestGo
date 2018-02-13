@@ -3,6 +3,7 @@ package com.xue.ui.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.netease.nimlib.sdk.NIMSDK;
 import com.xue.BaseApplication;
 
 /**
@@ -18,6 +19,7 @@ public class BaseActivity extends AppCompatActivity {
     public void logout(View view) {
         BaseApplication.get().setUser(null, true);
         MainActivity.logout(view.getContext());
+        NIMSDK.getAuthService().logout();
     }
 
     public void launchSessionListActivity(View view) {
