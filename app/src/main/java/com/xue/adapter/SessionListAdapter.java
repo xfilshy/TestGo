@@ -86,7 +86,7 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
 
             if (nimUserInfo != null) {
                 name.setText(nimUserInfo.getName());
-                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, false);
+                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, true);
             }
 
             int count = recentContact.getUnreadCount();

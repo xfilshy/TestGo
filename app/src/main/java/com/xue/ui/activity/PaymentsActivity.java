@@ -9,11 +9,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.elianshang.tools.FloatStringTool;
 import com.xue.R;
+import com.xue.asyns.HttpAsyncTask;
+import com.xue.bean.WalletDecorator;
+import com.xue.http.HttpApi;
+import com.xue.http.impl.DataHull;
 
 public class PaymentsActivity extends BaseActivity implements View.OnClickListener {
 
-    public static void launsh(Context context) {
+    public static void launch(Context context) {
         Intent intent = new Intent(context, PaymentsActivity.class);
         context.startActivity(intent);
     }
@@ -26,6 +31,16 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
 
     private TextView mWithdrawalsTextView;
 
+    private TextView mNCoinTextView;
+
+    private TextView mMoneyTextView;
+
+    private TextView mEncashTotalTextView;
+
+    private TextView mIncomeTotalTextView;
+
+    private WalletDecorator mWalletDecorator;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +48,8 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
 
         initActionBar();
         findView();
+
+        new GetWalletTask(this).start();
     }
 
     private void initActionBar() {
@@ -42,7 +59,6 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
             actionBar.setCustomView(R.layout.actionbar_payments);//设置自定义的布局：actionbar_custom
             mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
             mHistoryTextView = actionBar.getCustomView().findViewById(R.id.history);
-            mBackImageView.setOnClickListener(this);
             mHistoryTextView.setOnClickListener(this);
         }
     }
@@ -50,21 +66,49 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
     private void findView() {
         mRechargeTextView = findViewById(R.id.recharge);
         mWithdrawalsTextView = findViewById(R.id.withdrawals);
+        mNCoinTextView = findViewById(R.id.nCoin);
+        mMoneyTextView = findViewById(R.id.money);
+        mEncashTotalTextView = findViewById(R.id.encashTotal);
+        mIncomeTotalTextView = findViewById(R.id.incomeTotal);
 
         mRechargeTextView.setOnClickListener(this);
         mWithdrawalsTextView.setOnClickListener(this);
     }
 
+    private void fillData() {
+        mNCoinTextView.setText(FloatStringTool.twoDecimalPlaces(mWalletDecorator.getWalletInfo().getNCoin()));
+        mMoneyTextView.setText("相当于人民币：" + FloatStringTool.twoDecimalPlaces(mWalletDecorator.getWalletInfo().getMoney()) + "元");
+        mEncashTotalTextView.setText(FloatStringTool.twoDecimalPlaces(mWalletDecorator.getWalletInfo().getEncashmentTotal()));
+        mIncomeTotalTextView.setText(FloatStringTool.twoDecimalPlaces(mWalletDecorator.getWalletInfo().getIncomeNCoinTotal()));
+    }
+
     @Override
     public void onClick(View v) {
-        if (mBackImageView == v) {
-            finish();
-        } else if (mHistoryTextView == v) {
+        if (mHistoryTextView == v) {
             PaymentsHistoryActivity.launch(this);
         } else if (mRechargeTextView == v) {
-            RechargeNiubiActivity.launch(this);
+            RechargeNCoinActivity.launch(this);
         } else if (mWithdrawalsTextView == v) {
             WithdrawalsActivity.launch(this);
         }
     }
+
+    private class GetWalletTask extends HttpAsyncTask<WalletDecorator> {
+
+        public GetWalletTask(Context context) {
+            super(context);
+        }
+
+        @Override
+        public DataHull<WalletDecorator> doInBackground() {
+            return HttpApi.getWalletInfo();
+        }
+
+        @Override
+        public void onPostExecute(int updateId, WalletDecorator result) {
+            mWalletDecorator = result;
+            fillData();
+        }
+    }
+
 }

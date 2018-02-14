@@ -18,6 +18,7 @@ import com.xue.bean.UserExpertInfo;
 import com.xue.bean.UserList;
 import com.xue.bean.UserTagInfo;
 import com.xue.bean.UserWorkInfo;
+import com.xue.bean.WalletDecorator;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseHttpParameter;
 import com.xue.http.hook.BaseKVP;
@@ -44,6 +45,7 @@ import com.xue.parsers.UserParser;
 import com.xue.parsers.UserTagInfoParser;
 import com.xue.parsers.UserWorkInfoParser;
 import com.xue.parsers.UsetListParser;
+import com.xue.parsers.WalletDecoratorParser;
 import com.xue.tools.AppTool;
 import com.xue.tools.ConfigTool;
 import com.xue.tools.SecretTool;
@@ -527,6 +529,17 @@ public class HttpApi {
 
         String page_size = "page_size";
     }
+
+
+    /**
+     * 获取钱包数据  这个接口暂时不管
+     */
+    private interface GetWalletInfo {
+
+        String _funcation = "/wallet/info/getinfo";
+
+    }
+
 
     private static void build() {
         base_url = ConfigTool.getHttpBaseUrl();
@@ -1123,6 +1136,17 @@ public class HttpApi {
         String url = base_url + ResCityParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
         HttpDynamicParameter<CityListParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new CityListParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取钱包信息
+     */
+    public static DataHull<WalletDecorator> getWalletInfo() {
+        String url = base_url + GetWalletInfo._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        HttpDynamicParameter<WalletDecoratorParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new WalletDecoratorParser(), 0, secretKey);
 
         return request(parameter);
     }

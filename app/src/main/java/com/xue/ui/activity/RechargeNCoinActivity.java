@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import com.xue.R;
 
-public class RechargeNiubiActivity extends BaseActivity implements View.OnClickListener {
+public class RechargeNCoinActivity extends BaseActivity implements View.OnClickListener {
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, RechargeNiubiActivity.class);
+        Intent intent = new Intent(context, RechargeNCoinActivity.class);
         context.startActivity(intent);
     }
 

@@ -135,7 +135,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.BaseVi
         public void fillData(IMMessage imMessage) {
             NimUserInfo nimUserInfo = NeteaseUserInfoCache.get().getUserInfo(imMessage.getFromAccount());
             if (nimUserInfo != null) {
-                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, false);
+                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, true);
             }
             account.setText(imMessage.getFromNick());
             message.setText(imMessage.getContent());
@@ -165,7 +165,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.BaseVi
         public void fillData(IMMessage imMessage) {
             NimUserInfo nimUserInfo = NeteaseUserInfoCache.get().getUserInfo(imMessage.getFromAccount());
             if (nimUserInfo != null) {
-                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, false);
+                ImageCacheMannager.loadImage(itemView.getContext(), nimUserInfo.getAvatar(), profile, true);
             }
             account.setText(imMessage.getFromNick());
             message.setText(imMessage.getContent());

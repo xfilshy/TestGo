@@ -225,7 +225,7 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
 
         @Override
         public void onPostExecute(int updateId, UserExpertInfo result) {
-            BaseApplication.get().getUser().setUserExpertInfo(result);
+            BaseApplication.get().setUserExpertInfo(result);
             finish();
         }
     }

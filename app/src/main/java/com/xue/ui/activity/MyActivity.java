@@ -159,7 +159,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void goPayments(View view) {
-        PaymentsActivity.launsh(this);
+        PaymentsActivity.launch(this);
     }
 
     public void goSetting(View view) {

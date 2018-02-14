@@ -352,7 +352,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
 
         @Override
         public void onPostExecute(int updateId, UserEducationInfo result) {
-            BaseApplication.get().getUser().setUserEducationInfo(result);
+            BaseApplication.get().setUserEducationInfo(result);
             finish();
         }
     }
@@ -414,7 +414,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
 
         @Override
         public void onPostExecute(int updateId, UserEducationInfo result) {
-            BaseApplication.get().getUser().setUserEducationInfo(result);
+            BaseApplication.get().setUserEducationInfo(result);
             finish();
         }
     }

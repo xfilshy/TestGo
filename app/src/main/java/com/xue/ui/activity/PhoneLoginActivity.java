@@ -178,7 +178,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
         }
 
         private void handleUser(User user) {
-            BaseApplication.get().setUser(user, false);
+            BaseApplication.get().setUser(user, true);
             if (user != null) {
                 if (user.getUserDetailInfo() != null) {
                     setResult(RESULT_OK);

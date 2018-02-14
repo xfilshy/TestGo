@@ -376,7 +376,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
 
         @Override
         public void onPostExecute(int updateId, UserWorkInfo result) {
-            BaseApplication.get().getUser().setUserWorkInfo(result);
+            BaseApplication.get().setUserWorkInfo(result);
             finish();
         }
     }
@@ -441,7 +441,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
 
         @Override
         public void onPostExecute(int updateId, UserWorkInfo result) {
-            BaseApplication.get().getUser().setUserWorkInfo(result);
+            BaseApplication.get().setUserWorkInfo(result);
             finish();
         }
     }

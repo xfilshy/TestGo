@@ -111,7 +111,7 @@ public class BaseApplication extends Application {
         getUser().setUserExpertInfo(userExpertInfo);
     }
 
-    public void setUserExpertInfo(UserEducationInfo userEducationInfo) {
+    public void setUserEducationInfo(UserEducationInfo userEducationInfo) {
         getUser().setUserEducationInfo(userEducationInfo);
     }
 

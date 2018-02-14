@@ -185,7 +185,7 @@
 
         <!--牛币购买钻石页-->
         <activity
-            android:name=".ui.activity.RechargeNiubiActivity"
+            android:name=".ui.activity.RechargeNCoinActivity"
             android:screenOrientation="portrait" />
 
         <!--提现页-->
