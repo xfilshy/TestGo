@@ -38,6 +38,8 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
 
     private ArrayList<ItemViewHolder> viewHolders = new ArrayList(6);
 
+    private ItemViewHolder mSelectedViewHolder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,6 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         viewHolders.add(new ItemViewHolder(findViewById(R.id.item5)));
         viewHolders.add(new ItemViewHolder(findViewById(R.id.item6)));
 
-        mConfirmButton.setEnabled(true);
         mConfirmButton.setOnClickListener(this);
     }
 
@@ -92,17 +93,19 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         } else if (mHistoryTextView == v) {
             RechargeHistoryActivity.launch(this);
         } else if (mConfirmButton == v) {
-            PayActivity.launch(this);
+            PayActivity.launch(this, mSelectedViewHolder.recharge);
         }
     }
 
-    private static class ItemViewHolder {
+    private class ItemViewHolder {
 
         private View itemView;
 
         private TextView diamondTextView;
 
         private TextView priceTextView;
+
+        private RechargeList.Recharge recharge;
 
         ItemViewHolder(View itemView) {
             this.itemView = itemView;
@@ -111,9 +114,26 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         }
 
         void fill(RechargeList.Recharge recharge) {
+            this.recharge = recharge;
+
             itemView.setVisibility(View.VISIBLE);
             diamondTextView.setText(recharge.getDiamond());
             priceTextView.setText("售价" + recharge.getPrice() + "元");
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mSelectedViewHolder != null) {
+                        if (mSelectedViewHolder.itemView != v) {
+                            mSelectedViewHolder.itemView.setSelected(false);
+                        }
+                    }
+
+                    mSelectedViewHolder = ItemViewHolder.this;
+                    mSelectedViewHolder.itemView.setSelected(true);
+                    mConfirmButton.setEnabled(true);
+                }
+            });
         }
     }
 

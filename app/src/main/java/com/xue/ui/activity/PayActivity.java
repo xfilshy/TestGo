@@ -10,13 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xue.R;
+import com.xue.bean.RechargeList;
 
 public class PayActivity extends BaseActivity implements View.OnClickListener {
 
-    public static void launch(Context context) {
+    public static void launch(Context context, RechargeList.Recharge recharge) {
         Intent intent = new Intent(context, PayActivity.class);
+        intent.putExtra("recharge", recharge);
         context.startActivity(intent);
     }
+
+    private RechargeList.Recharge mRecharge;
 
     private ImageView mBackImageView;
 
@@ -25,8 +29,10 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_pay);
+
+        readExtra();
+        findView();
         initActionBar();
     }
 
@@ -41,6 +47,14 @@ public class PayActivity extends BaseActivity implements View.OnClickListener {
 
             mTitleTextView.setText("支付订单");
         }
+    }
+
+    private void findView() {
+
+    }
+
+    private void readExtra() {
+        mRecharge = (RechargeList.Recharge) getIntent().getSerializableExtra("recharge");
     }
 
     @Override
