@@ -4,7 +4,7 @@ import com.xue.http.hook.BaseBean;
 
 import java.util.ArrayList;
 
-public class RechargeNCoinList extends ArrayList implements BaseBean {
+public class RechargeNCoinList extends ArrayList<RechargeNCoinList.RechargeNCoin> implements BaseBean {
 
     @Override
     public void setDataKey(String dataKey) {

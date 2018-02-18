@@ -18,6 +18,7 @@
             android:textSize="16dp" />
 
         <TextView
+            android:id="@+id/nCoin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
@@ -54,11 +55,17 @@
             android:paddingBottom="10dp"
             android:paddingTop="20dp">
 
-            <include layout="@layout/item_recharge_niubi" />
+            <include
+                android:id="@+id/item1"
+                layout="@layout/item_recharge_ncoin" />
 
-            <include layout="@layout/item_recharge_niubi" />
+            <include
+                android:id="@+id/item2"
+                layout="@layout/item_recharge_ncoin" />
 
-            <include layout="@layout/item_recharge_niubi" />
+            <include
+                android:id="@+id/item3"
+                layout="@layout/item_recharge_ncoin" />
 
         </LinearLayout>
 
@@ -68,11 +75,17 @@
             android:orientation="horizontal"
             android:paddingBottom="20dp">
 
-            <include layout="@layout/item_recharge_niubi" />
+            <include
+                android:id="@+id/item4"
+                layout="@layout/item_recharge_ncoin" />
 
-            <include layout="@layout/item_recharge_niubi" />
+            <include
+                android:id="@+id/item5"
+                layout="@layout/item_recharge_ncoin" />
 
-            <include layout="@layout/item_recharge_niubi" />
+            <include
+                android:id="@+id/item6"
+                layout="@layout/item_recharge_ncoin" />
 
         </LinearLayout>
 
