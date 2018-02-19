@@ -136,7 +136,7 @@ public class WorkCardCertifyActivity extends BaseActivity implements View.OnClic
 
         public UploadTask(Context context, String imagePath) {
             super(context);
-            OssManager.get().upload(imagePath, callback);
+            OssManager.get().upload(imagePath, callback , true);
             this.resultPath = imagePath;
         }
 

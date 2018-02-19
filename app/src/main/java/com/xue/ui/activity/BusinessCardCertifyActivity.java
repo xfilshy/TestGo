@@ -137,7 +137,7 @@ public class BusinessCardCertifyActivity extends BaseActivity implements View.On
 
         public UploadTask(Context context, String imagePath) {
             super(context);
-            OssManager.get().upload(imagePath, callback);
+            OssManager.get().upload(imagePath, callback , true);
             this.resultPath = imagePath;
         }
 

@@ -166,7 +166,7 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
             this.realName = realName;
             this.gender = gender;
 
-            OssManager.get().upload(photoPath , callback);
+            OssManager.get().upload(photoPath , callback , true);
         }
 
         @Override

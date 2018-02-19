@@ -221,7 +221,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         public UploadTask(Context context, String cover) {
             super(context);
 
-            OssManager.get().upload(cover, callback);
+            OssManager.get().upload(cover, callback , true);
         }
 
         @Override

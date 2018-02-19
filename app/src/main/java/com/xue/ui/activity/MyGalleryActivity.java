@@ -297,7 +297,7 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
             if (list.isEmpty()) {
                 start();
             } else {
-                OssManager.get().upload(list, callback);
+                OssManager.get().upload(list, callback , false);
             }
         }
 

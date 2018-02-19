@@ -204,7 +204,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
 
         public UploadTask(Context context, String photoPath) {
             super(context);
-            OssManager.get().upload(photoPath, callback);
+            OssManager.get().upload(photoPath, callback , true);
         }
 
         @Override

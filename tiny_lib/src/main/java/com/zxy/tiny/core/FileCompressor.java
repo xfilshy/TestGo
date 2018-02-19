@@ -55,14 +55,14 @@ public class FileCompressor {
         if (quality < 0 || quality > 100)
             quality = CompressKit.DEFAULT_QUALITY;
 
-        if (Conditions.isDirectory(outfile))
-            outfile = FileKit.generateCompressOutfileFormatJPEG().getAbsolutePath();
-
-        if (!Conditions.isJpegFormat(outfile))
-            outfile = FileKit.generateCompressOutfileFormatJPEG().getAbsolutePath();
-
-        if (bitmap.hasAlpha())
-            outfile = FileKit.generateCompressOutfileFormatPNG().getAbsolutePath();
+//        if (Conditions.isDirectory(outfile))
+//            outfile = FileKit.generateCompressOutfileFormatJPEG().getAbsolutePath();
+//
+//        if (!Conditions.isJpegFormat(outfile))
+//            outfile = FileKit.generateCompressOutfileFormatJPEG().getAbsolutePath();
+//
+//        if (bitmap.hasAlpha())
+//            outfile = FileKit.generateCompressOutfileFormatPNG().getAbsolutePath();
 
         boolean isSuccess = false;
         try {

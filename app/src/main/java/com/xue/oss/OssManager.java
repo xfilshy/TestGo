@@ -17,6 +17,9 @@ import com.xue.BaseApplication;
 import com.xue.asyns.SimpleAsyncTask;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.callable.FileCompressCallableTasks;
+import com.zxy.tiny.common.CompressResult;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,10 +56,10 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
         return null;
     }
 
-    private synchronized boolean init(List<String> filePaths, OssManager.Callback callback) {
+    private synchronized boolean init(List<String> filePaths, OssManager.Callback callback, boolean deleteOriginal) {
         if (mOSS == null) {
             if (mOssConfig == null) {
-                new OssConfigTask(filePaths, callback).start();
+                new OssConfigTask(filePaths, callback, deleteOriginal).start();
                 return false;
             } else {
                 String endpoint = mOssConfig.getEndPoint();
@@ -74,26 +77,28 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
         return true;
     }
 
-    public void upload(List<String> filePaths, OssManager.Callback callback) {
+    public void upload(List<String> filePaths, OssManager.Callback callback, boolean deleteOriginal) {
         if (callback != null) {
             callback.onInit();
         }
 
-        if (!init(filePaths, callback)) {
+        if (!init(filePaths, callback, deleteOriginal)) {
             return;
         }
 
-        new UploadTask(mOSS, filePaths, mOssConfig.getBucketName(), mOssConfig.getUploadPath(), callback).start();
+        new UploadTask(mOSS, filePaths, mOssConfig.getBucketName(), mOssConfig.getUploadPath(), deleteOriginal, callback).start();
     }
 
-    public void upload(final String filePath, OssManager.Callback callback) {
+    public void upload(final String filePath, OssManager.Callback callback, boolean deleteOriginal) {
         List<String> filePaths = new ArrayList();
         filePaths.add(filePath);
-        this.upload(filePaths, callback);
+        this.upload(filePaths, callback, deleteOriginal);
     }
 
 
     private static class UploadTask extends BaseUploadTask {
+
+        private boolean deleteOriginal = false;
 
         private List<String> paths;
 
@@ -105,7 +110,7 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
 
         private Callback callback;
 
-        public UploadTask(OSS oss, List<String> paths, String bucket, String uploadPath, Callback callback) {
+        public UploadTask(OSS oss, List<String> paths, String bucket, String uploadPath, boolean deleteOriginal, Callback callback) {
             this.oss = oss;
             this.paths = paths;
             this.bucket = bucket;
@@ -128,18 +133,35 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
                     }
                 }
 
-                String imageType = filePath.substring(filePath.indexOf(".") + 1);
-
                 File tmpFile = null;
-                if ("png".equalsIgnoreCase(imageType)) {
-                    tmpFile = pngComPress(file);
-                } else if ("jpg".equalsIgnoreCase(imageType) || "jpeg".equalsIgnoreCase(imageType)) {
-                    tmpFile = jpegComPress(file);
+                try {
+                    Tiny.FileCompressOptions mCompressOptions = new Tiny.FileCompressOptions();
+                    mCompressOptions.quality = 75;
+                    mCompressOptions.outfile = file.getAbsolutePath() + "tmp";
+
+                    FileCompressCallableTasks.FileAsFileCallable callable = new FileCompressCallableTasks.FileAsFileCallable(mCompressOptions, false, file);
+                    CompressResult compressResult = callable.call();
+
+                    if (compressResult.success) {
+                        tmpFile = new File(compressResult.outfile);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                String imageType = filePath.substring(filePath.indexOf(".") + 1);
+                if (tmpFile == null) {
+                    if ("png".equalsIgnoreCase(imageType)) {
+                        tmpFile = pngComPress(file);
+                    } else if ("jpg".equalsIgnoreCase(imageType) || "jpeg".equalsIgnoreCase(imageType)) {
+                        tmpFile = jpegComPress(file);
+                    }
                 }
 
                 if (tmpFile == null) {
                     tmpFile = file;
                 }
+
                 final String md5Name = uploadPath + MD5Tool.getMd5ByFile(tmpFile);
                 PutObjectRequest request = new PutObjectRequest(bucket, md5Name, tmpFile.getPath());
                 request.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
@@ -172,6 +194,10 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
                     tmpFile.delete();
                 }
 
+                if (deleteOriginal) {
+                    file.delete();
+                }
+
                 if (result != null) {
                     if (result.getStatusCode() == 200) {
                         if (callback != null) {
@@ -198,13 +224,16 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
 
     private class OssConfigTask extends SimpleAsyncTask<OssConfig> {
 
+        private boolean deleteOriginal = false;
+
         private List<String> filePaths;
 
         private OssManager.Callback callback;
 
-        OssConfigTask(List<String> filePaths, OssManager.Callback callback) {
+        OssConfigTask(List<String> filePaths, OssManager.Callback callback, boolean deleteOriginal) {
             this.filePaths = filePaths;
             this.callback = callback;
+            this.deleteOriginal = deleteOriginal;
         }
 
         @Override
@@ -221,7 +250,7 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
         public void onPostExecute(OssConfig result) {
             if (result != null) {
                 mOssConfig = result;
-                upload(filePaths, callback);
+                upload(filePaths, callback, deleteOriginal);
             } else {
                 if (callback != null) {
                     callback.onInitFailure();
