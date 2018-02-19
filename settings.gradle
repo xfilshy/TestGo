@@ -11,4 +11,5 @@ include ':app',
         ':bubbleseekbar_lib',
         ':image_preview_lib',
         ':photoview_lib',
-        ':sliding_lib'
+        ':sliding_lib',
+        ':tiny_lib'
