@@ -120,4 +120,5 @@ dependencies {
     api project(':oss-android-sdk')
     api project(':sticky_recyclerview_lib')
     api project(':bubbleseekbar_lib')
+    api project(':sliding_lib')
 }

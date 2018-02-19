@@ -10,4 +10,5 @@ include ':app',
         ':sticky_recyclerview_lib',
         ':bubbleseekbar_lib',
         ':image_preview_lib',
-        ':photoview_lib'
+        ':photoview_lib',
+        ':sliding_lib'
