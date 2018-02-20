@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.NIMSDK;
 import com.netease.nimlib.sdk.Observer;
@@ -104,14 +103,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initSliding() {
-        SlidingMenu menu = new SlidingMenu(this);
-        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        menu.setShadowWidth(0);
-//        menu.setShadowDrawable(R.drawable.shadow);
-        menu.setBehindOffset(200);
-        menu.setFadeDegree(0.35f);
-        menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
-        menu.setMenu(R.layout.activity_my);
+//        SlidingMenu menu = new SlidingMenu(this);
+//        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+//        menu.setShadowWidth(0);
+////        menu.setShadowDrawable(R.drawable.shadow);
+//        menu.setBehindOffset(200);
+//        menu.setFadeDegree(0.35f);
+//        menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+//        menu.setMenu(R.layout.activity_my);
     }
 
     private void findView() {

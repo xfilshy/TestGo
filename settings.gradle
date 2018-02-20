@@ -13,4 +13,5 @@ include ':app',
         ':photoview_lib',
         ':sliding_lib',
         ':slidingmenu_lib',
-        ':tiny_lib'
+        ':tiny_lib',
+        ':spinkit_lib'

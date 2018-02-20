@@ -2,6 +2,7 @@ package com.xue.asyns;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Looper;
 import android.text.TextUtils;
 
@@ -10,6 +11,7 @@ import com.elianshang.tools.ToastTool;
 import com.elianshang.tools.WeakReferenceHandler;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.impl.DataHull;
+import com.xue.tools.LoadingDialogTools;
 
 
 /**
@@ -310,23 +312,23 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
 
     private void showLoadingDialog() {
         if (showLoading && null != context) {
-//            postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<HttpAsyncTask>() {
-//                @Override
-//                public void run(HttpAsyncTask httpAsyncTask) {
-//                    try {
-//                        loadingDialog = DialogTools.showLoadingDialog(context);
-//                        loadingDialog.setCancelable(cancelable);
-//                        loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                            @Override
-//                            public void onDismiss(DialogInterface dialog) {
-//                                cancel();
-//                            }
-//                        });
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
+            postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<HttpAsyncTask>() {
+                @Override
+                public void run(HttpAsyncTask httpAsyncTask) {
+                    try {
+                        loadingDialog = LoadingDialogTools.showLoadingDialog(context);
+                        loadingDialog.setCancelable(cancelable);
+                        loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                cancel();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 

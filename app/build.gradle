@@ -122,4 +122,5 @@ dependencies {
     api project(':bubbleseekbar_lib')
     api project(':slidingmenu_lib')
     api project(':tiny_lib')
+    api project(':spinkit_lib')
 }
