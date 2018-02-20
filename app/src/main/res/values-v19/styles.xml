@@ -1,8 +1,6 @@
 <resources>
 
     <style name="TransparentTitleTheme" parent="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
         <item name="colorPrimaryDark">@color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>

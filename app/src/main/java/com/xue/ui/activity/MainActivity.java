@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.NIMSDK;
 import com.netease.nimlib.sdk.Observer;
@@ -82,6 +83,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initActionBar();
+        initSliding();
+        addHomePage();
+
+        AVChatManager.getInstance().observeIncomingCall(mIncomingCallObserver, true);
+    }
+
+    private void initActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
@@ -92,11 +101,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             ImageCacheMannager.loadImage(this, R.drawable.photo_test, mActionLogoImageView, true);
         }
-
-        addHomePage();
-
-        AVChatManager.getInstance().observeIncomingCall(mIncomingCallObserver, true);
     }
+
+    private void initSliding() {
+        SlidingMenu menu = new SlidingMenu(this);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setShadowWidth(0);
+//        menu.setShadowDrawable(R.drawable.shadow);
+        menu.setBehindOffset(200);
+        menu.setFadeDegree(0.35f);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+        menu.setMenu(R.layout.activity_my);
+    }
+
+    private void findView() {
+
+    }
+
 
     @Override
     protected void onResume() {

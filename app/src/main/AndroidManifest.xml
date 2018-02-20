@@ -132,8 +132,7 @@
         <!--主页面父容器-->
         <activity
             android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTask"
-            android:logo="@drawable/red_oval" />
+            android:launchMode="singleTask"/>
 
         <!--音视频聊天页-->
         <activity

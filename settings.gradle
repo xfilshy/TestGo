@@ -12,4 +12,5 @@ include ':app',
         ':image_preview_lib',
         ':photoview_lib',
         ':sliding_lib',
+        ':slidingmenu_lib',
         ':tiny_lib'
