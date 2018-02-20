@@ -120,7 +120,7 @@ dependencies {
     api project(':oss-android-sdk')
     api project(':sticky_recyclerview_lib')
     api project(':bubbleseekbar_lib')
-    api project(':slidingmenu_lib')
+    api project(':sliding_lib')
     api project(':tiny_lib')
     api project(':spinkit_lib')
 }

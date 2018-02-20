@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlActivated">@color/black_light</item>
         <item name="android:windowBackground">@color/grey_50</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="WhiteAppTheme" parent="AppTheme">
@@ -96,4 +97,9 @@
         <item name="android:backgroundDimAmount">0.0</item>
     </style>
 
+    <!--小汉堡颜色为白色-->
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/white</item>
+    </style>
 </resources>

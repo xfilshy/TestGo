@@ -13,9 +13,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="41dp">
+            android:paddingLeft="16dp"
+            android:paddingTop="20dp">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
                     android:id="@+id/gender"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:scaleType="center"/>
+                    android:scaleType="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -84,7 +84,6 @@
                     android:id="@+id/uid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="123123"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -92,29 +91,29 @@
                     app:layout_constraintTop_toBottomOf="@id/photo" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/blue_light_shape"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/photo" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="30dp"
                 android:gravity="center"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/signature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/blue_light_shape"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:visibility="gone"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/photo" />
 
                 <TextView
                     android:id="@+id/fee"
@@ -147,7 +146,6 @@
                 android:onClick="goInfo"
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
-                android:paddingLeft="50dp"
                 android:paddingRight="30dp"
                 android:paddingTop="15dp">
 
@@ -173,7 +171,6 @@
                 android:onClick="goCertify"
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
-                android:paddingLeft="50dp"
                 android:paddingRight="30dp"
                 android:paddingTop="15dp">
 
@@ -210,7 +207,6 @@
                 android:onClick="goRecharge"
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
-                android:paddingLeft="50dp"
                 android:paddingRight="30dp"
                 android:paddingTop="15dp">
 
@@ -246,7 +242,6 @@
                 android:onClick="goPayments"
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
-                android:paddingLeft="50dp"
                 android:paddingRight="30dp"
                 android:paddingTop="15dp">
 
@@ -279,7 +274,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
-                android:paddingLeft="50dp"
                 android:paddingRight="30dp"
                 android:paddingTop="15dp">
 
@@ -303,7 +297,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
-                android:paddingLeft="50dp"
                 android:paddingRight="30dp"
                 android:paddingTop="15dp">
 
@@ -332,6 +325,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:onClick="closeActivity"
+        android:visibility="gone"
         app:srcCompat="@drawable/icon_close" />
 
     <ImageView
@@ -341,6 +335,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:onClick="goSetting"
+        android:visibility="gone"
         app:srcCompat="@drawable/icon_setting" />
 
     <LinearLayout
