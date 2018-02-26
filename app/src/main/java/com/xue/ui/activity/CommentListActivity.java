@@ -100,6 +100,7 @@ public class CommentListActivity extends BaseActivity {
             mAdapter.addFooter(mFooterView);
 
             mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.addOnScrollListener(mOnScrollListener);
         }
 
         mAdapter.setDataList(mOrderCommentInfo);
@@ -154,7 +155,7 @@ public class CommentListActivity extends BaseActivity {
         private boolean showLoading;
 
         public GetCommentInfoTask(Context context, String uid, int offset, int limit, boolean isNew, boolean showLoading) {
-            super(context , true , showLoading);
+            super(context, true, showLoading);
             isLoading = true;
             this.uid = uid;
             this.offset = offset;

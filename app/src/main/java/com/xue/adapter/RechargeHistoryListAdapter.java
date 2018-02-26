@@ -5,8 +5,15 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.xue.R;
+import com.xue.bean.WalletTradeList;
 
 public class RechargeHistoryListAdapter extends RecyclerView.Adapter<RechargeHistoryListAdapter.HistoryViewHolder> {
+
+    private WalletTradeList dataList;
+
+    public void setDataList(WalletTradeList dataList) {
+        this.dataList = dataList;
+    }
 
     @Override
     public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

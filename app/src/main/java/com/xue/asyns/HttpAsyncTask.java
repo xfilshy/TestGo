@@ -222,6 +222,17 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
                     }
                 }
             });
+        } finally {
+            postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<HttpAsyncTask>() {
+                @Override
+                public void run(HttpAsyncTask httpAsyncTask) {
+                    try {
+                        httpAsyncTask.finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         return SUCCESS;
@@ -302,6 +313,9 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
         }
     }
 
+    @Override
+    public void finish() {
+    }
 
     /**
      * 数据无更新，回调
