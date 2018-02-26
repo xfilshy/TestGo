@@ -75,7 +75,6 @@ public class DescribeActivity extends BaseActivity implements View.OnClickListen
             mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
             mBackImageView.setOnClickListener(this);
             mRightTextView.setOnClickListener(this);
-            mRightTextView.setVisibility(View.VISIBLE);
 
             mTitleTextView.setText("独白");
             mRightTextView.setText("保存");
@@ -143,7 +142,7 @@ public class DescribeActivity extends BaseActivity implements View.OnClickListen
         private String intro;
 
         public UploadTask(Context context, String intro) {
-            super(context);
+            super(context, true, true);
             this.intro = intro;
         }
 

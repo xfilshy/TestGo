@@ -203,7 +203,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         private String resultPath;
 
         public UploadTask(Context context, String photoPath) {
-            super(context);
+            super(context , true , true);
             OssManager.get().upload(photoPath, callback , true);
         }
 

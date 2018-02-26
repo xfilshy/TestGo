@@ -83,7 +83,7 @@ public class AcademicListActivity extends BaseActivity implements AdapterOnItemC
     private class GetTask extends HttpAsyncTask<AcademicList> {
 
         public GetTask(Context context) {
-            super(context);
+            super(context , true , true);
         }
 
         @Override

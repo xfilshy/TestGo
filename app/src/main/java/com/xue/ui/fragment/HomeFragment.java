@@ -89,7 +89,7 @@ public class HomeFragment extends BaseFragment implements AdapterOnItemClickCall
     private class ListTask extends HttpAsyncTask<UserList> {
 
         public ListTask(Context context) {
-            super(context);
+            super(context, true, true);
         }
 
         @Override

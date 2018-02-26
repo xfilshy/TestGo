@@ -358,7 +358,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
         private String endAt;
 
         public CreateTask(Context context, String companyName, String industryId, String positionName, String directionName, String describe, String beginAt, String endAt) {
-            super(context);
+            super(context,true , true);
 
             this.companyName = companyName;
             this.industryId = industryId;
@@ -400,7 +400,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
         private String endAt;
 
         public UpdateTask(Context context, String id, String companyName, String industryId, String positionName, String directionName, String describe, String beginAt, String endAt) {
-            super(context);
+            super(context,true , true);
 
             this.id = id;
             this.companyName = companyName;
@@ -429,7 +429,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
         private String id;
 
         public DeleteTask(Context context, String id) {
-            super(context);
+            super(context,true , true);
 
             this.id = id;
         }

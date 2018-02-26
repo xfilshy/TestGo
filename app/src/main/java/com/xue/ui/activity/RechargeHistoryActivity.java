@@ -13,6 +13,10 @@ import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.adapter.RechargeHistoryListAdapter;
+import com.xue.asyns.HttpAsyncTask;
+import com.xue.bean.WalletTradeList;
+import com.xue.http.HttpApi;
+import com.xue.http.impl.DataHull;
 import com.xue.support.view.DividerItemDecoration;
 
 public class RechargeHistoryActivity extends BaseActivity implements View.OnClickListener {
@@ -30,6 +34,10 @@ public class RechargeHistoryActivity extends BaseActivity implements View.OnClic
 
     private RechargeHistoryListAdapter mAdapter;
 
+    private WalletTradeList mWalletTradeList;
+
+    private int limit = 20;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +45,8 @@ public class RechargeHistoryActivity extends BaseActivity implements View.OnClic
         setContentView(R.layout.activity_payments_history);
         initActionBar();
         findView();
+
+        request(true, true);
     }
 
     private void initActionBar() {
@@ -71,6 +81,40 @@ public class RechargeHistoryActivity extends BaseActivity implements View.OnClic
     public void onClick(View v) {
         if (mBackImageView == v) {
             finish();
+        }
+    }
+
+    private void request(boolean isNew, boolean showLoading) {
+        int offset = mWalletTradeList == null ? 0 : mWalletTradeList.size();
+        new GetTradeListTask(this, String.valueOf(offset), String.valueOf(limit), isNew, showLoading).start();
+    }
+
+    private class GetTradeListTask extends HttpAsyncTask<WalletTradeList> {
+
+        private String offset;
+
+        private String limit;
+
+        private boolean isNew;
+
+        private boolean showLoading;
+
+        public GetTradeListTask(Context context, String offset, String limit, boolean isNew, boolean showLoading) {
+            super(context, true, true);
+            this.offset = offset;
+            this.limit = limit;
+            this.isNew = isNew;
+            this.showLoading = showLoading;
+        }
+
+        @Override
+        public DataHull<WalletTradeList> doInBackground() {
+            return HttpApi.getWalletTradeList("1", offset, limit);
+        }
+
+        @Override
+        public void onPostExecute(int updateId, WalletTradeList result) {
+
         }
     }
 }

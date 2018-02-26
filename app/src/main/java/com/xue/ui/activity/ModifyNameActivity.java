@@ -126,7 +126,7 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
         private String realName;
 
         public UploadTask(Context context, String realName) {
-            super(context);
+            super(context , true , true);
             this.realName = realName;
         }
 

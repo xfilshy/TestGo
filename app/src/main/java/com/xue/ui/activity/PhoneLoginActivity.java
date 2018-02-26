@@ -162,7 +162,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
         private String verifyCode;
 
         public LoginTask(Context context, String cellphone, String verifyCode) {
-            super(context);
+            super(context , true , true);
             this.cellphone = cellphone;
             this.verifyCode = verifyCode;
         }

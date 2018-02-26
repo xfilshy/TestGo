@@ -245,7 +245,7 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
     private class GetTask extends HttpAsyncTask<MomentInfoList> {
 
         public GetTask(Context context) {
-            super(context);
+            super(context , true , true);
         }
 
         @Override
@@ -276,7 +276,7 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
         private ArrayList<String> pics;
 
         public SaveTask(Context context, String momentId, String text, ArrayList<MomentInfoList.MomentRes> resList) {
-            super(context);
+            super(context , true , true);
             this.momentId = momentId;
             this.text = text;
             this.resList = resList;

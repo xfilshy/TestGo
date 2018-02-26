@@ -148,7 +148,7 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
         private String tagName;
 
         public CreateTask(Context context, String tagName) {
-            super(context);
+            super(context , true , true);
             this.tagName = tagName;
         }
 
@@ -171,7 +171,7 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
         private String tagName;
 
         public UploadTask(Context context, String tagId, String tagName) {
-            super(context);
+            super(context , true , true);
             this.tagId = tagId;
             this.tagName = tagName;
         }
@@ -193,7 +193,7 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
         private String tagId;
 
         public DeleteTask(Context context, String tagId) {
-            super(context);
+            super(context , true , true);
             this.tagId = tagId;
         }
 

@@ -396,7 +396,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         private String resultPath;
 
         public UploadTask(Context context, String cover) {
-            super(context);
+            super(context , true , true);
 
             OssManager.get().upload(cover, callback, true);
         }

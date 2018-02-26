@@ -187,7 +187,7 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
     private class CityListTask extends HttpAsyncTask<CityList> {
 
         public CityListTask(Context context) {
-            super(context);
+            super(context , true , true);
         }
 
         @Override
@@ -209,7 +209,7 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
         private String location;
 
         public UploadTask(Context context, String homeTown, String location) {
-            super(context);
+            super(context , true , true);
             this.homeTown = homeTown;
             this.location = location;
         }

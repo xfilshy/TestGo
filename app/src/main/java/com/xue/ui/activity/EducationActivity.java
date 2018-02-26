@@ -335,7 +335,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         private String endAt;
 
         public CreateTask(Context context, String school, String major, String academic, String descirbe, String beginAt, String endAt) {
-            super(context);
+            super(context , true , true);
 
             this.school = school;
             this.major = major;
@@ -374,7 +374,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         private String endAt;
 
         public UpdateTask(Context context, String id, String school, String major, String academic, String descirbe, String beginAt, String endAt) {
-            super(context);
+            super(context , true , true);
 
             this.id = id;
             this.school = school;
@@ -402,7 +402,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         private String id;
 
         public DeleteTask(Context context, String id) {
-            super(context);
+            super(context , true , true);
 
             this.id = id;
         }

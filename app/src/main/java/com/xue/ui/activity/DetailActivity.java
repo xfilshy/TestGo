@@ -347,7 +347,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         private String uid;
 
         public DetailTask(Context context, String uid) {
-            super(context);
+            super(context , true , true);
             this.uid = uid;
         }
 
@@ -393,7 +393,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         private String uid;
 
         public CreateFollow(Context context, String uid) {
-            super(context);
+            super(context , true , true);
             this.uid = uid;
         }
 
@@ -416,7 +416,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         private String uid;
 
         public DeleteFollow(Context context, String uid) {
-            super(context);
+            super(context , true , true);
             this.uid = uid;
         }
 
@@ -458,7 +458,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     private class CreateComment extends HttpAsyncTask<OrderCommentList.Comment> {
 
         public CreateComment(Context context) {
-            super(context);
+            super(context , true , true);
         }
 
         @Override

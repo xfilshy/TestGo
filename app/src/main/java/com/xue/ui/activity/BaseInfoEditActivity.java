@@ -162,7 +162,7 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
         private String resultPhotoPath;
 
         public UpdateTask(Context context, String realName, int gender, String photoPath) {
-            super(context);
+            super(context , true , true);
             this.realName = realName;
             this.gender = gender;
 

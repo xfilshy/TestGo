@@ -199,7 +199,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     private class UserInfoTask extends HttpAsyncTask<User> {
 
         public UserInfoTask(Context context) {
-            super(context);
+            super(context , true , true);
         }
 
         @Override
@@ -219,7 +219,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         private String resultPath;
 
         public UploadTask(Context context, String cover) {
-            super(context);
+            super(context , true , true);
 
             OssManager.get().upload(cover, callback , true);
         }

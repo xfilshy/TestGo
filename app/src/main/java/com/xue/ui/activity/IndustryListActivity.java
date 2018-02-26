@@ -83,7 +83,7 @@ public class IndustryListActivity extends BaseActivity implements AdapterOnItemC
     private class GetTask extends HttpAsyncTask<IndustryList> {
 
         public GetTask(Context context) {
-            super(context);
+            super(context , true , true);
         }
 
         @Override

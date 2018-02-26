@@ -141,7 +141,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
     private class GetWalletTask extends HttpAsyncTask<WalletDecorator> {
 
         public GetWalletTask(Context context) {
-            super(context);
+            super(context , true , true);
         }
 
         @Override

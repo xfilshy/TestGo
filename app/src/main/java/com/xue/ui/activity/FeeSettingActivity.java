@@ -213,7 +213,7 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
         private int serviceFee;
 
         public UpdateTask(Context context, String signature, int serviceFee) {
-            super(context);
+            super(context,true , true);
             this.signature = signature;
             this.serviceFee = serviceFee;
         }

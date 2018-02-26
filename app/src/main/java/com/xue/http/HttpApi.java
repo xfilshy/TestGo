@@ -19,6 +19,7 @@ import com.xue.bean.UserList;
 import com.xue.bean.UserTagInfo;
 import com.xue.bean.UserWorkInfo;
 import com.xue.bean.WalletDecorator;
+import com.xue.bean.WalletTradeList;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseHttpParameter;
 import com.xue.http.hook.BaseKVP;
@@ -46,6 +47,7 @@ import com.xue.parsers.UserTagInfoParser;
 import com.xue.parsers.UserWorkInfoParser;
 import com.xue.parsers.UsetListParser;
 import com.xue.parsers.WalletDecoratorParser;
+import com.xue.parsers.WalletTradeListParser;
 import com.xue.tools.AppTool;
 import com.xue.tools.ConfigTool;
 import com.xue.tools.SecretTool;
@@ -530,6 +532,20 @@ public class HttpApi {
         String page_size = "page_size";
     }
 
+    /**
+     * 获取交易记录
+     */
+    private interface GetWalletTradeList {
+
+        String _funcation = "/wallet/trade/getlist";
+
+        String currency_type = "currency_type";
+
+        String offset = "offset";
+
+        String limit = "limit";
+
+    }
 
     /**
      * 获取钱包数据  这个接口暂时不管
@@ -1147,6 +1163,22 @@ public class HttpApi {
         String url = base_url + GetWalletInfo._funcation;
         int type = BaseHttpParameter.Type.GET;
         HttpDynamicParameter<WalletDecoratorParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new WalletDecoratorParser(), 0, secretKey);
+
+        return request(parameter);
+    }
+
+    /**
+     * 获取钱包交易记录
+     */
+    public static DataHull<WalletTradeList> getWalletTradeList(String currencyType, String offset, String limit) {
+        String url = base_url + GetWalletTradeList._funcation;
+        int type = BaseHttpParameter.Type.GET;
+        List<BaseKVP> params = addParams(
+                new DefaultKVPBean(GetWalletTradeList.currency_type, currencyType),
+                new DefaultKVPBean(GetWalletTradeList.offset, offset),
+                new DefaultKVPBean(GetWalletTradeList.limit, limit)
+        );
+        HttpDynamicParameter<WalletTradeListParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new WalletTradeListParser(), 0, secretKey);
 
         return request(parameter);
     }
