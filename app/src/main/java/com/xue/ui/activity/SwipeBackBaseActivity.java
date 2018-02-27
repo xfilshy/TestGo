@@ -4,13 +4,13 @@ import android.view.View;
 
 import com.netease.nimlib.sdk.NIMSDK;
 import com.xue.BaseApplication;
-import com.xue.support.swipeback.SwipeBackActivity;
+import com.xue.support.slideback.activity.SlideBackActivity;
 
 /**
  * Created by xfilshy on 2018/1/17.
  */
 
-public class SwipeBackBaseActivity extends SwipeBackActivity {
+public class SwipeBackBaseActivity extends SlideBackActivity {
 
     public void closeActivity(View view) {
         finish();

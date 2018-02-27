@@ -113,19 +113,19 @@
         <attr name="tagGroupStyle" format="reference" />
     </declare-styleable>
 
-
-    <declare-styleable name="SwipeBackLayout">
-        <attr name="edge_size" format="dimension"/>
-        <attr name="edge_flag">
-            <enum name="left" value="0" />
-            <enum name="right" value="1" />
-            <enum name="bottom" value="2" />
-            <enum name="all" value="3" />
+    <declare-styleable name="SlideBackLayout">
+        <attr name="edgeFlags">
+            <flag name="left" value="0" />
+            <flag name="right" value="1" />
+            <flag name="bottom" value="2" />
+            <flag name="all" value="3" />
         </attr>
-        <attr name="shadow_left" format="reference"/>
-        <attr name="shadow_right" format="reference"/>
-        <attr name="shadow_bottom" format="reference"/>
+        <attr name="sensitivity" format="float" />
+        <attr name="scrollThreshold" format="float" />
+        <attr name="shadow_left" format="reference" />
+        <attr name="shadow_right" format="reference" />
+        <attr name="shadow_bottom" format="reference" />
     </declare-styleable>
 
-    <attr name="SwipeBackLayoutStyle" format="reference"/>
+    <attr name="SlideBackLayoutStyle" format="reference" />
 </resources>
