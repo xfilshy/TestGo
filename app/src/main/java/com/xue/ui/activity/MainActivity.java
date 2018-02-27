@@ -189,7 +189,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             UserConfigInfo userConfigInfo = user.getUserConfigInfo();
             if (userConfigInfo != null) {
                 mFeeTextView.setVisibility(View.VISIBLE);
-                mFeeTextView.setText(userConfigInfo.getFeeDefault() + "钻石/分钟");
+                mFeeTextView.setText(userConfigInfo.getFeeDefault() + "钻/分钟");
             }
 
             UserExpertInfo userExpertInfo = user.getUserExpertInfo();
@@ -203,7 +203,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 if (userExpertInfo.getServiceFee() > 0) {
                     mFeeTextView.setVisibility(View.VISIBLE);
-                    mFeeTextView.setText(userExpertInfo.getServiceFee() + "钻石/分钟");
+                    mFeeTextView.setText(userExpertInfo.getServiceFee() + "钻/分钟");
                 } else {
                     mFeeTextView.setVisibility(View.GONE);
                 }
@@ -285,10 +285,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void goPayments(View view) {
         PaymentsActivity.launch(this);
-    }
-
-    public void goSetting(View view) {
-        SettingActivity.launch(this);
     }
 
     public void goPickPhoto(View view) {
@@ -376,7 +372,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private class UserInfoTask extends HttpAsyncTask<User> {
 
         public UserInfoTask(Context context) {
-            super(context , true , true);
+            super(context, true, true);
         }
 
         @Override
@@ -396,7 +392,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         private String resultPath;
 
         public UploadTask(Context context, String cover) {
-            super(context , true , true);
+            super(context, true, true);
 
             OssManager.get().upload(cover, callback, true);
         }

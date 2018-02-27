@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_tr_80"
-    android:orientation="vertical">
+    android:background="@color/black_tr_80">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.615" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:paddingTop="20dp">
 
             <RelativeLayout
@@ -111,7 +123,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -126,7 +138,7 @@
                     android:paddingRight="8dp"
                     android:paddingTop="4dp"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="14dp"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -145,14 +157,13 @@
                 android:gravity="center_vertical"
                 android:onClick="goInfo"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
-                android:paddingRight="30dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     app:srcCompat="@drawable/icon_account" />
 
                 <TextView
@@ -170,14 +181,13 @@
                 android:gravity="center_vertical"
                 android:onClick="goCertify"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
-                android:paddingRight="30dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     app:srcCompat="@drawable/icon_auth" />
 
                 <TextView
@@ -195,7 +205,7 @@
                     android:gravity="right"
                     android:text="未认证"
                     android:textColor="@color/grey_light"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
             </LinearLayout>
 
@@ -206,14 +216,13 @@
                 android:gravity="center_vertical"
                 android:onClick="goRecharge"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
-                android:paddingRight="30dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     app:srcCompat="@drawable/icon_money" />
 
                 <TextView
@@ -230,7 +239,7 @@
                     android:gravity="right"
                     android:text="0钻石"
                     android:textColor="@color/grey_light"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
             </LinearLayout>
 
@@ -241,14 +250,13 @@
                 android:gravity="center_vertical"
                 android:onClick="goPayments"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
-                android:paddingRight="30dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     app:srcCompat="@drawable/icon_balance" />
 
                 <TextView
@@ -265,7 +273,7 @@
                     android:gravity="right"
                     android:text="0牛币"
                     android:textColor="@color/grey_light"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -273,14 +281,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
-                android:paddingRight="30dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     app:srcCompat="@drawable/icon_friend" />
 
                 <TextView
@@ -296,14 +303,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="15dp"
-                android:paddingRight="30dp"
-                android:paddingTop="15dp">
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     app:srcCompat="@drawable/icon_help" />
 
                 <TextView
@@ -317,31 +323,9 @@
 
     </ScrollView>
 
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp"
-        android:onClick="closeActivity"
-        android:visibility="gone"
-        app:srcCompat="@drawable/icon_close" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:onClick="goSetting"
-        android:visibility="gone"
-        app:srcCompat="@drawable/icon_setting" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/close"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="10dp"
@@ -350,7 +334,10 @@
         android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
@@ -365,5 +352,6 @@
             android:layout_height="20dp"
             android:src="@drawable/icon_close" />
     </LinearLayout>
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
+
 
