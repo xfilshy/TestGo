@@ -108,8 +108,6 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
 //                    HttpApi.homeConfigInit();
                 }
 
-                dissmissLoadingDialog();
-
                 final DataHull<T> dataHull = dh;
 
                 if (!isCancel) {
@@ -211,7 +209,6 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
             // 线程异常
 //            UMengEventTool.onRequest(context, "线程异常", "-1", "", (int) (System.currentTimeMillis() - start));
             e.printStackTrace();
-            dissmissLoadingDialog();
             postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<HttpAsyncTask>() {
                 @Override
                 public void run(HttpAsyncTask httpAsyncTask) {
@@ -223,11 +220,12 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
                 }
             });
         } finally {
+            dissmissLoadingDialog();
             postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<HttpAsyncTask>() {
                 @Override
                 public void run(HttpAsyncTask httpAsyncTask) {
                     try {
-                        httpAsyncTask.finish();
+                        httpAsyncTask.finished();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -314,7 +312,7 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
     }
 
     @Override
-    public void finish() {
+    public void finished() {
     }
 
     /**

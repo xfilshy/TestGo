@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elianshang.tools.EditTextTool;
+import com.elianshang.tools.TextTool;
 import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
@@ -114,6 +115,13 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
     @Override
     public void afterTextChanged(Editable s) {
         String text = s.toString();
+        String fText = TextTool.getFullWidthText(text, 5, true);
+        if (!TextUtils.equals(text, fText)) {
+            mRealNameEditText.setText(fText);
+            mRealNameEditText.setSelection(fText.length());
+            return;
+        }
+
         if (TextUtils.isEmpty(text) || TextUtils.equals(text, mRealName)) {
             mRightTextView.setVisibility(View.GONE);
         } else {
@@ -126,7 +134,7 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
         private String realName;
 
         public UploadTask(Context context, String realName) {
-            super(context , true , true);
+            super(context, true, true);
             this.realName = realName;
         }
 

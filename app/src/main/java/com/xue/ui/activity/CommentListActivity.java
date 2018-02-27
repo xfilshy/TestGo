@@ -179,6 +179,11 @@ public class CommentListActivity extends BaseActivity {
             }
 
             fillData();
+        }
+
+        @Override
+        public void finished() {
+            super.finished();
             isLoading = false;
         }
     }

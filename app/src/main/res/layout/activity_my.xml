@@ -78,7 +78,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -107,7 +107,7 @@
                 android:id="@+id/signature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/blue_light_shape"
                 android:paddingBottom="4dp"
                 android:paddingLeft="8dp"
@@ -138,7 +138,7 @@
                     android:paddingRight="8dp"
                     android:paddingTop="4dp"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="12dp"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -205,7 +205,7 @@
                     android:gravity="right"
                     android:text="未认证"
                     android:textColor="@color/grey_light"
-                    android:textSize="14dp" />
+                    android:textSize="12dp" />
 
             </LinearLayout>
 
@@ -239,7 +239,7 @@
                     android:gravity="right"
                     android:text="0钻石"
                     android:textColor="@color/grey_light"
-                    android:textSize="14dp" />
+                    android:textSize="12dp" />
 
             </LinearLayout>
 
@@ -273,7 +273,7 @@
                     android:gravity="right"
                     android:text="0牛币"
                     android:textColor="@color/grey_light"
-                    android:textSize="14dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
             <LinearLayout

@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:hint="修改姓名"
+            android:hint="修改姓名（最长5字）"
+            android:singleLine="true"
             android:padding="16dp"
             android:textColor="@color/black"
             android:textSize="16dp" />

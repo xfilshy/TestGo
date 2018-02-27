@@ -185,8 +185,8 @@ public class RechargeHistoryActivity extends BaseActivity implements View.OnClic
         }
 
         @Override
-        public void finish() {
-            super.finish();
+        public void finished() {
+            super.finished();
             isLoading = false;
         }
     }

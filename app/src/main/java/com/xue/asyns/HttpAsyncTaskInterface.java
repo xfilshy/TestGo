@@ -27,6 +27,6 @@ public interface HttpAsyncTaskInterface<T extends BaseBean> {
     /**
      * 结束最终回调
      */
-    public void finish();
+    public void finished();
 
 }

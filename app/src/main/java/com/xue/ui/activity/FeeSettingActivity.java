@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.elianshang.tools.EditTextTool;
+import com.elianshang.tools.TextTool;
 import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.asyns.HttpAsyncTask;
@@ -94,6 +96,8 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
         mFeeTextView = findViewById(R.id.fee);
         mConfirmTextView = findViewById(R.id.confirm);
         mBubbleSeekBar = findViewById(R.id.seekBar);
+
+        EditTextTool.setEmojiFilter(mSignatureEditText);
 
         mConfirmTextView.setOnClickListener(this);
     }
@@ -203,6 +207,13 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void afterTextChanged(Editable s) {
+        String text = s.toString();
+        String fText = TextTool.getFullWidthText(text, 10, true);
+        if (!TextUtils.equals(text, fText)) {
+            mSignatureEditText.setText(fText);
+            mSignatureEditText.setSelection(fText.length());
+            return;
+        }
         checkChange();
     }
 
@@ -213,7 +224,7 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
         private int serviceFee;
 
         public UpdateTask(Context context, String signature, int serviceFee) {
-            super(context,true , true);
+            super(context, true, true);
             this.signature = signature;
             this.serviceFee = serviceFee;
         }
