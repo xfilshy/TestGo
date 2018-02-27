@@ -204,11 +204,6 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
 
         @Override
         public DataHull<User> doInBackground() {
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             return HttpApi.userInfo();
         }
 
