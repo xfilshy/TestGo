@@ -21,6 +21,7 @@ import com.xue.bean.UserTagInfo;
 import com.xue.bean.UserWorkInfo;
 import com.xue.netease.NimSDKOptionConfig;
 import com.xue.preference.PreferencesManager;
+import com.xue.support.slideback.SwipeBackHelper;
 import com.xue.tools.PreviewImageLoader;
 
 /**
@@ -61,6 +62,7 @@ public class BaseApplication extends Application {
              * 初始化查看图片
              * */
             ZoomMediaLoader.getInstance().init(new PreviewImageLoader());
+            SwipeBackHelper.init(this, null);
         }
     }
 
