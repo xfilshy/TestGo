@@ -43,11 +43,11 @@ import com.xue.ui.views.FavoriteImageBehavior;
 
 import java.util.List;
 
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static android.view.View.GONE;
 
-public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, AdapterOnItemClickCallback<DetailHelper.ItemType> {
+public class DetailActivity extends SwipeBackBaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, AdapterOnItemClickCallback<DetailHelper.ItemType> {
 
     public static void launch(Context context, String uid) {
         Intent intent = new Intent(context, DetailActivity.class);
@@ -347,7 +347,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         private String uid;
 
         public DetailTask(Context context, String uid) {
-            super(context , true , true);
+            super(context, true, true);
             this.uid = uid;
         }
 
@@ -393,7 +393,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         private String uid;
 
         public CreateFollow(Context context, String uid) {
-            super(context , true , true);
+            super(context, true, true);
             this.uid = uid;
         }
 
@@ -416,7 +416,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
         private String uid;
 
         public DeleteFollow(Context context, String uid) {
-            super(context , true , true);
+            super(context, true, true);
             this.uid = uid;
         }
 
@@ -458,7 +458,7 @@ public class DetailActivity extends BaseActivity implements AppBarLayout.OnOffse
     private class CreateComment extends HttpAsyncTask<OrderCommentList.Comment> {
 
         public CreateComment(Context context) {
-            super(context , true , true);
+            super(context, true, true);
         }
 
         @Override

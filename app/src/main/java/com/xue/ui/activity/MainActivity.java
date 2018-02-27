@@ -287,6 +287,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         PaymentsActivity.launch(this);
     }
 
+    public void goSetting(View view) {
+        SettingActivity.launch(this);
+    }
+
     public void goPickPhoto(View view) {
         SimplePickHandlerCallBack iHandlerCallBack = new SimplePickHandlerCallBack() {
 
