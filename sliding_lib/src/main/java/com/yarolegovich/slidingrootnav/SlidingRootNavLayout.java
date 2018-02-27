@@ -55,7 +55,7 @@ public class SlidingRootNavLayout extends FrameLayout implements SlidingRootNav 
 
         FLING_MIN_VELOCITY = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
 
-        dragHelper = ViewDragHelper.create(this, new ViewDragCallback());
+        dragHelper = ViewDragHelper.create(this, 0.5f, new ViewDragCallback());
 
         dragProgress = 0f;
         isMenuHidden = true;
@@ -64,8 +64,8 @@ public class SlidingRootNavLayout extends FrameLayout implements SlidingRootNav 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return (!isMenuLocked
-            && dragHelper.shouldInterceptTouchEvent(ev))
-            || shouldBlockClick(ev);
+                && dragHelper.shouldInterceptTouchEvent(ev))
+                || shouldBlockClick(ev);
     }
 
     @Override
@@ -113,7 +113,8 @@ public class SlidingRootNavLayout extends FrameLayout implements SlidingRootNav 
         return isMenuHidden;
     }
 
-    @Override public boolean isMenuOpened() {
+    @Override
+    public boolean isMenuOpened() {
         return !isMenuHidden;
     }
 
@@ -258,12 +259,13 @@ public class SlidingRootNavLayout extends FrameLayout implements SlidingRootNav 
             boolean isOnEdge = edgeTouched;
             edgeTouched = false;
             if (isMenuClosed()) {
-                return child == rootView && isOnEdge;
+                return child == rootView ;
             } else {
                 if (child != rootView) {
                     dragHelper.captureChildView(rootView, pointerId);
                     return false;
                 }
+
                 return true;
             }
         }

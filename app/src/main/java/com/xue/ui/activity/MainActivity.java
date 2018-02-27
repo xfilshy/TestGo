@@ -146,6 +146,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void initSliding(@Nullable Bundle savedInstanceState) {
         mSlidingRootNav = new SlidingRootNavBuilder(this)
+                .withDragDistance(236)
                 .withToolbarMenuToggle(mToolbar)
                 .withMenuOpened(false)
                 .withContentClickableWhenMenuOpened(false)
