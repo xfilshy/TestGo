@@ -14,14 +14,16 @@ import org.json.JSONObject;
 public class PreferencesManager {
 
     private static PreferencesManager mInstance;
+
     private Context mContext;
-    private static String USER = "user";
 
-    private static String DEVICE = "device";
+    private static final String USER = "user";
 
-    private static String TACTIC = "tactic";
+    private static final String DEVICE = "device";
 
-    private static String SHOPPING = "shopping";
+    private static final String TACTIC = "tactic";
+
+    private static final String TIP = "tip";
 
     public static PreferencesManager get() {
         if (null == mInstance) {
@@ -81,5 +83,17 @@ public class PreferencesManager {
         }
 
         return user;
+    }
+
+    public boolean isShowUserTip() {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(TIP, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("user", true);
+    }
+
+    public void closeUserTip() {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(TIP, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("user", false);
+        editor.commit();
     }
 }

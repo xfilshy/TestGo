@@ -220,7 +220,7 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
                 }
             });
         } finally {
-            dissmissLoadingDialog();
+            dismissLoadingDialog();
             postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<HttpAsyncTask>() {
                 @Override
                 public void run(HttpAsyncTask httpAsyncTask) {
@@ -322,20 +322,26 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
 //        ToastTool.show(context, R.string.text_no_update);
     }
 
-    private void showLoadingDialog() {
+    protected void showLoadingDialog() {
         if (showLoading && null != context) {
             postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<HttpAsyncTask>() {
                 @Override
                 public void run(HttpAsyncTask httpAsyncTask) {
                     try {
-                        loadingDialog = LoadingDialogTools.showLoadingDialog(context);
-                        loadingDialog.setCancelable(cancelable);
-                        loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                cancel();
-                            }
-                        });
+                        if (loadingDialog == null) {
+                            loadingDialog = LoadingDialogTools.showLoadingDialog(context);
+                            loadingDialog.setCancelable(cancelable);
+                            loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    cancel();
+                                }
+                            });
+                        }
+
+                        if (!loadingDialog.isShowing()) {
+                            loadingDialog.show();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -344,7 +350,7 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
         }
     }
 
-    private void dissmissLoadingDialog() {
+    protected void dismissLoadingDialog() {
         if (showLoading && null != context) {
             postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<HttpAsyncTask>() {
                 @Override

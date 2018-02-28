@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.elianshang.tools.ToastTool;
@@ -22,6 +23,7 @@ import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.oss.OssManager;
 import com.xue.oss.SimpleOssManagerCallback;
+import com.xue.preference.PreferencesManager;
 import com.xue.tools.GlideImageLoader;
 import com.xue.tools.SimplePickHandlerCallBack;
 import com.yancy.gallerypick.config.GalleryConfig;
@@ -35,6 +37,8 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         Intent intent = new Intent(context, MyActivity.class);
         context.startActivity(intent);
     }
+
+    private LinearLayout mTipLinearLayout;
 
     private ImageView mPhotoImageView;
 
@@ -57,14 +61,15 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
         findView();
-        new UserInfoTask(this).start();
 
+        checkUserTip();
+        new UserInfoTask(this).start();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        init();
+        initUserInfo();
     }
 
     @Override
@@ -78,6 +83,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void findView() {
+        mTipLinearLayout = findViewById(R.id.tip);
         mPhotoImageView = findViewById(R.id.photo);
         mRealNameTextView = findViewById(R.id.realName);
         mGenderImageView = findViewById(R.id.gender);
@@ -87,7 +93,16 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         mAuthTextView = findViewById(R.id.auth);
     }
 
-    private void init() {
+    private void checkUserTip() {
+        boolean isShowUserTip = PreferencesManager.get().isShowUserTip();
+        if (isShowUserTip) {
+            mTipLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            mTipLinearLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void initUserInfo() {
         User user = BaseApplication.get().getUser();
         if (mUserTimeStamp != user.getTimeStamp()) {
             mUidTextView.setText(user.getUserBase().getUid());
@@ -199,7 +214,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
     private class UserInfoTask extends HttpAsyncTask<User> {
 
         public UserInfoTask(Context context) {
-            super(context , true , true);
+            super(context, true, true);
         }
 
         @Override
@@ -210,7 +225,7 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public void onPostExecute(int updateId, User result) {
             BaseApplication.get().setUser(result, false);
-            init();
+            initUserInfo();
         }
     }
 
@@ -219,9 +234,9 @@ public class MyActivity extends BaseActivity implements View.OnClickListener {
         private String resultPath;
 
         public UploadTask(Context context, String cover) {
-            super(context , true , true);
+            super(context, true, true);
 
-            OssManager.get().upload(cover, callback , true);
+            OssManager.get().upload(cover, callback, true);
         }
 
         @Override

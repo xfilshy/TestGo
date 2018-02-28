@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.elianshang.tools.ToastTool;
@@ -38,6 +39,7 @@ import com.xue.http.impl.DataHull;
 import com.xue.imagecache.ImageCacheMannager;
 import com.xue.oss.OssManager;
 import com.xue.oss.SimpleOssManagerCallback;
+import com.xue.preference.PreferencesManager;
 import com.xue.tools.GlideImageLoader;
 import com.xue.tools.SimplePickHandlerCallBack;
 import com.xue.ui.fragment.HomeFragment;
@@ -92,6 +94,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private View mActionDotView;
 
+    private LinearLayout mTipLinearLayout;
+
     private ImageView mPhotoImageView;
 
     private TextView mRealNameTextView;
@@ -129,6 +133,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initSliding(savedInstanceState);
         findView();
         addHomePage();
+
+        checkUserTip();
         new UserInfoTask(this).start();
 
         AVChatManager.getInstance().observeIncomingCall(mIncomingCallObserver, true);
@@ -162,6 +168,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void findView() {
+        mTipLinearLayout = mSlidingRootNav.getLayout().findViewById(R.id.tip);
         mPhotoImageView = mSlidingRootNav.getLayout().findViewById(R.id.photo);
         mRealNameTextView = mSlidingRootNav.getLayout().findViewById(R.id.realName);
         mGenderImageView = mSlidingRootNav.getLayout().findViewById(R.id.gender);
@@ -169,6 +176,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mSignatureTextView = mSlidingRootNav.getLayout().findViewById(R.id.signature);
         mFeeTextView = mSlidingRootNav.getLayout().findViewById(R.id.fee);
         mAuthTextView = mSlidingRootNav.getLayout().findViewById(R.id.auth);
+    }
+
+    private void checkUserTip() {
+        boolean isShowUserTip = PreferencesManager.get().isShowUserTip();
+        if (isShowUserTip) {
+            mTipLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            mTipLinearLayout.setVisibility(View.GONE);
+        }
     }
 
     private void fillUser() {
@@ -266,6 +282,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_root, new HomeFragment());
         transaction.commit();
+    }
+
+
+    public void closeTip(View view) {
+        mTipLinearLayout.setVisibility(View.GONE);
+        PreferencesManager.get().closeUserTip();
     }
 
     public void goPrice(View view) {
@@ -398,7 +420,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         public UploadTask(Context context, String cover) {
             super(context, true, true);
-
+            showLoadingDialog();
             OssManager.get().upload(cover, callback, true);
         }
 
