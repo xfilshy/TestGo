@@ -56,7 +56,7 @@ public class SlidingRootNavLayout extends FrameLayout implements SlidingRootNav 
 
         FLING_MIN_VELOCITY = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
 
-        dragHelper = ViewDragHelper.create(this, 0.5f, new ViewDragCallback());
+        dragHelper = ViewDragHelper.create(this, 0.1f, new ViewDragCallback());
 
         dragProgress = 0f;
         isMenuHidden = true;
