@@ -380,7 +380,7 @@ public class AVChatActivity extends BaseActivity implements AVChatControllerCall
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e("xue", "发送  同意请求");
-                        mAVChatController.agreetVideo2Audio();
+                        mAVChatController.agreeVideo2Audio();
                     }
                 })
                 .setCancelable(false)

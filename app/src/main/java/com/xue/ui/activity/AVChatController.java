@@ -236,7 +236,7 @@ public class AVChatController implements View.OnClickListener {
         });
     }
 
-    public void agreetVideo2Audio() {
+    public void agreeVideo2Audio() {
         AVChatManager.getInstance().sendControlCommand(AVChatManager.getInstance().getCurrentChatId(), AVChatControlCommand.SWITCH_VIDEO_TO_AUDIO_AGREE, new AVChatCallback<Void>() {
 
             @Override
