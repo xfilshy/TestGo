@@ -118,7 +118,7 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/blue_light_shape"
                     android:ellipsize="end"
-                    android:maxWidth="100dp"
+                    android:maxWidth="140dp"
                     android:paddingBottom="4dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
