@@ -61,6 +61,7 @@ public class SwipeBackBaseActivity extends AppCompatActivity implements SwipeBac
         // 设置触发释放后自动滑动返回的阈值，默认值为 0.3f
         mSwipeBackHelper.setSwipeBackThreshold(0.3f);
         // 设置底部导航条是否悬浮在内容上，默认值为 false
+        mSwipeBackHelper.setIsWeChatStyle(false);
         mSwipeBackHelper.setIsNavigationBarOverlap(false);
         mSwipeBackHelper.setIsOnlyTrackingLeftEdge(false);
     }
