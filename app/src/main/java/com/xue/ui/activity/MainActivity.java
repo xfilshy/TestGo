@@ -145,15 +145,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mActionLogoImageView = mToolbar.findViewById(R.id.actionAccount);
         mActionDotView = mToolbar.findViewById(R.id.actionDot);
 
+        mActionLogoImageView.setOnClickListener(this);
         setSupportActionBar(mToolbar);
-
-        ImageCacheMannager.loadImage(this, R.drawable.photo_test, mActionLogoImageView, true);
     }
 
     private void initSliding(@Nullable Bundle savedInstanceState) {
         mSlidingRootNav = new SlidingRootNavBuilder(this)
                 .withDragDistance(236)
-                .withToolbarMenuToggle(mToolbar)
                 .withMenuOpened(false)
                 .withContentClickableWhenMenuOpened(false)
                 .withSavedState(savedInstanceState)
@@ -194,7 +192,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             UserDetailInfo userDetailInfo = user.getUserDetailInfo();
             if (userDetailInfo != null) {
-                ImageCacheMannager.loadImage(this, user.getUserDetailInfo().getProfile(), mPhotoImageView, true);
+                ImageCacheMannager.loadImage(this, user.getUserDetailInfo().getProfile(), R.drawable.grey_oval, R.drawable.grey_oval, mPhotoImageView, true);
+                ImageCacheMannager.loadImage(this, user.getUserDetailInfo().getProfile(), R.drawable.grey_oval, R.drawable.grey_oval, mActionLogoImageView, true);
                 mRealNameTextView.setText(userDetailInfo.getRealName());
                 if (TextUtils.equals("1", userDetailInfo.getGender())) {
                     ImageCacheMannager.loadImage(this, R.drawable.icon_male, mGenderImageView, false);
@@ -384,7 +383,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == mActionLogoImageView) {
-            MyActivity.launch(this);
+            mSlidingRootNav.openMenu();
         }
     }
 
@@ -414,7 +413,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private static class UploadTask extends HttpAsyncTask<UserDetailInfo> {
+    private class UploadTask extends HttpAsyncTask<UserDetailInfo> {
 
         private String resultPath;
 
@@ -433,6 +432,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         public void onPostExecute(int updateId, UserDetailInfo result) {
             ToastTool.show(context, "头像上传成功");
             BaseApplication.get().setUserDetailInfo(result);
+            fillUser();
         }
 
         @Override
