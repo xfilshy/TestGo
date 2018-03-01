@@ -1,6 +1,6 @@
 package com.yarolegovich.slidingrootnav.transform;
 
-import android.os.Build;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 
 import com.yarolegovich.slidingrootnav.util.SideNavUtils;
@@ -21,9 +21,7 @@ public class ElevationTransformation implements RootTransformation {
 
     @Override
     public void transform(float dragProgress, View rootView) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            float elevation = SideNavUtils.evaluate(dragProgress, START_ELEVATION, endElevation);
-            rootView.setElevation(elevation);
-        }
+        float elevation = SideNavUtils.evaluate(dragProgress, START_ELEVATION, endElevation);
+        ViewCompat.setElevation(rootView, elevation);
     }
 }
