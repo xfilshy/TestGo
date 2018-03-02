@@ -16,7 +16,7 @@ import com.xue.support.slideback.SwipeBackHelper;
 public class SwipeBackBaseActivity extends AppCompatActivity implements SwipeBackHelper.Delegate {
 
     public void closeActivity(View view) {
-        finish();
+        onBackPressed();
     }
 
     public void logout(View view) {
@@ -68,6 +68,7 @@ public class SwipeBackBaseActivity extends AppCompatActivity implements SwipeBac
 
     /**
      * 是否支持滑动返回。这里在父类中默认返回 true 来支持滑动返回，如果某个界面不想支持滑动返回则重写该方法返回 false 即可
+     *
      * @return
      */
     @Override
@@ -77,6 +78,7 @@ public class SwipeBackBaseActivity extends AppCompatActivity implements SwipeBac
 
     /**
      * 正在滑动返回
+     *
      * @param slideOffset 从 0 到 1
      */
     @Override

@@ -1,17 +1,16 @@
 package com.xue.asyns;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.elianshang.tools.NetWorkTool;
 import com.elianshang.tools.ToastTool;
 import com.elianshang.tools.WeakReferenceHandler;
 import com.xue.http.hook.BaseBean;
 import com.xue.http.impl.DataHull;
-import com.xue.tools.LoadingDialogTools;
+import com.xue.tools.LoadingDialog;
 
 
 /**
@@ -48,11 +47,11 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
      */
     private boolean showLoading = false;
 
-    private Dialog loadingDialog;
+    private LoadingDialog loadingDialog;
 
     protected boolean hasNet = true;
 
-    private boolean cancelable = true;
+    private boolean cancelable = false;
 
     public HttpAsyncTask(Context context) {
         this.context = context;
@@ -329,19 +328,18 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
                 public void run(HttpAsyncTask httpAsyncTask) {
                     try {
                         if (loadingDialog == null) {
-                            loadingDialog = LoadingDialogTools.showLoadingDialog(context);
+                            loadingDialog = LoadingDialog.getLoadingDialog(context);
                             loadingDialog.setCancelable(cancelable);
-                            loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                    cancel();
-                                }
-                            });
+//                            loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                                @Override
+//                                public void onDismiss(DialogInterface dialog) {
+//                                    cancel();
+//                                }
+//                            });
                         }
+                        loadingDialog.show(hashCode());
 
-                        if (!loadingDialog.isShowing()) {
-                            loadingDialog.show();
-                        }
+                        Log.e("xue", "class:" + HttpAsyncTask.this.getClass().getName() + "  hashcode:" + context.hashCode() + " loadingDialog:" + loadingDialog);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -356,8 +354,8 @@ public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl imp
                 @Override
                 public void run(HttpAsyncTask httpAsyncTask) {
                     try {
-                        if (null != loadingDialog && loadingDialog.isShowing()) {
-                            loadingDialog.dismiss();
+                        if (null != loadingDialog) {
+                            loadingDialog.dismiss(hashCode());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

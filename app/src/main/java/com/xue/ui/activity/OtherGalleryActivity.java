@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,7 +21,7 @@ import com.xue.support.view.GridItemDecoration;
 
 import java.util.ArrayList;
 
-public class OtherGalleryActivity extends BaseActivity implements AdapterOnItemClickCallback<String> {
+public class OtherGalleryActivity extends SwipeBackBaseActivity implements AdapterOnItemClickCallback<String> {
 
 
     public static void launch(Context context, ArrayList<String> pics) {
@@ -57,14 +57,11 @@ public class OtherGalleryActivity extends BaseActivity implements AdapterOnItemC
     }
 
     private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mTitleTextView = toolbar.findViewById(R.id.title);
 
-            mTitleTextView.setText("他的相册");
-        }
+        mTitleTextView.setText("他的相册");
     }
 
     private void findView() {

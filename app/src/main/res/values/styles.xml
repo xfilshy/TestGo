@@ -41,12 +41,11 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="TransparentTitleTheme" parent="AppTheme.NoActionBar">
+    <style name="TransparentSwipeBackTheme" parent="SwipeBackTheme">
         <item name="colorPrimaryDark">@color/transparent</item>
     </style>
 
     <style name="SwipeBackTheme" parent="AppTheme.NoActionBar">
-        <item name="colorPrimaryDark">@color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
