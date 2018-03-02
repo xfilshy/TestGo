@@ -1,337 +1,347 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/grey_50">
 
-    <LinearLayout
+    <include layout="@layout/actionbar_simple2" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/coverLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/grey_300">
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/grey_oval_frame"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_setting" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/image"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="上传海报[上推荐，必填]"
-                android:textColor="@color/grey_dark"
-                android:textSize="16dp" />
-
-            <ImageView
-                android:id="@+id/cover"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:onClick="goDescribe"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="10dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/photo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/photo_test" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="独白"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="上推荐，必填"
-                android:textColor="@color/grey_dark"
-                android:textSize="16dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_right" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:onClick="goGallery"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="10dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_gallery" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="相册"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_right" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="20dp"
-            android:text="我的信息"
-            android:textColor="@color/grey_dark"
-            android:textSize="16dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:onClick="goWork"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="工作经历"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="上推荐，必填"
-                android:textColor="@color/grey_dark"
-                android:textSize="16dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_right" />
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:onClick="goEducation"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="教育背景"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="上推荐，必填"
-                android:textColor="@color/grey_dark"
-                android:textSize="16dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_right" />
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:onClick="getHomeTown"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="家乡"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-
-
-            <TextView
-                android:id="@+id/homeTown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey_dark"
-                android:textSize="16dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_right" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="现居地"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="北京"
-                android:textColor="@color/grey_dark"
-                android:textSize="16dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_right" />
-        </LinearLayout>
-
-
-        <View
-
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="20dp"
-            android:text="自我标签"
-            android:textColor="@color/grey_dark"
-            android:textSize="16dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <com.xue.support.view.TagGroup
-                android:id="@+id/tagGroup"
-                style="@style/TagGroup"
-                android:layout_marginTop="10dp" />
-
-            <TextView
+            <RelativeLayout
+                android:id="@+id/coverLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:gravity="center"
-                android:onClick="getTag"
+                android:background="@color/grey_300">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/grey_oval_frame"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_setting" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="上传海报[上推荐，必填]"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:id="@+id/cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="goDescribe"
+                android:orientation="horizontal"
                 android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="+ 添加标签"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/photo_test" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="独白"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上推荐，必填"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="goGallery"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_gallery" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="相册"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey_light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="20dp"
+                android:text="我的信息"
                 android:textColor="@color/grey_dark"
                 android:textSize="16dp" />
 
-        </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey_light" />
 
-    </LinearLayout>
-</ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="goWork"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="工作经历"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上推荐，必填"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_right" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="goEducation"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="教育背景"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上推荐，必填"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_right" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="getHomeTown"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="家乡"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+
+                <TextView
+                    android:id="@+id/homeTown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey_light" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="现居地"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="北京"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_right" />
+            </LinearLayout>
+
+
+            <View
+
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey_light" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="20dp"
+                android:text="自我标签"
+                android:textColor="@color/grey_dark"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <com.xue.support.view.TagGroup
+                    android:id="@+id/tagGroup"
+                    style="@style/TagGroup"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="50dp"
+                    android:gravity="center"
+                    android:onClick="getTag"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="+ 添加标签"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

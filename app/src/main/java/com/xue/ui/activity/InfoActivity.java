@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -31,7 +31,7 @@ import com.yancy.gallerypick.config.GalleryPick;
 
 import java.util.List;
 
-public class InfoActivity extends BaseActivity implements View.OnClickListener, TagGroup.OnTagClickListener {
+public class InfoActivity extends SwipeBackBaseActivity implements View.OnClickListener, TagGroup.OnTagClickListener {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, InfoActivity.class);
@@ -77,20 +77,17 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mBackImageView = toolbar.findViewById(R.id.back);
+        mTitleTextView = toolbar.findViewById(R.id.title);
+        mRightTextView = toolbar.findViewById(R.id.right);
 
-            mTitleTextView.setText("个人资料");
-            mRightTextView.setText("保存");
+        mTitleTextView.setText("个人资料");
+        mRightTextView.setText("保存");
 
-            mBackImageView.setOnClickListener(this);
-            mRightTextView.setOnClickListener(this);
-        }
+        mBackImageView.setOnClickListener(this);
+        mRightTextView.setOnClickListener(this);
     }
 
     private void findView() {
@@ -203,8 +200,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         private String resultPath;
 
         public UploadTask(Context context, String photoPath) {
-            super(context , true , true);
-            OssManager.get().upload(photoPath, callback , true);
+            super(context, true, true);
+            OssManager.get().upload(photoPath, callback, true);
         }
 
         @Override

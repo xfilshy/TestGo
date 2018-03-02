@@ -157,7 +157,7 @@
         <activity
             android:name=".ui.activity.DetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TransparentSwipeBackTheme"></activity>
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--购买钻石页-->
         <activity
@@ -202,7 +202,8 @@
         <!--用户信息页-->
         <activity
             android:name=".ui.activity.InfoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--设置页-->
         <activity
