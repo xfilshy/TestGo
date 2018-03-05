@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,15 +27,13 @@ import com.xue.adapter.ChatListAdapter;
 
 import java.util.List;
 
-public class ChatActivity extends BaseActivity implements View.OnClickListener {
+public class ChatActivity extends SwipeBackBaseActivity implements View.OnClickListener {
 
     public static void launch(Context context, String account) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("account", account);
         context.startActivity(intent);
     }
-
-    private TextView mTitleTextView;
 
     private String mAccount;
 
@@ -56,7 +53,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_chat);
 
         readExtra();
-        initActionBar();
         findView();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -87,6 +83,21 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "聊天";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return null;
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         NIMSDK.getMsgService().clearUnreadCount(mAccount, SessionTypeEnum.P2P);
@@ -103,17 +114,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         mSendTextView.setOnClickListener(this);
-    }
-
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple_primary);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-
-            mTitleTextView.setText("聊天");
-        }
     }
 
     private void fillMessageList() {
