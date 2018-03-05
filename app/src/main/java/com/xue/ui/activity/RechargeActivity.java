@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elianshang.tools.FloatStringTool;
@@ -19,16 +17,12 @@ import com.xue.http.impl.DataHull;
 
 import java.util.ArrayList;
 
-public class RechargeActivity extends BaseActivity implements View.OnClickListener {
+public class RechargeActivity extends SwipeBackBaseActivity implements View.OnClickListener {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, RechargeActivity.class);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mHistoryTextView;
 
     private TextView mConfirmButton;
 
@@ -45,22 +39,30 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_recharge);
-        initActionBar();
         findView();
 
         new GetWalletTask(this).start();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_recharge);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mHistoryTextView = actionBar.getCustomView().findViewById(R.id.history);
-            mBackImageView.setOnClickListener(this);
-            mHistoryTextView.setOnClickListener(this);
-        }
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "购买钻石";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "购买记录";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        RechargeHistoryActivity.launch(this);
     }
 
     private void findView() {
@@ -75,6 +77,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
         viewHolders.add(new ItemViewHolder(findViewById(R.id.item6)));
 
         mConfirmButton.setOnClickListener(this);
+        setActionRightVisibility(View.VISIBLE);
     }
 
     private void fillData() {
@@ -88,11 +91,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (mBackImageView == v) {
-            finish();
-        } else if (mHistoryTextView == v) {
-            RechargeHistoryActivity.launch(this);
-        } else if (mConfirmButton == v) {
+        if (mConfirmButton == v) {
             PayActivity.launch(this, mSelectedViewHolder.recharge);
         }
     }
@@ -141,7 +140,7 @@ public class RechargeActivity extends BaseActivity implements View.OnClickListen
     private class GetWalletTask extends HttpAsyncTask<WalletDecorator> {
 
         public GetWalletTask(Context context) {
-            super(context , true , true);
+            super(context, true, true);
         }
 
         @Override

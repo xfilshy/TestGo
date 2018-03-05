@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -40,12 +39,6 @@ public class InfoActivity extends SwipeBackBaseActivity implements View.OnClickL
 
     private long mUserTimeStamp;
 
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
-
     private RelativeLayout mCoverRelativeLayout;
 
     private ImageView mCoverImageView;
@@ -61,8 +54,22 @@ public class InfoActivity extends SwipeBackBaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
 
-        initActionBar();
         findView();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "个人资料";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return null;
     }
 
     @Override
@@ -74,20 +81,6 @@ public class InfoActivity extends SwipeBackBaseActivity implements View.OnClickL
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    private void initActionBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mBackImageView = toolbar.findViewById(R.id.back);
-        mTitleTextView = toolbar.findViewById(R.id.title);
-        mRightTextView = toolbar.findViewById(R.id.right);
-
-        mTitleTextView.setText("个人资料");
-        mRightTextView.setText("保存");
-
-        mBackImageView.setOnClickListener(this);
-        mRightTextView.setOnClickListener(this);
     }
 
     private void findView() {
@@ -155,13 +148,13 @@ public class InfoActivity extends SwipeBackBaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (mBackImageView == v) {
-            finish();
-        } else if (mRightTextView == v) {
-
-        } else if (mCoverRelativeLayout == v) {
-            pickPhoto();
-        }
+//        if (mBackImageView == v) {
+//            finish();
+//        } else if (mRightTextView == v) {
+//
+//        } else if (mCoverRelativeLayout == v) {
+//            pickPhoto();
+//        }
     }
 
     public void pickPhoto() {

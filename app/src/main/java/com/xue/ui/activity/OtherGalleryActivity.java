@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,8 +29,6 @@ public class OtherGalleryActivity extends SwipeBackBaseActivity implements Adapt
         context.startActivity(intent);
     }
 
-    private TextView mTitleTextView;
-
     private RecyclerView mRecyclerView;
 
     private TextView mEmptyTextView;
@@ -46,22 +43,28 @@ public class OtherGalleryActivity extends SwipeBackBaseActivity implements Adapt
         setContentView(R.layout.activity_other_gallery);
 
         readExtra();
-        initActionBar();
         findView();
 
         fillData();
     }
 
-    private void readExtra() {
-        mPictureList = getIntent().getStringArrayListExtra("pics");
+    @Override
+    protected boolean hasActionBar() {
+        return true;
     }
 
-    private void initActionBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mTitleTextView = toolbar.findViewById(R.id.title);
+    @Override
+    protected String actionBarTitle() {
+        return "他的相册";
+    }
 
-        mTitleTextView.setText("他的相册");
+    @Override
+    protected String actionBarRight() {
+        return null;
+    }
+
+    private void readExtra() {
+        mPictureList = getIntent().getStringArrayListExtra("pics");
     }
 
     private void findView() {

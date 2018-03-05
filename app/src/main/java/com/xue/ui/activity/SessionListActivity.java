@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.netease.nimlib.sdk.NIMSDK;
 import com.netease.nimlib.sdk.Observer;
@@ -29,14 +27,12 @@ import com.xue.support.view.DividerItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SessionListActivity extends BaseActivity implements AdapterOnItemClickCallback<RecentContact>, AdapterOnItemLongClickCallback<RecentContact> {
+public class SessionListActivity extends SwipeBackBaseActivity implements AdapterOnItemClickCallback<RecentContact>, AdapterOnItemLongClickCallback<RecentContact> {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, SessionListActivity.class);
         context.startActivity(intent);
     }
-
-    private TextView mTitleTextView;
 
     private RecyclerView mRecyclerView;
 
@@ -49,10 +45,24 @@ public class SessionListActivity extends BaseActivity implements AdapterOnItemCl
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_session_list);
-        initActionBar();
         findView();
 
         fillData();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "消息";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return null;
     }
 
     @Override
@@ -130,17 +140,6 @@ public class SessionListActivity extends BaseActivity implements AdapterOnItemCl
         mAdapter.notifyDataSetChanged();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-
-            mTitleTextView.setText("消息");
-        }
-    }
-
     @Override
     public void onItemClick(RecentContact recentContact, View view) {
         ChatActivity.launch(this, recentContact.getContactId());
@@ -168,7 +167,7 @@ public class SessionListActivity extends BaseActivity implements AdapterOnItemCl
 
         @Override
         public void onChange() {
-            Log.e("xue" , "onChange ");
+            Log.e("xue", "onChange ");
             fillData();
         }
     };

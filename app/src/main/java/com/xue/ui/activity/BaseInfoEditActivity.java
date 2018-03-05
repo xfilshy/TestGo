@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.elianshang.tools.ToastTool;
 import com.xue.BaseApplication;
@@ -30,16 +30,12 @@ import com.yancy.gallerypick.config.GalleryPick;
 
 import java.util.List;
 
-public class BaseInfoEditActivity extends BaseActivity implements View.OnClickListener {
+public class BaseInfoEditActivity extends SwipeBackBaseActivity implements View.OnClickListener, TextWatcher {
 
     public static void launch(Activity activity) {
         Intent intent = new Intent(activity, BaseInfoEditActivity.class);
         activity.startActivityForResult(intent, 1);
     }
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private ImageView mPhotoImageView;
 
@@ -59,23 +55,40 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_base_info_edit);
         BaseInfoEditActivity.this.setResult(RESULT_CANCELED);
 
-        initActionBar();
         findView();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mRightTextView.setOnClickListener(this);
-            mRightTextView.setVisibility(View.VISIBLE);
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
 
-            mTitleTextView.setText("基本资料");
-            mRightTextView.setText("保存");
-        }
+    @Override
+    protected String actionBarTitle() {
+        return "基本资料";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        save();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRealNameEditText.addTextChangedListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRealNameEditText.removeTextChangedListener(this);
     }
 
     private void findView() {
@@ -90,7 +103,7 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
         mFemaleCheckBox.setOnClickListener(this);
     }
 
-    private void save() {
+    private void checkChange() {
         String realName = mRealNameEditText.getText().toString();
         int gender = 0;
         if (mMaleCheckBox.isChecked()) {
@@ -99,19 +112,20 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
             gender = 2;
         }
 
-        if (TextUtils.isEmpty(realName)) {
-            ToastTool.show(this, "姓名不能为空");
-            return;
+        if (!TextUtils.isEmpty(realName) && gender != 0 && !TextUtils.isEmpty(mPhotoPath)) {
+            setActionRightVisibility(View.VISIBLE);
+        } else {
+            setActionRightVisibility(View.GONE);
         }
+    }
 
-        if (gender == 0) {
-            ToastTool.show(this, "请选择性别");
-            return;
-        }
-
-        if (TextUtils.isEmpty(mPhotoPath)) {
-            ToastTool.show(this, "请选择头像");
-            return;
+    private void save() {
+        String realName = mRealNameEditText.getText().toString();
+        int gender = 0;
+        if (mMaleCheckBox.isChecked()) {
+            gender = 1;
+        } else if (mFemaleCheckBox.isChecked()) {
+            gender = 2;
         }
 
         new UpdateTask(this, realName, gender, mPhotoPath);
@@ -129,6 +143,7 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
                         ImageCacheMannager.loadImage(BaseInfoEditActivity.this, photoPath, mPhotoImageView, true);
 
                         mPhotoPath = photoPath;
+                        checkChange();
                     }
                 }
             };
@@ -142,15 +157,30 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
                     .build();
 
             GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
-        } else if (mRightTextView == v) {
-            save();
         } else if (mMaleCheckBox == v) {
             mMaleCheckBox.setChecked(true);
             mFemaleCheckBox.setChecked(false);
+            checkChange();
         } else if (mFemaleCheckBox == v) {
             mMaleCheckBox.setChecked(false);
             mFemaleCheckBox.setChecked(true);
+            checkChange();
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        checkChange();
     }
 
     private class UpdateTask extends HttpAsyncTask<UserDetailInfo> {
@@ -162,11 +192,11 @@ public class BaseInfoEditActivity extends BaseActivity implements View.OnClickLi
         private String resultPhotoPath;
 
         public UpdateTask(Context context, String realName, int gender, String photoPath) {
-            super(context , true , true);
+            super(context, true, true);
             this.realName = realName;
             this.gender = gender;
 
-            OssManager.get().upload(photoPath , callback , true);
+            OssManager.get().upload(photoPath, callback, true);
         }
 
         @Override

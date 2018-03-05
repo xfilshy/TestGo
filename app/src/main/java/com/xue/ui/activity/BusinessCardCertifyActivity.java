@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.elianshang.tools.ToastTool;
 import com.elianshang.tools.UITool;
@@ -28,18 +26,12 @@ import com.yancy.gallerypick.config.GalleryPick;
 
 import java.util.List;
 
-public class BusinessCardCertifyActivity extends BaseActivity implements View.OnClickListener {
+public class BusinessCardCertifyActivity extends SwipeBackBaseActivity {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, BusinessCardCertifyActivity.class);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private ImageView mPhotoImageView;
 
@@ -50,25 +42,29 @@ public class BusinessCardCertifyActivity extends BaseActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_card_certify);
 
-        initActionBar();
         findView();
         init();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
 
-            mRightTextView.setOnClickListener(this);
+    @Override
+    protected String actionBarTitle() {
+        return "名片认证（未认证）";
+    }
 
-            mTitleTextView.setText("名片认证（未认证）");
-            mRightTextView.setText("保存");
-        }
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        new BusinessCardCertifyActivity.UploadTask(this, mImagePath);
     }
 
     private void findView() {
@@ -86,13 +82,13 @@ public class BusinessCardCertifyActivity extends BaseActivity implements View.On
             }
 
             if (TextUtils.equals("0", userExpertInfo.getBusinessCardAuth())) {
-                mTitleTextView.setText("名片认证（未认证）");
+                setActionTitle("名片认证（未认证）");
             } else if (TextUtils.equals("1", userExpertInfo.getBusinessCardAuth())) {
-                mTitleTextView.setText("名片认证（认证中）");
+                setActionTitle("名片认证（认证中）");
             } else if (TextUtils.equals("2", userExpertInfo.getBusinessCardAuth())) {
-                mTitleTextView.setText("名片认证（认证通过）");
+                setActionTitle("名片认证（认证通过）");
             } else if (TextUtils.equals("3", userExpertInfo.getBusinessCardAuth())) {
-                mTitleTextView.setText("名片认证（认证失败）");
+                setActionTitle("名片认证（认证失败）");
             }
         }
     }
@@ -107,7 +103,7 @@ public class BusinessCardCertifyActivity extends BaseActivity implements View.On
                     ImageCacheMannager.loadImage(BusinessCardCertifyActivity.this, photoPath, mPhotoImageView, false);
 
                     mImagePath = photoPath;
-                    mRightTextView.setVisibility(View.VISIBLE);
+                    setActionRightVisibility(View.VISIBLE);
                 }
             }
         };
@@ -123,21 +119,14 @@ public class BusinessCardCertifyActivity extends BaseActivity implements View.On
         GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (mRightTextView == v) {
-            new UploadTask(this, mImagePath);
-        }
-    }
-
-
     private class UploadTask extends HttpAsyncTask<UserExpertInfo> {
 
         private String resultPath;
 
         public UploadTask(Context context, String imagePath) {
-            super(context , true , true);
-            OssManager.get().upload(imagePath, callback , true);
+            super(context, true, true);
+            showLoadingDialog();
+            OssManager.get().upload(imagePath, callback, true);
             this.resultPath = imagePath;
         }
 

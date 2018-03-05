@@ -105,14 +105,27 @@ public class DetailActivity extends SwipeBackBaseActivity implements AppBarLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         readExtra();
         findView();
         initRecyclerView();
 
         new DetailTask(this, mUid).start();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return false;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return null;
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return null;
     }
 
     @Override

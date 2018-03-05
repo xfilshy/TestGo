@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -23,7 +22,7 @@ import com.xue.http.impl.DataHull;
 /**
  * Created by xfilshy on 2018/1/17.
  */
-public class PhoneLoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class PhoneLoginActivity extends SwipeBackBaseActivity implements View.OnClickListener {
 
     public static void launch(Activity activity) {
         if (activity == null) {
@@ -50,10 +49,27 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
         findView();
     }
 
-    private void findView() {
-        getSupportActionBar().setTitle("登录");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
 
+    @Override
+    protected String actionBarTitle() {
+        return "登录";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return null;
+    }
+
+    @Override
+    protected Style actionBarStyle() {
+        return Style.White;
+    }
+
+    private void findView() {
         mCellphoneEditText = findViewById(R.id.cellphone);
         mVerifyCodeEditText = findViewById(R.id.verifyCode);
         mVerifyButton = findViewById(R.id.verify);
@@ -162,7 +178,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
         private String verifyCode;
 
         public LoginTask(Context context, String cellphone, String verifyCode) {
-            super(context , true , true);
+            super(context, true, true);
             this.cellphone = cellphone;
             this.verifyCode = verifyCode;
         }
@@ -182,7 +198,7 @@ public class PhoneLoginActivity extends AppCompatActivity implements View.OnClic
             if (user != null) {
                 if (user.getUserDetailInfo() != null) {
                     setResult(RESULT_OK);
-                    finish();
+                    onBackPressed();
                 } else {
                     BaseInfoEditActivity.launch(PhoneLoginActivity.this);
                 }

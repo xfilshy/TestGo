@@ -8,7 +8,8 @@
     android:fitsSystemWindows="true"
     android:minHeight="?attr/actionBarSize"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:layout_collapseMode="pin">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:onClick="closeActivity"
-            android:src="@drawable/gallery_pick_back_white" />
+            android:src="@drawable/icon_back_white" />
 
         <TextView
             android:id="@+id/title"
@@ -37,6 +38,8 @@
             android:id="@+id/right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:onClick="rightAction"
             android:textColor="@color/white"
             android:textSize="14dp"
             android:visibility="gone" />

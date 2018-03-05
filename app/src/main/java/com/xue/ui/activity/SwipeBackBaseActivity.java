@@ -2,32 +2,34 @@ package com.xue.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.netease.nimlib.sdk.NIMSDK;
-import com.xue.BaseApplication;
 import com.xue.R;
 import com.xue.support.slideback.SwipeBackHelper;
 
 /**
  * Created by xfilshy on 2018/1/17.
  */
-public class SwipeBackBaseActivity extends AppCompatActivity implements SwipeBackHelper.Delegate {
+public abstract class SwipeBackBaseActivity extends BaseActivity implements SwipeBackHelper.Delegate {
 
-    public void closeActivity(View view) {
-        onBackPressed();
+    enum Style {
+        Primary,
+        White
     }
 
-    public void logout(View view) {
-        BaseApplication.get().setUser(null, true);
-        MainActivity.logout(view.getContext());
-        NIMSDK.getAuthService().logout();
-    }
+    private LinearLayout mRootView;
 
-    public void launchSessionListActivity(View view) {
-        SessionListActivity.launch(this);
-    }
+    private ImageView mActionBackImageView;
+
+    private TextView mActionTitleTextView;
+
+    private TextView mActionRightTextView;
 
     protected SwipeBackHelper mSwipeBackHelper;
 
@@ -38,6 +40,110 @@ public class SwipeBackBaseActivity extends AppCompatActivity implements SwipeBac
         initSwipeBackFinish();
         super.onCreate(savedInstanceState);
         mSwipeBackHelper.executeForwardAnim();
+    }
+
+    private void createRootView(LinearLayout linearLayout) {
+        if (linearLayout == null) {
+            linearLayout = new LinearLayout(this);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+        }
+        linearLayout.setBackgroundResource(R.color.grey_50);
+
+        Toolbar toolbar = null;
+        if (actionBarStyle() == Style.Primary) {
+            toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.actionbar_simple_primary, null, false);
+        } else if (actionBarStyle() == Style.White) {
+            toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.actionbar_simple_white, null, false);
+        }
+        initActionBar(toolbar, actionBarTitle(), actionBarRight());
+        linearLayout.addView(toolbar, 0);
+
+        mRootView = linearLayout;
+    }
+
+    private void initActionBar(Toolbar toolbar, String title, String right) {
+        setSupportActionBar(toolbar);
+        mActionBackImageView = toolbar.findViewById(R.id.back);
+        mActionTitleTextView = toolbar.findViewById(R.id.title);
+        mActionRightTextView = toolbar.findViewById(R.id.right);
+
+        mActionTitleTextView.setText(title);
+        mActionRightTextView.setText(right);
+    }
+
+    protected abstract boolean hasActionBar();
+
+    protected abstract String actionBarTitle();
+
+    protected abstract String actionBarRight();
+
+    protected Style actionBarStyle() {
+        return Style.Primary;
+    }
+
+    protected void setActionTitle(String titleText) {
+        if (mActionTitleTextView != null) {
+            mActionTitleTextView.setText(titleText);
+        }
+    }
+
+    protected void setActionRight(String rightText) {
+        if (mActionRightTextView != null) {
+            mActionRightTextView.setText(rightText);
+        }
+    }
+
+    protected void setActionRightVisibility(int visibility) {
+        if (mActionRightTextView != null) {
+            mActionRightTextView.setVisibility(visibility);
+        }
+    }
+
+    public void closeActivity(View view) {
+        onBackPressed();
+    }
+
+    public void rightAction(View view) {
+
+    }
+
+    @Override
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        if (hasActionBar()) {
+            if (view instanceof LinearLayout && ((LinearLayout) view).getOrientation() == LinearLayout.VERTICAL) {
+                createRootView((LinearLayout) view);
+            } else {
+                createRootView(null);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                mRootView.addView(view, layoutParams);
+            }
+            super.setContentView(mRootView);
+        } else {
+            super.setContentView(view, params);
+        }
+    }
+
+    @Override
+    public void setContentView(View view) {
+        if (hasActionBar()) {
+            if (view instanceof LinearLayout && ((LinearLayout) view).getOrientation() == LinearLayout.VERTICAL) {
+                createRootView((LinearLayout) view);
+            } else {
+                createRootView(null);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                mRootView.addView(view, layoutParams);
+            }
+            super.setContentView(mRootView);
+        } else {
+            super.setContentView(view);
+        }
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        View view = LayoutInflater.from(this).inflate(layoutResID, null, false);
+
+        setContentView(view);
     }
 
     /**

@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elianshang.tools.EditTextTool;
@@ -25,7 +23,7 @@ import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xw.repo.BubbleSeekBar;
 
-public class FeeSettingActivity extends BaseActivity implements View.OnClickListener, BubbleSeekBar.OnProgressChangedListener, TextWatcher {
+public class FeeSettingActivity extends SwipeBackBaseActivity implements BubbleSeekBar.OnProgressChangedListener, TextWatcher {
 
 
     public static void launch(Context context) {
@@ -33,17 +31,9 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
         context.startActivity(intent);
     }
 
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
-
     private EditText mSignatureEditText;
 
     private TextView mFeeTextView;
-
-    private TextView mConfirmTextView;
 
     private BubbleSeekBar mBubbleSeekBar;
 
@@ -56,9 +46,31 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fee_setting);
 
-        initActionBar();
         findView();
         init();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "通话定价";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        String signature = mSignatureEditText.getText().toString();
+        int serviceFee = mBubbleSeekBar.getProgress();
+        new UpdateTask(this, signature, serviceFee).start();
     }
 
     @Override
@@ -75,31 +87,12 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
         mBubbleSeekBar.setOnProgressChangedListener(null);
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mBackImageView.setOnClickListener(this);
-            mRightTextView.setOnClickListener(this);
-
-            mTitleTextView.setText("通话定价");
-            mRightTextView.setText("保存");
-        }
-    }
-
     private void findView() {
         mSignatureEditText = findViewById(R.id.signature);
         mFeeTextView = findViewById(R.id.fee);
-        mConfirmTextView = findViewById(R.id.confirm);
         mBubbleSeekBar = findViewById(R.id.seekBar);
 
         EditTextTool.setEmojiFilter(mSignatureEditText);
-
-        mConfirmTextView.setOnClickListener(this);
     }
 
     private void init() {
@@ -145,37 +138,28 @@ public class FeeSettingActivity extends BaseActivity implements View.OnClickList
         int progress = mBubbleSeekBar.getProgress();
         if (mUserExpertInfo != null) {
             if (!TextUtils.equals(mUserExpertInfo.getSignature(), text)) {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
                 return;
             }
 
             if (mUserExpertInfo.getServiceFee() != progress) {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
                 return;
             }
 
-            mRightTextView.setVisibility(View.GONE);
+            setActionRightVisibility(View.GONE);
         } else {
             if (!TextUtils.isEmpty(text)) {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
                 return;
             }
 
             if (mUserConfigInfo.getFeeDefault() != progress) {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
                 return;
             }
 
-            mRightTextView.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mRightTextView == v) {
-            String signature = mSignatureEditText.getText().toString();
-            int serviceFee = mBubbleSeekBar.getProgress();
-            new UpdateTask(this, signature, serviceFee).start();
+            setActionRightVisibility(View.GONE);
         }
     }
 

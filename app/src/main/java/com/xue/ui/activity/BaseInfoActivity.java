@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,16 +14,12 @@ import com.xue.bean.User;
 import com.xue.bean.UserDetailInfo;
 import com.xue.imagecache.ImageCacheMannager;
 
-public class BaseInfoActivity extends BaseActivity implements View.OnClickListener {
+public class BaseInfoActivity extends SwipeBackBaseActivity{
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, BaseInfoActivity.class);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
 
     private ImageView mPhotoImageView;
 
@@ -41,27 +36,28 @@ public class BaseInfoActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_info);
 
-        initActionBar();
         findView();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "基本资料";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return null;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         init();
-    }
-
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mBackImageView.setOnClickListener(this);
-
-            mTitleTextView.setText("基本资料");
-        }
     }
 
     private void findView() {
@@ -91,10 +87,4 @@ public class BaseInfoActivity extends BaseActivity implements View.OnClickListen
         ModifyNameActivity.launch(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (mBackImageView == v) {
-            finish();
-        }
-    }
 }

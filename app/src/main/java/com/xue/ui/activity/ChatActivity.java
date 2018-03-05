@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -58,6 +59,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         initActionBar();
         findView();
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         NIMSDK.getMsgServiceObserve().observeReceiveMessage(mReceiveMessageObserver, true);
         NIMSDK.getMsgServiceObserve().observeMsgStatus(mMsgStatusObserver, true);
 
@@ -105,7 +109,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
+            actionBar.setCustomView(R.layout.actionbar_simple_primary);//设置自定义的布局：actionbar_custom
             mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
 
             mTitleTextView.setText("聊天");

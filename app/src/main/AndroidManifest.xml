@@ -127,7 +127,7 @@
         <!--手机登陆页-->
         <activity
             android:name=".ui.activity.PhoneLoginActivity"
-            android:theme="@style/WhiteAppTheme" />
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--主页面父容器-->
         <activity
@@ -146,12 +146,13 @@
         <activity
             android:name=".ui.activity.ChatActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:theme="@style/TransparentSwipeBackTheme"  />
 
         <!--我的页-->
-        <activity
-            android:name=".ui.activity.MyActivity"
-            android:theme="@style/Transparent80FullscreenTheme" />
+        <!--<activity-->
+        <!--android:name=".ui.activity.MyActivity"-->
+        <!--android:theme="@style/Transparent80FullscreenTheme" />-->
 
         <!--用户详细信息页-->
         <activity
@@ -162,42 +163,50 @@
         <!--购买钻石页-->
         <activity
             android:name=".ui.activity.RechargeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--支付页-->
         <activity
             android:name=".ui.activity.PayActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--充值记录页-->
         <activity
             android:name=".ui.activity.RechargeHistoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--我的收益页-->
         <activity
             android:name=".ui.activity.PaymentsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--收支记录页-->
         <activity
             android:name=".ui.activity.PaymentsHistoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--牛币购买钻石页-->
         <activity
             android:name=".ui.activity.RechargeNCoinActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--提现页-->
         <activity
             android:name=".ui.activity.WithdrawalsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--支付宝绑定页-->
         <activity
             android:name=".ui.activity.BindZhifubaoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--用户信息页-->
         <activity
@@ -208,52 +217,62 @@
         <!--设置页-->
         <activity
             android:name=".ui.activity.SettingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--基础用户信息页-->
         <activity
             android:name=".ui.activity.BaseInfoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--修改名字页-->
         <activity
             android:name=".ui.activity.ModifyNameActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--用户协议页-->
         <activity
             android:name=".ui.activity.AgreementActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--认证列表页-->
         <activity
             android:name=".ui.activity.CertifyActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--名片认证页-->
         <activity
             android:name=".ui.activity.BusinessCardCertifyActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--工牌认证页-->
         <activity
             android:name=".ui.activity.WorkCardCertifyActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--独白页-->
         <activity
             android:name=".ui.activity.DescribeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--价格设置页-->
         <activity
             android:name=".ui.activity.FeeSettingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--我的相册页-->
         <activity
             android:name=".ui.activity.MyGalleryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--别人的相册页-->
         <activity
@@ -264,59 +283,70 @@
         <!--基础信息编辑页-->
         <activity
             android:name=".ui.activity.BaseInfoEditActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--城市列表页-->
         <activity
             android:name=".ui.activity.CityListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--学习背景列表页-->
         <activity
             android:name=".ui.activity.EducationListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--学习背景编辑页-->
         <activity
             android:name=".ui.activity.EducationActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!--工作背景列表页-->
         <activity
             android:name=".ui.activity.WorkListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--工作背景编辑页-->
         <activity
             android:name=".ui.activity.WorkActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!--学历列表页-->
         <activity
             android:name=".ui.activity.AcademicListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--行业列表页-->
         <activity
             android:name=".ui.activity.IndustryListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--标签表页-->
         <activity
             android:name=".ui.activity.TagActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--评论列表页-->
         <activity
             android:name=".ui.activity.CommentListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--会话列表页-->
         <activity
             android:name=".ui.activity.SessionListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentSwipeBackTheme" />
 
         <!--图片选择器-->
         <!--图片选择器-->

@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
@@ -27,7 +25,7 @@ import com.xue.support.view.SideBar;
 
 import java.util.HashMap;
 
-public class CityListActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<CityList.City>, SideBar.OnTouchingLetterChangedListener {
+public class CityListActivity extends SwipeBackBaseActivity implements AdapterOnItemClickCallback<CityList.City>, SideBar.OnTouchingLetterChangedListener {
 
     public static final int HomeTown = 1;
 
@@ -38,12 +36,6 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
         intent.putExtra("type", type);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private TextView mCityTitleTextView;
 
@@ -73,29 +65,34 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_city_list);
 
         readExtra();
-        initActionBar();
         findView();
         init();
 
         new CityListTask(this).start();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mRightTextView.setOnClickListener(this);
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
 
-            if (mType == HomeTown) {
-                mTitleTextView.setText("选择家乡");
-            } else if (mType == Location) {
-                mTitleTextView.setText("选择现居地");
-            }
-            mRightTextView.setText("保存");
+    @Override
+    protected String actionBarTitle() {
+        return "选择城市";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        if (mType == HomeTown) {
+            new UploadTask(this, mCity.getId(), null).start();
+        } else if (mType == Location) {
+            new UploadTask(this, null, mCity.getId()).start();
         }
     }
 
@@ -109,6 +106,12 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
         mSideBar = findViewById(R.id.sidebar);
         mCityTitleTextView = findViewById(R.id.cityTitle);
         mCityTextView = findViewById(R.id.city);
+
+        if (mType == HomeTown) {
+            setActionTitle("选择家乡");
+        } else if (mType == Location) {
+            setActionTitle("选择现居地");
+        }
     }
 
     private void init() {
@@ -155,24 +158,13 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View v) {
-        if (mRightTextView == v) {
-            if (mType == HomeTown) {
-                new UploadTask(this, mCity.getId(), null).start();
-            } else if (mType == Location) {
-                new UploadTask(this, null, mCity.getId()).start();
-            }
-        }
-    }
-
-    @Override
-    public void onItemClick(CityList.City city , View view) {
+    public void onItemClick(CityList.City city, View view) {
         mCity = city;
         mCityTextView.setText(city.getShowName());
         if (!TextUtils.equals(mUserDetailInfo.getHomeTown(), city.getId())) {
-            mRightTextView.setVisibility(View.VISIBLE);
+            setActionRightVisibility(View.VISIBLE);
         } else {
-            mRightTextView.setVisibility(View.GONE);
+            setActionRightVisibility(View.GONE);
         }
     }
 
@@ -187,7 +179,7 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
     private class CityListTask extends HttpAsyncTask<CityList> {
 
         public CityListTask(Context context) {
-            super(context , true , true);
+            super(context, true, true);
         }
 
         @Override
@@ -209,7 +201,7 @@ public class CityListActivity extends BaseActivity implements View.OnClickListen
         private String location;
 
         public UploadTask(Context context, String homeTown, String location) {
-            super(context , true , true);
+            super(context, true, true);
             this.homeTown = homeTown;
             this.location = location;
         }

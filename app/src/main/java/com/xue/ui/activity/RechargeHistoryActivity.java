@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xue.R;
@@ -21,16 +19,12 @@ import com.xue.http.impl.DataHull;
 import com.xue.support.view.DividerItemDecoration;
 import com.xue.ui.views.ListFootView;
 
-public class RechargeHistoryActivity extends BaseActivity implements View.OnClickListener {
+public class RechargeHistoryActivity extends SwipeBackBaseActivity {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, RechargeHistoryActivity.class);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
 
     private TextView mEmptyTextView;
 
@@ -53,23 +47,24 @@ public class RechargeHistoryActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_recharge_history);
-        initActionBar();
         findView();
 
         getTradeList(true, true);
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mBackImageView.setOnClickListener(this);
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
 
-            mTitleTextView.setText("收益记录");
-        }
+    @Override
+    protected String actionBarTitle() {
+        return "收益记录";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return null;
     }
 
     private void findView() {
@@ -112,13 +107,6 @@ public class RechargeHistoryActivity extends BaseActivity implements View.OnClic
     private void getTradeList(boolean isNew, boolean showLoading) {
         int offset = mWalletTradeList == null ? 0 : mWalletTradeList.size();
         new GetTradeListTask(this, String.valueOf(offset), String.valueOf(limit), isNew, showLoading).start();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mBackImageView == v) {
-            finish();
-        }
     }
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {

@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.elianshang.tools.ToastTool;
 import com.elianshang.tools.UITool;
@@ -43,19 +40,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyGalleryActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<MomentInfoList.MomentRes>, AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> {
+public class MyGalleryActivity extends SwipeBackBaseActivity implements AdapterOnItemClickCallback<MomentInfoList.MomentRes>, AdapterOnItemLongClickCallback<MomentInfoList.MomentRes> {
 
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, MyGalleryActivity.class);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private RecyclerView mRecyclerView;
 
@@ -74,27 +65,30 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_gallery);
 
-        initActionBar();
         findView();
-
         fillData();
         new GetTask(this).start();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mBackImageView.setOnClickListener(this);
-            mRightTextView.setOnClickListener(this);
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
 
-            mTitleTextView.setText("相册");
-            mRightTextView.setText("保存");
-        }
+    @Override
+    protected String actionBarTitle() {
+        return "相册";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        new SaveTask(this, mMomentId, null, mMomentResList);
     }
 
     private void findView() {
@@ -122,18 +116,11 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
 
     private void checkResChange() {
         if (mOriginalSize != mMomentResList.size() || mDeleteFlag) {
-            mRightTextView.setVisibility(View.VISIBLE);
+            setActionRightVisibility(View.VISIBLE);
         } else {
-            mRightTextView.setVisibility(View.GONE);
+            setActionRightVisibility(View.GONE);
         }
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mRightTextView == v) {
-            new SaveTask(this, mMomentId, null, mMomentResList);
-        }
     }
 
     @Override
@@ -245,7 +232,7 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
     private class GetTask extends HttpAsyncTask<MomentInfoList> {
 
         public GetTask(Context context) {
-            super(context , true , true);
+            super(context, true, true);
         }
 
         @Override
@@ -276,7 +263,7 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
         private ArrayList<String> pics;
 
         public SaveTask(Context context, String momentId, String text, ArrayList<MomentInfoList.MomentRes> resList) {
-            super(context , true , true);
+            super(context, true, true);
             this.momentId = momentId;
             this.text = text;
             this.resList = resList;
@@ -297,7 +284,7 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
             if (list.isEmpty()) {
                 start();
             } else {
-                OssManager.get().upload(list, callback , false);
+                OssManager.get().upload(list, callback, false);
             }
         }
 
@@ -349,7 +336,7 @@ public class MyGalleryActivity extends BaseActivity implements View.OnClickListe
             mMomentResList.clear();
             mMomentResList.addAll(result.getResList());
             mOriginalSize = result.getResList().size();
-            mDeleteFlag = false ;
+            mDeleteFlag = false;
             fillData();
 
             ToastTool.show(context, "上传成功");

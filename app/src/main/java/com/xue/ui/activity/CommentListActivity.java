@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,15 +19,13 @@ import com.xue.http.impl.DataHull;
 import com.xue.support.view.DividerItemDecoration;
 import com.xue.ui.views.ListFootView;
 
-public class CommentListActivity extends BaseActivity {
+public class CommentListActivity extends SwipeBackBaseActivity {
 
     public static void launch(Context context, String uid) {
         Intent intent = new Intent(context, CommentListActivity.class);
         intent.putExtra("uid", uid);
         context.startActivity(intent);
     }
-
-    private TextView mTitleTextView = null;
 
     private RecyclerView mRecyclerView = null;
 
@@ -54,25 +51,28 @@ public class CommentListActivity extends BaseActivity {
         setContentView(R.layout.activity_comment_list);
 
         readExtra();
-        initActionBar();
         findView();
 
         getCommentInfo(true, true);
     }
 
-    private void readExtra() {
-        mUid = getIntent().getStringExtra("uid");
+    @Override
+    protected boolean hasActionBar() {
+        return true;
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
+    @Override
+    protected String actionBarTitle() {
+        return "评论";
+    }
 
-            mTitleTextView.setText("评论");
-        }
+    @Override
+    protected String actionBarRight() {
+        return null;
+    }
+
+    private void readExtra() {
+        mUid = getIntent().getStringExtra("uid");
     }
 
     private void findView() {

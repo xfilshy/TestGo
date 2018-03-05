@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,16 +16,12 @@ import com.xue.adapter.EducationFooterListAdapter;
 import com.xue.adapter.EducationListAdapter;
 import com.xue.bean.UserEducationInfo;
 
-public class EducationListActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<UserEducationInfo.Education> {
+public class EducationListActivity extends SwipeBackBaseActivity implements AdapterOnItemClickCallback<UserEducationInfo.Education> {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, EducationListActivity.class);
         context.startActivity(intent);
     }
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private TextView mEmptyTextView;
 
@@ -41,8 +36,28 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_education_list);
 
-        initActionBar();
         findView();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "教育经历";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "添加";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        EducationActivity.launch(this, null);
     }
 
     @Override
@@ -61,28 +76,14 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-
-            mRightTextView.setVisibility(View.VISIBLE);
-            mRightTextView.setOnClickListener(this);
-
-            mTitleTextView.setText("教育经历");
-            mRightTextView.setText("添加");
-        }
-    }
-
     private void findView() {
         mEmptyTextView = findViewById(R.id.empty);
         mRecyclerView = findViewById(R.id.recyclerView);
         mFooterView = View.inflate(this, R.layout.footer_educationa_work, null);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        setActionRightVisibility(View.VISIBLE);
     }
 
     private void init() {
@@ -112,14 +113,7 @@ public class EducationListActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void onClick(View v) {
-        if (mRightTextView == v) {
-            EducationActivity.launch(this, null);
-        }
-    }
-
-    @Override
-    public void onItemClick(UserEducationInfo.Education education , View view) {
+    public void onItemClick(UserEducationInfo.Education education, View view) {
         EducationActivity.launch(this, education);
     }
 }

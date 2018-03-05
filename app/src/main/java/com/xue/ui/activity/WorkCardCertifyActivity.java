@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.elianshang.tools.ToastTool;
 import com.elianshang.tools.UITool;
@@ -29,18 +26,12 @@ import com.yancy.gallerypick.config.GalleryPick;
 
 import java.util.List;
 
-public class WorkCardCertifyActivity extends BaseActivity implements View.OnClickListener {
+public class WorkCardCertifyActivity extends SwipeBackBaseActivity {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, WorkCardCertifyActivity.class);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private ImageView mPhotoImageView;
 
@@ -51,9 +42,28 @@ public class WorkCardCertifyActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_card_certify);
 
-        initActionBar();
         findView();
         init();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "工牌认证（未认证）";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        new UploadTask(this, mImagePath);
     }
 
     private void findView() {
@@ -69,29 +79,14 @@ public class WorkCardCertifyActivity extends BaseActivity implements View.OnClic
             }
 
             if (TextUtils.equals("0", userExpertInfo.getWorkCardAuth())) {
-                mTitleTextView.setText("工牌认证（未认证）");
+                setActionTitle("工牌认证（未认证）");
             } else if (TextUtils.equals("1", userExpertInfo.getWorkCardAuth())) {
-                mTitleTextView.setText("工牌认证（认证中）");
+                setActionTitle("工牌认证（认证中）");
             } else if (TextUtils.equals("2", userExpertInfo.getWorkCardAuth())) {
-                mTitleTextView.setText("工牌认证（认证通过）");
+                setActionTitle("工牌认证（认证通过）");
             } else if (TextUtils.equals("3", userExpertInfo.getWorkCardAuth())) {
-                mTitleTextView.setText("工牌认证（认证失败）");
+                setActionTitle("工牌认证（认证失败）");
             }
-        }
-    }
-
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mRightTextView.setOnClickListener(this);
-
-            mTitleTextView.setText("工牌认证（未认证）");
-            mRightTextView.setText("保存");
         }
     }
 
@@ -100,13 +95,12 @@ public class WorkCardCertifyActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onSuccess(List<String> photoList) {
-                Log.e("xue", "成功了" + photoList);
                 if (photoList != null && photoList.size() > 0) {
                     String photoPath = photoList.get(0);
                     ImageCacheMannager.loadImage(WorkCardCertifyActivity.this, photoPath, mPhotoImageView, false);
 
                     mImagePath = photoPath;
-                    mRightTextView.setVisibility(View.VISIBLE);
+                    setActionRightVisibility(View.VISIBLE);
                 }
             }
         };
@@ -122,21 +116,14 @@ public class WorkCardCertifyActivity extends BaseActivity implements View.OnClic
         GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (mRightTextView == v) {
-            new UploadTask(this, mImagePath);
-        }
-    }
-
-
     private class UploadTask extends HttpAsyncTask<UserExpertInfo> {
 
         private String resultPath;
 
         public UploadTask(Context context, String imagePath) {
-            super(context , true , true);
-            OssManager.get().upload(imagePath, callback , true);
+            super(context, true, true);
+            showLoadingDialog();
+            OssManager.get().upload(imagePath, callback, true);
             this.resultPath = imagePath;
         }
 

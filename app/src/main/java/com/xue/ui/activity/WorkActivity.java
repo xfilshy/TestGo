@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xue.BaseApplication;
@@ -22,19 +20,13 @@ import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.support.view.DatePicker;
 
-public class WorkActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class WorkActivity extends SwipeBackBaseActivity implements View.OnClickListener, TextWatcher {
 
     public static void launch(Context context, UserWorkInfo.Work work) {
         Intent intent = new Intent(context, WorkActivity.class);
         intent.putExtra("work", work);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private EditText mCompanyEditText;
 
@@ -75,9 +67,46 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work);
         readExtra();
-        initActionBar();
         findView();
         init();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "工作经历";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        String companyName = mCompanyEditText.getText().toString();
+        String industryId;
+        if (mIndustry != null) {
+            industryId = mIndustry.getId();
+        } else {
+            industryId = mWork.getIndustryId();
+        }
+        String positionName = mPositionEditText.getText().toString();
+        String directionName = mDirectionEditText.getText().toString();
+        String describe = mDescribeEditText.getText().toString();
+        String beginAt = mBeginAtEditText.getText().toString();
+        String endAt = mEndAtEditText.getText().toString();
+
+        if (mWork == null) {
+            new CreateTask(this, companyName, industryId, positionName, directionName, describe, beginAt, endAt).start();
+        } else {
+            new UpdateTask(this, mWork.getId(), companyName, industryId, positionName, directionName, describe, beginAt, endAt).start();
+        }
     }
 
     @Override
@@ -107,21 +136,6 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
 
     private void readExtra() {
         mWork = (UserWorkInfo.Work) getIntent().getSerializableExtra("work");
-    }
-
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mRightTextView.setOnClickListener(this);
-
-            mTitleTextView.setText("工作经历");
-            mRightTextView.setText("保存");
-        }
     }
 
     private void findView() {
@@ -186,26 +200,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        if (mRightTextView == v) {
-            String companyName = mCompanyEditText.getText().toString();
-            String industryId;
-            if (mIndustry != null) {
-                industryId = mIndustry.getId();
-            } else {
-                industryId = mWork.getIndustryId();
-            }
-            String positionName = mPositionEditText.getText().toString();
-            String directionName = mDirectionEditText.getText().toString();
-            String describe = mDescribeEditText.getText().toString();
-            String beginAt = mBeginAtEditText.getText().toString();
-            String endAt = mEndAtEditText.getText().toString();
-
-            if (mWork == null) {
-                new CreateTask(this, companyName, industryId, positionName, directionName, describe, beginAt, endAt).start();
-            } else {
-                new UpdateTask(this, mWork.getId(), companyName, industryId, positionName, directionName, describe, beginAt, endAt).start();
-            }
-        } else if (mDeleteTextView == v) {
+        if (mDeleteTextView == v) {
             if (mWork != null) {
                 new DeleteTask(this, mWork.getId()).start();
             }
@@ -327,15 +322,15 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
         if (mWork != null) {
             if ((mCompanyFlag != 0 && mIndustryFlag != 0 && mPositionFlag != 0 && mDirectionFlag != 0 && mBeginAtFlag != 0 && mEndAtFlag != 0)
                     && (mCompanyFlag == 2 || mIndustryFlag == 2 || mPositionFlag == 2 || mDirectionFlag == 2 || mDescribeFlag == 2 || mBeginAtFlag == 2 && mEndAtFlag == 2)) {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
             } else {
-                mRightTextView.setVisibility(View.GONE);
+                setActionRightVisibility(View.GONE);
             }
         } else {
             if (mCompanyFlag == 2 && mIndustryFlag == 2 && mPositionFlag == 2 && mDirectionFlag == 2 && mBeginAtFlag == 2 && mEndAtFlag == 2) {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
             } else {
-                mRightTextView.setVisibility(View.GONE);
+                setActionRightVisibility(View.GONE);
             }
         }
     }
@@ -358,7 +353,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
         private String endAt;
 
         public CreateTask(Context context, String companyName, String industryId, String positionName, String directionName, String describe, String beginAt, String endAt) {
-            super(context,true , true);
+            super(context, true, true);
 
             this.companyName = companyName;
             this.industryId = industryId;
@@ -400,7 +395,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
         private String endAt;
 
         public UpdateTask(Context context, String id, String companyName, String industryId, String positionName, String directionName, String describe, String beginAt, String endAt) {
-            super(context,true , true);
+            super(context, true, true);
 
             this.id = id;
             this.companyName = companyName;
@@ -429,7 +424,7 @@ public class WorkActivity extends BaseActivity implements View.OnClickListener, 
         private String id;
 
         public DeleteTask(Context context, String id) {
-            super(context,true , true);
+            super(context, true, true);
 
             this.id = id;
         }

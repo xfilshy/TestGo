@@ -4,14 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.elianshang.tools.EditTextTool;
 import com.elianshang.tools.TextTool;
@@ -22,18 +19,12 @@ import com.xue.bean.UserDetailInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 
-public class ModifyNameActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class ModifyNameActivity extends SwipeBackBaseActivity implements TextWatcher {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, ModifyNameActivity.class);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private EditText mRealNameEditText;
 
@@ -44,10 +35,31 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_name);
 
-        initActionBar();
         findView();
 
         init();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "修改姓名";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        String realName = mRealNameEditText.getText().toString();
+        new UploadTask(this, realName).start();
     }
 
     @Override
@@ -62,22 +74,6 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
         mRealNameEditText.removeTextChangedListener(this);
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mBackImageView.setOnClickListener(this);
-            mRightTextView.setOnClickListener(this);
-
-            mTitleTextView.setText("修改姓名");
-            mRightTextView.setText("保存");
-        }
-    }
-
     private void findView() {
         mRealNameEditText = findViewById(R.id.realName);
         EditTextTool.setEmojiFilter(mRealNameEditText);
@@ -89,16 +85,6 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
             mRealName = userDetailInfo.getRealName();
             mRealNameEditText.setText(mRealName);
             mRealNameEditText.setSelection(mRealName.length());
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mBackImageView == v) {
-            finish();
-        } else if (mRightTextView == v) {
-            String realName = mRealNameEditText.getText().toString();
-            new UploadTask(this, realName).start();
         }
     }
 
@@ -123,9 +109,9 @@ public class ModifyNameActivity extends BaseActivity implements View.OnClickList
         }
 
         if (TextUtils.isEmpty(text) || TextUtils.equals(text, mRealName)) {
-            mRightTextView.setVisibility(View.GONE);
+            setActionRightVisibility(View.GONE);
         } else {
-            mRightTextView.setVisibility(View.VISIBLE);
+            setActionRightVisibility(View.VISIBLE);
         }
     }
 

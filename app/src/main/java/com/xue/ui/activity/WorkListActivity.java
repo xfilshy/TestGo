@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,16 +16,12 @@ import com.xue.adapter.WorkFooterListAdapter;
 import com.xue.adapter.WorkListAdapter;
 import com.xue.bean.UserWorkInfo;
 
-public class WorkListActivity extends BaseActivity implements View.OnClickListener, AdapterOnItemClickCallback<UserWorkInfo.Work> {
+public class WorkListActivity extends SwipeBackBaseActivity implements AdapterOnItemClickCallback<UserWorkInfo.Work> {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, WorkListActivity.class);
         context.startActivity(intent);
     }
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private TextView mEmptyTextView;
 
@@ -41,8 +36,28 @@ public class WorkListActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_list);
 
-        initActionBar();
         findView();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "工作经历";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "添加";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        WorkActivity.launch(this, null);
     }
 
     @Override
@@ -56,26 +71,14 @@ public class WorkListActivity extends BaseActivity implements View.OnClickListen
         super.onPause();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mRightTextView.setOnClickListener(this);
-            mRightTextView.setVisibility(View.VISIBLE);
-            mTitleTextView.setText("工作经历");
-            mRightTextView.setText("添加");
-        }
-    }
-
     private void findView() {
         mEmptyTextView = findViewById(R.id.empty);
         mRecyclerView = findViewById(R.id.recyclerView);
         mFooterView = View.inflate(this, R.layout.footer_educationa_work, null);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        setActionRightVisibility(View.VISIBLE);
     }
 
     private void init() {
@@ -105,14 +108,7 @@ public class WorkListActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View v) {
-        if (mRightTextView == v) {
-            WorkActivity.launch(this, null);
-        }
-    }
-
-    @Override
-    public void onItemClick(UserWorkInfo.Work work , View view) {
+    public void onItemClick(UserWorkInfo.Work work, View view) {
         WorkActivity.launch(this, work);
     }
 }

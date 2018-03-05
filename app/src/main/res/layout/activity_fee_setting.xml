@@ -85,19 +85,4 @@
         android:textColor="@color/grey_dark"
         android:textSize="14dp" />
 
-    <TextView
-        android:id="@+id/confirm"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/primary_button_selector"
-        android:enabled="false"
-        android:gravity="center"
-        android:text="完成"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:visibility="gone" />
-
 </LinearLayout>

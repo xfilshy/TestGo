@@ -5,11 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.adapter.AcademicListAdapter;
@@ -20,14 +18,12 @@ import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.support.view.DividerItemDecoration;
 
-public class AcademicListActivity extends BaseActivity implements AdapterOnItemClickCallback<AcademicList.Academic> {
+public class AcademicListActivity extends SwipeBackBaseActivity implements AdapterOnItemClickCallback<AcademicList.Academic> {
 
     public static void launch(Activity activity) {
         Intent intent = new Intent(activity, AcademicListActivity.class);
         activity.startActivityForResult(intent, 1);
     }
-
-    private TextView mTitleTextView;
 
     private RecyclerView mRecyclerView;
 
@@ -38,20 +34,23 @@ public class AcademicListActivity extends BaseActivity implements AdapterOnItemC
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_academic_list);
-        initActionBar();
         findView();
         new GetTask(this).start();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
 
-            mTitleTextView.setText("学历列表");
-        }
+    @Override
+    protected String actionBarTitle() {
+        return "学历列表";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return null;
     }
 
     private void findView() {

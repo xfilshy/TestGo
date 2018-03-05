@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -20,17 +19,13 @@ import com.xue.bean.UserTagInfo;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 
-public class TagActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class TagActivity extends SwipeBackBaseActivity implements View.OnClickListener, TextWatcher {
 
     public static void launch(Context context, UserTagInfo.Tag tag) {
         Intent intent = new Intent(context, TagActivity.class);
         intent.putExtra("tag", tag);
         context.startActivity(intent);
     }
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private EditText mTagEditText;
 
@@ -44,10 +39,36 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
         setContentView(R.layout.activity_tag);
 
         readExtra();
-        initActionBar();
         findView();
 
         init();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "标签";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        String tagName = mTagEditText.getText().toString();
+
+        if (mTag != null) {
+            new UploadTask(this, mTag.getTagId(), tagName).start();
+        } else {
+            new CreateTask(this, tagName).start();
+        }
     }
 
     @Override
@@ -64,20 +85,6 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
 
     private void readExtra() {
         mTag = (UserTagInfo.Tag) getIntent().getSerializableExtra("tag");
-    }
-
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mRightTextView.setOnClickListener(this);
-
-            mTitleTextView.setText("标签");
-            mRightTextView.setText("保存");
-        }
     }
 
     private void findView() {
@@ -101,15 +108,7 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
 
     @Override
     public void onClick(View v) {
-        if (mRightTextView == v) {
-            String tagName = mTagEditText.getText().toString();
-
-            if (mTag != null) {
-                new UploadTask(this, mTag.getTagId(), tagName).start();
-            } else {
-                new CreateTask(this, tagName).start();
-            }
-        } else if (mDeleteTextView == v) {
+        if (mDeleteTextView == v) {
             new DeleteTask(this, mTag.getTagId()).start();
         }
     }
@@ -129,15 +128,15 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
         String text = s.toString();
         if (mTag == null) {
             if (TextUtils.isEmpty(text)) {
-                mRightTextView.setVisibility(View.GONE);
+                setActionRightVisibility(View.GONE);
             } else {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
             }
         } else {
             if (TextUtils.isEmpty(text) || TextUtils.equals(text, mTag.getTagName())) {
-                mRightTextView.setVisibility(View.GONE);
+                setActionRightVisibility(View.GONE);
             } else {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
             }
         }
     }
@@ -148,7 +147,7 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
         private String tagName;
 
         public CreateTask(Context context, String tagName) {
-            super(context , true , true);
+            super(context, true, true);
             this.tagName = tagName;
         }
 
@@ -171,7 +170,7 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
         private String tagName;
 
         public UploadTask(Context context, String tagId, String tagName) {
-            super(context , true , true);
+            super(context, true, true);
             this.tagId = tagId;
             this.tagName = tagName;
         }
@@ -193,7 +192,7 @@ public class TagActivity extends BaseActivity implements View.OnClickListener, T
         private String tagId;
 
         public DeleteTask(Context context, String tagId) {
-            super(context , true , true);
+            super(context, true, true);
             this.tagId = tagId;
         }
 

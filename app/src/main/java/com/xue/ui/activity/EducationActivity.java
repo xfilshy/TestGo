@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xue.BaseApplication;
@@ -22,19 +20,13 @@ import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 import com.xue.support.view.DatePicker;
 
-public class EducationActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class EducationActivity extends SwipeBackBaseActivity implements View.OnClickListener, TextWatcher {
 
     public static void launch(Context context, UserEducationInfo.Education education) {
         Intent intent = new Intent(context, EducationActivity.class);
         intent.putExtra("education", education);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mTitleTextView;
-
-    private TextView mRightTextView;
 
     private EditText mSchoolEditText;
 
@@ -72,10 +64,45 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_education);
 
         readExtra();
-        initActionBar();
         findView();
 
         init();
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "教育经历";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "保存";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        String school = mSchoolEditText.getText().toString();
+        String major = mMajorEditText.getText().toString();
+        String academic;
+        if (mAcademic != null) {
+            academic = mAcademic.getId();
+        } else {
+            academic = mEducation.getAcademicType();
+        }
+        String describe = mDescribeEditText.getText().toString();
+        String beginAt = mBeginAtEditText.getText().toString();
+        String endAt = mEndAtEditText.getText().toString();
+        if (mEducation == null) {
+            new CreateTask(this, school, major, academic, describe, beginAt, endAt).start();
+        } else {
+            new UpdateTask(this, mEducation.getId(), school, major, academic, describe, beginAt, endAt).start();
+        }
     }
 
     @Override
@@ -104,21 +131,6 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
 
     private void readExtra() {
         mEducation = (UserEducationInfo.Education) getIntent().getSerializableExtra("education");
-    }
-
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_simple);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mTitleTextView = actionBar.getCustomView().findViewById(R.id.title);
-            mRightTextView = actionBar.getCustomView().findViewById(R.id.right);
-            mRightTextView.setOnClickListener(this);
-
-            mTitleTextView.setText("教育经历");
-            mRightTextView.setText("保存");
-        }
     }
 
     private void findView() {
@@ -178,24 +190,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (mRightTextView == v) {
-            String school = mSchoolEditText.getText().toString();
-            String major = mMajorEditText.getText().toString();
-            String academic;
-            if (mAcademic != null) {
-                academic = mAcademic.getId();
-            } else {
-                academic = mEducation.getAcademicType();
-            }
-            String describe = mDescribeEditText.getText().toString();
-            String beginAt = mBeginAtEditText.getText().toString();
-            String endAt = mEndAtEditText.getText().toString();
-            if (mEducation == null) {
-                new CreateTask(this, school, major, academic, describe, beginAt, endAt).start();
-            } else {
-                new UpdateTask(this, mEducation.getId(), school, major, academic, describe, beginAt, endAt).start();
-            }
-        } else if (mDeleteTextView == v) {
+        if (mDeleteTextView == v) {
             if (mEducation != null) {
                 new DeleteTask(this, mEducation.getId()).start();
             }
@@ -307,15 +302,15 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         if (mEducation != null) {
             if ((mSchoolFlag != 0 && mMajorFlag != 0 && mAcademicFlag != 0 && mBeginAtFlag != 0 && mEndAtFlag != 0)
                     && (mSchoolFlag == 2 || mMajorFlag == 2 || mAcademicFlag == 2 || mDescribeFlag == 2 || mBeginAtFlag == 2 && mEndAtFlag == 2)) {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
             } else {
-                mRightTextView.setVisibility(View.GONE);
+                setActionRightVisibility(View.GONE);
             }
         } else {
             if (mSchoolFlag == 2 && mMajorFlag == 2 && mAcademicFlag == 2 && mBeginAtFlag == 2 && mEndAtFlag == 2) {
-                mRightTextView.setVisibility(View.VISIBLE);
+                setActionRightVisibility(View.VISIBLE);
             } else {
-                mRightTextView.setVisibility(View.GONE);
+                setActionRightVisibility(View.GONE);
             }
         }
     }
@@ -335,7 +330,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         private String endAt;
 
         public CreateTask(Context context, String school, String major, String academic, String descirbe, String beginAt, String endAt) {
-            super(context , true , true);
+            super(context, true, true);
 
             this.school = school;
             this.major = major;
@@ -374,7 +369,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         private String endAt;
 
         public UpdateTask(Context context, String id, String school, String major, String academic, String descirbe, String beginAt, String endAt) {
-            super(context , true , true);
+            super(context, true, true);
 
             this.id = id;
             this.school = school;
@@ -402,7 +397,7 @@ public class EducationActivity extends BaseActivity implements View.OnClickListe
         private String id;
 
         public DeleteTask(Context context, String id) {
-            super(context , true , true);
+            super(context, true, true);
 
             this.id = id;
         }

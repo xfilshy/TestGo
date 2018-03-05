@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elianshang.tools.FloatStringTool;
@@ -16,16 +14,12 @@ import com.xue.bean.WalletDecorator;
 import com.xue.http.HttpApi;
 import com.xue.http.impl.DataHull;
 
-public class PaymentsActivity extends BaseActivity implements View.OnClickListener {
+public class PaymentsActivity extends SwipeBackBaseActivity implements View.OnClickListener {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, PaymentsActivity.class);
         context.startActivity(intent);
     }
-
-    private ImageView mBackImageView;
-
-    private TextView mHistoryTextView;
 
     private TextView mRechargeTextView;
 
@@ -46,21 +40,29 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments);
 
-        initActionBar();
         findView();
-
         new GetWalletTask(this).start();
     }
 
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); //Enable自定义的View
-            actionBar.setCustomView(R.layout.actionbar_payments);//设置自定义的布局：actionbar_custom
-            mBackImageView = actionBar.getCustomView().findViewById(R.id.back);
-            mHistoryTextView = actionBar.getCustomView().findViewById(R.id.history);
-            mHistoryTextView.setOnClickListener(this);
-        }
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected String actionBarTitle() {
+        return "我的收益";
+    }
+
+    @Override
+    protected String actionBarRight() {
+        return "收支记录";
+    }
+
+    @Override
+    public void rightAction(View view) {
+        super.rightAction(view);
+        PaymentsHistoryActivity.launch(this);
     }
 
     private void findView() {
@@ -73,6 +75,7 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
 
         mRechargeTextView.setOnClickListener(this);
         mWithdrawalsTextView.setOnClickListener(this);
+        setActionRightVisibility(View.VISIBLE);
     }
 
     private void fillData() {
@@ -84,9 +87,7 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (mHistoryTextView == v) {
-            PaymentsHistoryActivity.launch(this);
-        } else if (mRechargeTextView == v) {
+        if (mRechargeTextView == v) {
             RechargeNCoinActivity.launch(this);
         } else if (mWithdrawalsTextView == v) {
             WithdrawalsActivity.launch(this);
@@ -96,7 +97,7 @@ public class PaymentsActivity extends BaseActivity implements View.OnClickListen
     private class GetWalletTask extends HttpAsyncTask<WalletDecorator> {
 
         public GetWalletTask(Context context) {
-            super(context , true , true);
+            super(context, true, true);
         }
 
         @Override
