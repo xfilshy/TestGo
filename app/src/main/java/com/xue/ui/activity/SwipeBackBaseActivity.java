@@ -109,6 +109,10 @@ public abstract class SwipeBackBaseActivity extends BaseActivity implements Swip
 
     }
 
+    public void setRequestDisallowInterceptTouchEventEnable(boolean isEnable) {
+        mSwipeBackHelper.setRequestDisallowInterceptTouchEventEnable(isEnable);
+    }
+
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         if (hasActionBar()) {

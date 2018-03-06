@@ -188,6 +188,13 @@ public class SwipeBackHelper {
         return this;
     }
 
+    public SwipeBackHelper setRequestDisallowInterceptTouchEventEnable(boolean isEnable) {
+        if (mSwipeBackLayout != null) {
+            mSwipeBackLayout.setRequestDisallowInterceptTouchEventEnable(isEnable);
+        }
+        return this;
+    }
+
     /**
      * 是否正在滑动
      *

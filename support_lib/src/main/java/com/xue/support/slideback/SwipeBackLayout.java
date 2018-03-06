@@ -213,6 +213,11 @@ public class SwipeBackLayout extends ViewGroup {
     //===========================新增END=======================
 
     /**
+     * 控件事件拦截是否可用 默认不可用
+     */
+    private boolean mRequestDisallowInterceptTouchEventEnable = false;
+
+    /**
      * 将该滑动返回控件添加到 Activity 上
      *
      * @param activity
@@ -320,6 +325,7 @@ public class SwipeBackLayout extends ViewGroup {
     void setIsShadowAlphaGradient(boolean isShadowAlphaGradient) {
         mShadowView.setIsShadowAlphaGradient(isShadowAlphaGradient);
     }
+
     // ======================== 新加的 END ========================
 
     /**
@@ -913,39 +919,6 @@ public class SwipeBackLayout extends ViewGroup {
         }
     }
 
-
-    private float mDispatchMotionX;
-    private float mDispatchMotionY;
-    private boolean mMoveFlag = false;
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        int action = ev.getAction();
-        if (action == MotionEvent.ACTION_DOWN) {
-            mDispatchMotionX = ev.getX();
-            mDispatchMotionY = ev.getY();
-        } else if (action == MotionEvent.ACTION_MOVE) {
-            final float x = ev.getX();
-            final float y = ev.getY();
-            final float adx = Math.abs(x - mDispatchMotionX);
-            final float ady = Math.abs(y - mDispatchMotionY);
-            final int slop = mDragHelper.getTouchSlop();
-            if (adx > slop && adx > ady * 2) {
-                mMoveFlag = true;
-                onTouchEvent(ev);
-                ev.setAction(action); // restore action in case it was changed
-                return true;
-            }
-        } else if (ev.getAction() == MotionEvent.ACTION_UP && mMoveFlag) {
-            mMoveFlag = false;
-            onTouchEvent(ev);
-            ev.setAction(action); // restore action in case it was changed
-            return true;
-        }
-
-        return super.dispatchTouchEvent(ev);
-    }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = MotionEventCompat.getActionMasked(ev);
@@ -955,8 +928,7 @@ public class SwipeBackLayout extends ViewGroup {
             // After the first things will be slideable.
             final View secondChild = getChildAt(1);
             if (secondChild != null) {
-                mPreservedOpenState = !mDragHelper.isViewUnder(secondChild,
-                        (int) ev.getX(), (int) ev.getY());
+                mPreservedOpenState = !mDragHelper.isViewUnder(secondChild, (int) ev.getX(), (int) ev.getY());
             }
         }
 
@@ -987,8 +959,7 @@ public class SwipeBackLayout extends ViewGroup {
                 mInitialMotionX = x;
                 mInitialMotionY = y;
 
-                if (mDragHelper.isViewUnder(mSlideableView, (int) x, (int) y)
-                        && isDimmed(mSlideableView)) {
+                if (mDragHelper.isViewUnder(mSlideableView, (int) x, (int) y) && isDimmed(mSlideableView)) {
                     interceptTap = true;
                 }
                 break;
@@ -1058,6 +1029,13 @@ public class SwipeBackLayout extends ViewGroup {
         }
 
         return wantTouchEvents;
+    }
+
+    @Override
+    public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        if (mRequestDisallowInterceptTouchEventEnable) {
+            super.requestDisallowInterceptTouchEvent(disallowIntercept);
+        }
     }
 
     private boolean closePane(View pane, int initialVelocity) {
@@ -1139,6 +1117,11 @@ public class SwipeBackLayout extends ViewGroup {
      */
     public boolean isSlideable() {
         return mCanSlide;
+    }
+
+
+    public void setRequestDisallowInterceptTouchEventEnable(boolean isEnable) {
+        mRequestDisallowInterceptTouchEventEnable = isEnable;
     }
 
     void onPanelDragged(int newLeft) {

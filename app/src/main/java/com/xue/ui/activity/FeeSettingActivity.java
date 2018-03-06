@@ -93,6 +93,8 @@ public class FeeSettingActivity extends SwipeBackBaseActivity implements BubbleS
         mBubbleSeekBar = findViewById(R.id.seekBar);
 
         EditTextTool.setEmojiFilter(mSignatureEditText);
+
+        setRequestDisallowInterceptTouchEventEnable(true);
     }
 
     private void init() {
@@ -114,6 +116,8 @@ public class FeeSettingActivity extends SwipeBackBaseActivity implements BubbleS
 
     private void initSeekBar() {
         mBubbleSeekBar.getConfigBuilder()
+                .secondTrackSize(6)
+                .trackSize(4)
                 .min(mUserConfigInfo.getFeeMin())
                 .max(mUserConfigInfo.getFeeMax())
                 .sectionCount(mUserConfigInfo.getFeeMax() - mUserConfigInfo.getFeeMin())
@@ -127,10 +131,8 @@ public class FeeSettingActivity extends SwipeBackBaseActivity implements BubbleS
                 .bubbleColor(ContextCompat.getColor(this, R.color.colorAccent))
                 .bubbleTextSize(18)
                 .autoAdjustSectionMark()
-                .alwaysShowBubble()
                 .sectionTextPosition(BubbleSeekBar.TextPosition.SIDES)
                 .build();
-
     }
 
     private void checkChange() {

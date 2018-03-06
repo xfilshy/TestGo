@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -62,41 +61,8 @@ public class SlidingRootNavLayout extends FrameLayout implements SlidingRootNav 
         isMenuHidden = true;
     }
 
-    private float mInitialMotionX;
-    private float mInitialMotionY;
-    private boolean mMoveFlag = false;
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        int action = ev.getAction();
-        if (action == MotionEvent.ACTION_DOWN) {
-            mInitialMotionX = ev.getX();
-            mInitialMotionY = ev.getY();
-        } else if (action == MotionEvent.ACTION_MOVE) {
-            final float x = ev.getX();
-            final float y = ev.getY();
-            final float adx = Math.abs(x - mInitialMotionX);
-            final float ady = Math.abs(y - mInitialMotionY);
-            final int slop = dragHelper.getTouchSlop();
-            if (adx > slop && adx > ady * 2) {
-                mMoveFlag = true;
-                onTouchEvent(ev);
-                ev.setAction(action); // restore action in case it was changed
-                return true;
-            }
-        } else if (ev.getAction() == MotionEvent.ACTION_UP && mMoveFlag) {
-            mMoveFlag = false;
-            onTouchEvent(ev);
-            ev.setAction(action); // restore action in case it was changed
-            return true;
-        }
-
-        return super.dispatchTouchEvent(ev);
-    }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        Log.e("xue", "onInterceptTouchEvent ev == " + ev.getAction());
         return (!isMenuLocked
                 && dragHelper.shouldInterceptTouchEvent(ev))
                 || shouldBlockClick(ev);
@@ -104,9 +70,12 @@ public class SlidingRootNavLayout extends FrameLayout implements SlidingRootNav 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.e("xue", "onTouchEvent ev == " + event.getAction());
         dragHelper.processTouchEvent(event);
         return true;
+    }
+
+    @Override
+    public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
     }
 
     @Override
