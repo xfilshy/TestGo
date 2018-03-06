@@ -1,8 +1,6 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
-public class UserExpertInfo implements BaseBean {
+public class UserExpertInfo {
 
     private String signature;
 
@@ -87,15 +85,5 @@ public class UserExpertInfo implements BaseBean {
 
     public void setBusinessCardImg(String businessCardImg) {
         this.businessCardImg = businessCardImg;
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

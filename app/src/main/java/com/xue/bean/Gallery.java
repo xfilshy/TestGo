@@ -1,36 +1,15 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import java.util.ArrayList;
 
-public class Gallery extends ArrayList<Gallery.Picture> implements BaseBean {
+public class Gallery extends ArrayList<Gallery.Picture> {
 
-    @Override
-    public void setDataKey(String dataKey) {
 
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class Picture implements BaseBean {
+    public static class Picture {
 
         private String id;
 
         private String url;
-
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
 
         public String getId() {
             return id;

@@ -1,13 +1,12 @@
 package com.xue.asyns;
 
 
-import com.xue.http.hook.BaseBean;
 import com.xue.http.impl.DataHull;
 
 /**
  * 异步任务接口类（网络任务）
  */
-public interface HttpAsyncTaskInterface<T extends BaseBean> {
+public interface HttpAsyncTaskInterface<T> {
 
     /**
      * 异步任务开始前

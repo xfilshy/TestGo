@@ -1,7 +1,6 @@
 package com.xue.http.parse;
 
 import com.xue.http.exception.ParseException;
-import com.xue.http.hook.BaseBean;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -16,7 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * 主解析器，封装部分解析方法(面向XML DOM解析)
  */
-public abstract class XDomParser<T extends BaseBean> extends BaseParser<T, String> {
+public abstract class XDomParser<T> extends BaseParser<T, String> {
 
     @Override
     public T parse(String data) throws ParseException {

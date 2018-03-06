@@ -8,7 +8,6 @@ import android.util.Log;
 import com.elianshang.tools.NetWorkTool;
 import com.elianshang.tools.ToastTool;
 import com.elianshang.tools.WeakReferenceHandler;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.impl.DataHull;
 import com.xue.tools.LoadingDialog;
 
@@ -16,7 +15,7 @@ import com.xue.tools.LoadingDialog;
 /**
  * 网络请求的异步任务
  */
-public abstract class HttpAsyncTask<T extends BaseBean> extends BaseTaskImpl implements HttpAsyncTaskInterface<T> {
+public abstract class HttpAsyncTask<T> extends BaseTaskImpl implements HttpAsyncTaskInterface<T> {
 
     /**
      * 上下文对象

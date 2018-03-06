@@ -1,22 +1,10 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import java.util.ArrayList;
 
-public class OrderCommentList extends ArrayList<OrderCommentList.Comment> implements BaseBean {
+public class OrderCommentList extends ArrayList<OrderCommentList.Comment> {
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class Comment implements BaseBean {
+    public static class Comment {
 
         private String id;
 
@@ -108,14 +96,5 @@ public class OrderCommentList extends ArrayList<OrderCommentList.Comment> implem
             this.createdAt = createdAt;
         }
 
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
     }
 }

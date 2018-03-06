@@ -1,10 +1,8 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import java.util.ArrayList;
 
-public class CityList extends ArrayList<CityList.City> implements BaseBean {
+public class CityList extends ArrayList<CityList.City> {
 
 
     public static class City {
@@ -48,15 +46,5 @@ public class CityList extends ArrayList<CityList.City> implements BaseBean {
         public void setInitial(String initial) {
             this.initial = initial;
         }
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

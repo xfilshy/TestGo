@@ -1,8 +1,6 @@
 package com.xue.oss;
 
-import com.xue.http.hook.BaseBean;
-
-public class SignContent implements BaseBean {
+public class SignContent {
 
     private String sign;
 
@@ -14,13 +12,4 @@ public class SignContent implements BaseBean {
         this.sign = sign;
     }
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
 }

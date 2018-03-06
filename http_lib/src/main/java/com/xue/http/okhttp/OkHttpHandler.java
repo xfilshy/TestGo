@@ -2,9 +2,7 @@ package com.xue.http.okhttp;
 
 import com.xue.http.HttpLogTool;
 import com.xue.http.exception.ResponseException;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.HttpHandler;
-import com.xue.http.parse.BaseParser;
 
 import java.io.IOException;
 
@@ -16,7 +14,7 @@ import okhttp3.Response;
  * 网络请求处理类，okhttp实现
  */
 
-public final class OkHttpHandler<B extends BaseBean> extends HttpHandler<OkHttpParameter<? extends BaseParser<B, ?>>, B> {
+public final class OkHttpHandler<B> extends HttpHandler<OkHttpParameter<B>, B> {
 
     private int code;
 

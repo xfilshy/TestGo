@@ -12,7 +12,7 @@ import com.xue.http.parse.BaseParser;
 
 import java.io.IOException;
 
-public abstract class HttpHandler<P extends BaseHttpParameter<?, ? extends BaseParser<B, ?>>, B extends BaseBean> implements BaseHttpHandler<P, B> {
+public abstract class HttpHandler<P extends BaseHttpParameter<?, B>, B> implements BaseHttpHandler<P, B> {
 
     @Override
     public DataHull<B> requestData(P httpParameter) {

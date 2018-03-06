@@ -1,11 +1,9 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User implements BaseBean {
+public class User {
 
     private long timeStamp = System.currentTimeMillis();
 
@@ -102,16 +100,6 @@ public class User implements BaseBean {
 
     public long getTimeStamp() {
         return timeStamp;
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 
     @Override

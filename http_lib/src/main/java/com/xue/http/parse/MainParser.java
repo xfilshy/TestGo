@@ -2,8 +2,6 @@ package com.xue.http.parse;
 
 import android.text.TextUtils;
 
-import com.xue.http.hook.BaseBean;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +9,7 @@ import org.json.JSONObject;
 /**
  * 主解析器，封装部分解析方法(面向JSON 解析)
  */
-public abstract class MainParser<T extends BaseBean, D> extends BaseParser<T, D> {
+public abstract class MainParser<T, D> extends BaseParser<T, D> {
 
     protected boolean has(JSONObject jsonObject, String name) {
         if (jsonObject == null) {
@@ -338,6 +336,7 @@ public abstract class MainParser<T extends BaseBean, D> extends BaseParser<T, D>
 
         return value;
     }
+
     protected double optDouble(JSONObject jsonObject, String name) throws JSONException {
 
         if (jsonObject == null) {

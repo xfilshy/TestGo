@@ -1,23 +1,12 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RechargeList extends ArrayList<RechargeList.Recharge> implements BaseBean{
+public class RechargeList extends ArrayList<RechargeList.Recharge> {
 
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class Recharge implements BaseBean {
+    public static class Recharge implements Serializable{
 
         private String id ;
 
@@ -49,14 +38,5 @@ public class RechargeList extends ArrayList<RechargeList.Recharge> implements Ba
             this.price = price;
         }
 
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
     }
 }

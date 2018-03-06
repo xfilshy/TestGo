@@ -3,9 +3,7 @@ package com.xue.http.java;
 import com.xue.http.HttpConstant;
 import com.xue.http.HttpLogTool;
 import com.xue.http.exception.ResponseException;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.HttpHandler;
-import com.xue.http.parse.BaseParser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +17,7 @@ import java.net.URL;
  * 网络请求处理类，java实现
  */
 
-public final class JavaHttpHandler<B extends BaseBean> extends HttpHandler<JavaHttpParameter<? extends BaseParser<B, ?>>, B> {
+public final class JavaHttpHandler<B> extends HttpHandler<JavaHttpParameter<B>, B> {
 
     private int code = -2;
 

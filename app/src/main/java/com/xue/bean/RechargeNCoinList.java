@@ -1,22 +1,10 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import java.util.ArrayList;
 
-public class RechargeNCoinList extends ArrayList<RechargeNCoinList.RechargeNCoin> implements BaseBean {
+public class RechargeNCoinList extends ArrayList<RechargeNCoinList.RechargeNCoin> {
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class RechargeNCoin implements BaseBean {
+    public static class RechargeNCoin {
 
         private String id;
 
@@ -48,14 +36,5 @@ public class RechargeNCoinList extends ArrayList<RechargeNCoinList.RechargeNCoin
             this.nCoin = nCoin;
         }
 
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
     }
 }

@@ -2,7 +2,6 @@ package com.xue.http.parse;
 
 
 import com.xue.http.exception.ParseException;
-import com.xue.http.hook.BaseBean;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -25,7 +24,7 @@ import javax.xml.parsers.SAXParserFactory;
 /**
  * 主解析器，封装部分解析方法(面向XML SAX解析)
  */
-public abstract class XSAXParser<T extends BaseBean> extends BaseParser<T, String> implements EntityResolver, DTDHandler, ContentHandler, ErrorHandler {
+public abstract class XSAXParser<T> extends BaseParser<T, String> implements EntityResolver, DTDHandler, ContentHandler, ErrorHandler {
 
     @Override
     public T parse(String data) throws ParseException {

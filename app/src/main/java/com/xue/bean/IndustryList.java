@@ -1,12 +1,11 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class IndustryList extends ArrayList<IndustryList.Industry> implements BaseBean {
+public class IndustryList extends ArrayList<IndustryList.Industry>{
 
-    public static class Industry implements BaseBean {
+    public static class Industry implements Serializable{
 
         private String id;
 
@@ -28,24 +27,5 @@ public class IndustryList extends ArrayList<IndustryList.Industry> implements Ba
             this.name = name;
         }
 
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

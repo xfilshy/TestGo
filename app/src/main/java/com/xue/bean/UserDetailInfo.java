@@ -1,11 +1,9 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserDetailInfo implements BaseBean {
+public class UserDetailInfo {
 
     /**
      * 性别 id
@@ -129,15 +127,5 @@ public class UserDetailInfo implements BaseBean {
         }
 
         return object == null ? null : object.toString();
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

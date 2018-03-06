@@ -3,7 +3,6 @@ package com.xue.http.okhttp;
 import android.text.TextUtils;
 
 import com.xue.http.HttpLogTool;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseKVP;
 import com.xue.http.hook.HttpParameter;
 import com.xue.http.parse.BaseParser;
@@ -15,15 +14,15 @@ import okhttp3.Request;
 /**
  * 动态请求参数类
  */
-public abstract class OkHttpParameter<PR extends BaseParser<? extends BaseBean, ?>> extends HttpParameter<Request.Builder, PR, List<BaseKVP>> {
+public abstract class OkHttpParameter<B> extends HttpParameter<Request.Builder, B, List<BaseKVP>> {
 
     /**
      * 公钥
      */
     protected String secretKey = "";
 
-    public OkHttpParameter(String baseUrl, List<BaseKVP> headers, List<BaseKVP> params, int type, PR parser, int updataId, String secretKey) {
-        super(baseUrl, headers, params, type, parser, updataId);
+    public OkHttpParameter(String baseUrl, List<BaseKVP> headers, List<BaseKVP> params, int type, BaseParser<B, ?> parser, int updateId, String secretKey) {
+        super(baseUrl, headers, params, type, parser, updateId);
         this.secretKey = secretKey;
     }
 

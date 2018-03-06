@@ -1,22 +1,10 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import java.util.ArrayList;
 
-public class MomentInfoList extends ArrayList<MomentInfoList.MomentInfo> implements BaseBean {
+public class MomentInfoList extends ArrayList<MomentInfoList.MomentInfo> {
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class MomentInfo implements BaseBean {
+    public static class MomentInfo {
 
         private String id;
 
@@ -58,18 +46,9 @@ public class MomentInfoList extends ArrayList<MomentInfoList.MomentInfo> impleme
             this.resList = resList;
         }
 
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
     }
 
-    public static class MomentRes implements BaseBean {
+    public static class MomentRes {
 
         private String type;
 
@@ -99,16 +78,6 @@ public class MomentInfoList extends ArrayList<MomentInfoList.MomentInfo> impleme
 
         public void setUrl(String url) {
             this.url = url;
-        }
-
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
         }
     }
 }

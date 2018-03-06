@@ -1,7 +1,5 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,7 +7,7 @@ import org.json.JSONObject;
  * 基础用户类，提供用户最基本的数据 如 id token name 等
  */
 
-public class UserBase implements BaseBean {
+public class UserBase {
 
     private String uid;
 
@@ -76,15 +74,5 @@ public class UserBase implements BaseBean {
         }
 
         return object == null ? null : object.toString();
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

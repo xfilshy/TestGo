@@ -2,7 +2,7 @@ package com.xue.http.hook;
 
 import com.xue.http.parse.BaseParser;
 
-public interface BaseHttpParameter<N, PR extends BaseParser<? extends BaseBean, ?>> {
+public interface BaseHttpParameter<N, B> {
 
     /**
      * 请求类型
@@ -32,6 +32,6 @@ public interface BaseHttpParameter<N, PR extends BaseParser<? extends BaseBean, 
 
     String sign(N n);
 
-    PR getParser();
+    BaseParser<B, ?> getParser();
 
 }

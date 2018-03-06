@@ -3,7 +3,6 @@ package com.xue.http.impl;
 import android.text.TextUtils;
 
 import com.xue.http.java.JavaHttpParameter;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseKVP;
 import com.xue.http.parse.BaseParser;
 
@@ -14,10 +13,10 @@ import java.util.List;
 /**
  * 动态请求参数类
  */
-public abstract class JavaHttpDynamicParameter<PR extends BaseParser<? extends BaseBean, ?>> extends JavaHttpParameter<PR> {
+public abstract class JavaHttpDynamicParameter<B> extends JavaHttpParameter<B> {
 
-    public JavaHttpDynamicParameter(String baseUrl, List<BaseKVP> headers, List<BaseKVP> params, int type, PR parser, int updataId, String secretkey) {
-        super(baseUrl, headers, params, type, parser, updataId, secretkey);
+    public JavaHttpDynamicParameter(String baseUrl, List<BaseKVP> headers, List<BaseKVP> params, int type, BaseParser<B, ?> parser, int updateId, String secretKey) {
+        super(baseUrl, headers, params, type, parser, updateId, secretKey);
     }
 
     public StringBuilder encodeUrl() {

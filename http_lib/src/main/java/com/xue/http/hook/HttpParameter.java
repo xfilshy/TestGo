@@ -10,7 +10,7 @@ import com.xue.http.parse.BaseParser;
  * 解析器
  * 刷新ID
  */
-public abstract class HttpParameter<N, PR extends BaseParser<? extends BaseBean, ?>, P> implements BaseHttpParameter<N, PR> {
+public abstract class HttpParameter<N, B, P> implements BaseHttpParameter<N, B> {
 
     /**
      * baseUrl请求地址
@@ -40,12 +40,12 @@ public abstract class HttpParameter<N, PR extends BaseParser<? extends BaseBean,
     /**
      * 请求结束后的解析器
      */
-    protected PR parser;
+    protected BaseParser<B, ?> parser;
 
     /**
      * 构造方法
      */
-    public HttpParameter(String baseUrl, P headers, P params, int type, PR parser, int dataId) {
+    public HttpParameter(String baseUrl, P headers, P params, int type, BaseParser<B, ?> parser, int dataId) {
         this.baseUrl = baseUrl;
         this.headers = headers;
         this.params = params;
@@ -86,7 +86,7 @@ public abstract class HttpParameter<N, PR extends BaseParser<? extends BaseBean,
     /**
      * 得到请求结束后的解析器
      */
-    public PR getParser() {
+    public BaseParser<B, ?> getParser() {
         return parser;
     }
 

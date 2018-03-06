@@ -1,7 +1,6 @@
 package com.xue.parsers;
 
 import com.elianshang.tools.DateTool;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.parse.MainParser;
 import com.xue.tools.TimestampTool;
 
@@ -12,7 +11,7 @@ import org.json.JSONObject;
 /**
  * 移动端接口，解析器父类 ｛ code , msg , timestamp, body:{...} ｝ 针对返回模式这样的解析
  */
-public abstract class MasterParser<T extends BaseBean> extends MainParser<T, JSONObject> {
+public abstract class MasterParser<T> extends MainParser<T, JSONObject> {
 
     /**
      * 接口返回状态 0正常

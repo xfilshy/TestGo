@@ -1,11 +1,9 @@
 package com.xue.http.impl;
 
-import com.xue.http.hook.BaseBean;
-
 /**
  * 数据壳对象，携带请求状态，基础数据状态
  */
-public class DataHull<T extends BaseBean> {
+public class DataHull<T> {
 
     /**
      * 请求数据到分派给解析器解析，所有状态

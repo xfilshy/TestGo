@@ -3,7 +3,6 @@ package com.xue.http;
 import android.text.TextUtils;
 
 import com.elianshang.tools.MD5Tool;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseKVP;
 import com.xue.http.impl.OkHttpDynamicParameter;
 import com.xue.http.parse.BaseParser;
@@ -15,10 +14,10 @@ import java.util.List;
 
 import okhttp3.Request;
 
-public class HttpDynamicParameter<PR extends BaseParser<? extends BaseBean, ?>> extends OkHttpDynamicParameter<PR> {
+public class HttpDynamicParameter<B> extends OkHttpDynamicParameter<B> {
 
-    public HttpDynamicParameter(String baseUrl, List headers, List params, int type, PR parser, int updataId, String secretKey) {
-        super(baseUrl, headers, params, type, parser, updataId, secretKey);
+    public HttpDynamicParameter(String baseUrl, List headers, List params, int type, BaseParser<B, ?> parser, int updateId, String secretKey) {
+        super(baseUrl, headers, params, type, parser, updateId, secretKey);
     }
 
     @Override

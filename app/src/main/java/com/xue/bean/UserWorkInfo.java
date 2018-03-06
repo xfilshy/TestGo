@@ -1,23 +1,11 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class UserWorkInfo extends ArrayList<UserWorkInfo.Work> implements BaseBean {
+public class UserWorkInfo extends ArrayList<UserWorkInfo.Work> {
 
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class Work implements BaseBean {
+    public static class Work implements Serializable{
 
         /**
          * id
@@ -136,14 +124,5 @@ public class UserWorkInfo extends ArrayList<UserWorkInfo.Work> implements BaseBe
             this.endAt = endAt;
         }
 
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
     }
 }

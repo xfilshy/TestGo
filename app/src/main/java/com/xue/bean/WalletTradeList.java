@@ -1,12 +1,10 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import java.util.ArrayList;
 
-public class WalletTradeList extends ArrayList<WalletTradeList.WalletTrade> implements BaseBean {
+public class WalletTradeList extends ArrayList<WalletTradeList.WalletTrade> {
 
-    private int total ;
+    private int total;
 
     public int getTotal() {
         return total;
@@ -16,26 +14,8 @@ public class WalletTradeList extends ArrayList<WalletTradeList.WalletTrade> impl
         this.total = total;
     }
 
-    @Override
-    public void setDataKey(String dataKey) {
 
-    }
+    public static class WalletTrade {
 
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class WalletTrade implements BaseBean {
-
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
     }
 }

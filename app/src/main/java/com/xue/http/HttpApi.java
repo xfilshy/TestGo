@@ -20,13 +20,11 @@ import com.xue.bean.UserTagInfo;
 import com.xue.bean.UserWorkInfo;
 import com.xue.bean.WalletDecorator;
 import com.xue.bean.WalletTradeList;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseHttpParameter;
 import com.xue.http.hook.BaseKVP;
 import com.xue.http.impl.DataHull;
 import com.xue.http.impl.DefaultKVPBean;
 import com.xue.http.okhttp.OkHttpHandler;
-import com.xue.http.parse.BaseParser;
 import com.xue.oss.OssConfig;
 import com.xue.oss.OssConfigParser;
 import com.xue.oss.SignConentParser;
@@ -695,7 +693,7 @@ public class HttpApi {
     /**
      * 根据参数，调起请求
      */
-    public static <B extends BaseBean, D, PR extends BaseParser<B, D>> DataHull<B> request(HttpDynamicParameter<PR> httpParameter) {
+    public static <B> DataHull<B> request(HttpDynamicParameter<B> httpParameter) {
         httpParameter.addParameter(new DefaultKVPBean(PublicParameter.timestampt, String.valueOf(TimestampTool.currentTimeMillis() / 1000)));
         OkHttpHandler<B> handler = new OkHttpHandler();
         DataHull<B> dataHull = handler.requestData(httpParameter);
@@ -713,7 +711,7 @@ public class HttpApi {
                 new DefaultKVPBean(PhoneLoginParameter.verifyCode, verifyCode)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserParser(), 0, secretKey);
+        HttpDynamicParameter<User> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -725,7 +723,7 @@ public class HttpApi {
     public static DataHull<User> userInfo() {
         String url = base_url + UserInfoParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new UserParser(), 0, secretKey);
+        HttpDynamicParameter<User> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new UserParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -739,7 +737,7 @@ public class HttpApi {
                 new DefaultKVPBean(GetShowInfoParameter.uid, uid)
         );
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<UserParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserParser(), 0, secretKey);
+        HttpDynamicParameter<User> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -758,7 +756,7 @@ public class HttpApi {
                 new DefaultKVPBean(UpdateUserDetailInfoParameter.intro, intro)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserDetailInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserDetailInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserDetailInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserDetailInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -775,7 +773,7 @@ public class HttpApi {
                 new DefaultKVPBean(UpdateUserExpertInfoParameter.busine_card_img, businessCardImg)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserExpertInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserExpertInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserExpertInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserExpertInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -794,7 +792,7 @@ public class HttpApi {
                 new DefaultKVPBean(CreateUserEducationParameter.end_at, endAt)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserEducationInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserEducationInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -814,7 +812,7 @@ public class HttpApi {
                 new DefaultKVPBean(UpdateUserEducationParameter.end_at, endAt)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserEducationInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserEducationInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -828,7 +826,7 @@ public class HttpApi {
                 new DefaultKVPBean(DeleteUserEducationParameter.id, id)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserEducationInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserEducationInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserEducationInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -849,7 +847,7 @@ public class HttpApi {
                 new DefaultKVPBean(CreateUserWorkParameter.end_at, endAt)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserWorkInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserWorkInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -870,7 +868,7 @@ public class HttpApi {
                 new DefaultKVPBean(UpdateUserWorkParameter.end_at, endAt)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserWorkInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserWorkInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -884,7 +882,7 @@ public class HttpApi {
                 new DefaultKVPBean(DeleteUserWorkParameter.id, id)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserWorkInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserWorkInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserWorkInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -898,7 +896,7 @@ public class HttpApi {
                 new DefaultKVPBean(CreateUserTagParameter.tag_name, tagName)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserTagInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserTagInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -913,7 +911,7 @@ public class HttpApi {
                 new DefaultKVPBean(UpdateUserTagParameter.tag_name, tagName)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserTagInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserTagInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -928,7 +926,7 @@ public class HttpApi {
                 new DefaultKVPBean(DeleteUserTagParameter.tag_id, tagId)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<UserTagInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
+        HttpDynamicParameter<UserTagInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new UserTagInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -946,7 +944,7 @@ public class HttpApi {
                 new DefaultKVPBean(GetMomentInfoList.order, order)
         );
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<MomentInfoListParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoListParser(), 0, secretKey);
+        HttpDynamicParameter<MomentInfoList> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoListParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -960,7 +958,7 @@ public class HttpApi {
                 new DefaultKVPBean(GetLastMomentInfo.uid, uid)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<MomentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
+        HttpDynamicParameter<MomentInfoList.MomentInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -975,7 +973,7 @@ public class HttpApi {
                 new DefaultKVPBean(CreateMomentInfo.res_list, resList)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<MomentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
+        HttpDynamicParameter<MomentInfoList.MomentInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -991,7 +989,7 @@ public class HttpApi {
                 new DefaultKVPBean(UpdateMomentInfo.res_list, resList)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<MomentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
+        HttpDynamicParameter<MomentInfoList.MomentInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1005,7 +1003,7 @@ public class HttpApi {
                 new DefaultKVPBean(DeleteMomentInfo.id, id)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<MomentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
+        HttpDynamicParameter<MomentInfoList.MomentInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new MomentInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1019,7 +1017,7 @@ public class HttpApi {
                 new DefaultKVPBean(CreateFollow.uid, uid)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<FollowResultParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new FollowResultParser(), 0, secretKey);
+        HttpDynamicParameter<FollowResult> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new FollowResultParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1033,7 +1031,7 @@ public class HttpApi {
                 new DefaultKVPBean(DeleteFollow.uid, uid)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<FollowResultParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new FollowResultParser(), 0, secretKey);
+        HttpDynamicParameter<FollowResult> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new FollowResultParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1051,7 +1049,7 @@ public class HttpApi {
                 new DefaultKVPBean(CreateOrderComment.content, content)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<OrderCommentParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentParser(), 0, secretKey);
+        HttpDynamicParameter<OrderCommentList.Comment> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1067,7 +1065,7 @@ public class HttpApi {
                 new DefaultKVPBean(GetOrderComment.limit, limit)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<OrderCommentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentInfoParser(), 0, secretKey);
+        HttpDynamicParameter<OrderCommentInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1081,7 +1079,7 @@ public class HttpApi {
                 new DefaultKVPBean(GetLastOrderComment.uid, uid)
         );
         int type = BaseHttpParameter.Type.POST;
-        HttpDynamicParameter<OrderCommentInfoParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentInfoParser(), 0, secretKey);
+        HttpDynamicParameter<OrderCommentInfo> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new OrderCommentInfoParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1092,7 +1090,7 @@ public class HttpApi {
     public static DataHull<AcademicList> getAcademicList() {
         String url = base_url + GetAcademicListParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<AcademicListParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new AcademicListParser(), 0, secretKey);
+        HttpDynamicParameter<AcademicList> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new AcademicListParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1104,7 +1102,7 @@ public class HttpApi {
     public static DataHull<IndustryList> getIndustryList() {
         String url = base_url + GetIndustryListParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<IndustryListParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new IndustryListParser(), 0, secretKey);
+        HttpDynamicParameter<IndustryList> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new IndustryListParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1115,7 +1113,7 @@ public class HttpApi {
     public static DataHull<UserList> recommendList() {
         String url = base_url + RecommendListParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<UsetListParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new UsetListParser(), 0, secretKey);
+        HttpDynamicParameter<UserList> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new UsetListParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1126,7 +1124,7 @@ public class HttpApi {
     public static DataHull<OssConfig> ossConfig() {
         String url = base_url + OssConfigParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<OssConfigParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new OssConfigParser(), 0, secretKey);
+        HttpDynamicParameter<OssConfig> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new OssConfigParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1140,7 +1138,7 @@ public class HttpApi {
         List<BaseKVP> params = addParams(
                 new DefaultKVPBean(SignConetntParameter.content, content)
         );
-        HttpDynamicParameter<SignConentParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new SignConentParser(), 0, secretKey);
+        HttpDynamicParameter<SignContent> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new SignConentParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1151,7 +1149,7 @@ public class HttpApi {
     public static DataHull<CityList> resCityList() {
         String url = base_url + ResCityParameter._funcation;
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<CityListParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new CityListParser(), 0, secretKey);
+        HttpDynamicParameter<CityList> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new CityListParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1162,7 +1160,7 @@ public class HttpApi {
     public static DataHull<WalletDecorator> getWalletInfo() {
         String url = base_url + GetWalletInfo._funcation;
         int type = BaseHttpParameter.Type.GET;
-        HttpDynamicParameter<WalletDecoratorParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new WalletDecoratorParser(), 0, secretKey);
+        HttpDynamicParameter<WalletDecorator> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), null, type, new WalletDecoratorParser(), 0, secretKey);
 
         return request(parameter);
     }
@@ -1178,7 +1176,7 @@ public class HttpApi {
                 new DefaultKVPBean(GetWalletTradeList.offset, offset),
                 new DefaultKVPBean(GetWalletTradeList.limit, limit)
         );
-        HttpDynamicParameter<WalletTradeListParser> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new WalletTradeListParser(), 0, secretKey);
+        HttpDynamicParameter<WalletTradeList> parameter = new HttpDynamicParameter(url, getDefaultHeaders(), params, type, new WalletTradeListParser(), 0, secretKey);
 
         return request(parameter);
     }

@@ -7,12 +7,11 @@ import com.xue.http.exception.DataIsNullException;
 import com.xue.http.exception.DataNoUpdateException;
 import com.xue.http.exception.JsonCanNotParseException;
 import com.xue.http.exception.ParseException;
-import com.xue.http.hook.BaseBean;
 
 /**
  * 解析器接口类
  */
-public abstract class BaseParser<T extends BaseBean, D> {
+public abstract class BaseParser<T, D> {
 
     /**
      * 服务器信息
@@ -23,11 +22,6 @@ public abstract class BaseParser<T extends BaseBean, D> {
      * 接口状态码
      */
     private int status;
-
-    /**
-     * 数据key，数据文件唯一key
-     */
-    private String dataKey;
 
     /**
      * 解析入口
@@ -59,9 +53,6 @@ public abstract class BaseParser<T extends BaseBean, D> {
             T t;
             try {
                 t = parse(d);
-                if (t != null) {
-                    t.setDataKey(dataKey);
-                }
                 return t;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -112,20 +103,6 @@ public abstract class BaseParser<T extends BaseBean, D> {
      */
     public boolean hasUpdate() {
         return true;
-    }
-
-    /**
-     * 得到数据唯一key
-     */
-    public String getDataKey() {
-        return dataKey;
-    }
-
-    /**
-     * 设置数据唯一key
-     */
-    public void setDataKey(String dataKey) {
-        this.dataKey = dataKey;
     }
 
     /**

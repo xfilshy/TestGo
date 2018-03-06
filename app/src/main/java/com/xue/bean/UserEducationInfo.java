@@ -1,23 +1,11 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class UserEducationInfo extends ArrayList<UserEducationInfo.Education> implements BaseBean {
+public class UserEducationInfo extends ArrayList<UserEducationInfo.Education> {
 
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class Education implements BaseBean {
+    public static class Education implements Serializable{
 
         /**
          * id
@@ -123,14 +111,5 @@ public class UserEducationInfo extends ArrayList<UserEducationInfo.Education> im
             this.describe = describe;
         }
 
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
     }
 }

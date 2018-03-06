@@ -1,8 +1,6 @@
 package com.xue.oss;
 
-import com.xue.http.hook.BaseBean;
-
-public class OssConfig implements BaseBean {
+public class OssConfig {
 
     private String endPoint;
 
@@ -34,13 +32,4 @@ public class OssConfig implements BaseBean {
         this.uploadPath = uploadPath;
     }
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
 }

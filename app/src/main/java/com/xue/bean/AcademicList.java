@@ -1,12 +1,11 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AcademicList extends ArrayList<AcademicList.Academic> implements BaseBean {
+public class AcademicList extends ArrayList<AcademicList.Academic> {
 
-    public static class Academic implements BaseBean{
+    public static class Academic implements Serializable{
 
         private String id;
 
@@ -27,25 +26,5 @@ public class AcademicList extends ArrayList<AcademicList.Academic> implements Ba
         public void setName(String name) {
             this.name = name;
         }
-
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

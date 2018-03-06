@@ -1,8 +1,6 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
-public class WalletDecorator implements BaseBean{
+public class WalletDecorator {
 
     private WalletInfo walletInfo;
 
@@ -32,15 +30,5 @@ public class WalletDecorator implements BaseBean{
 
     public void setRechargeNCoinList(RechargeNCoinList rechargeNCoinList) {
         this.rechargeNCoinList = rechargeNCoinList;
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

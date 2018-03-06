@@ -1,11 +1,9 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserConfigInfo implements BaseBean {
+public class UserConfigInfo {
 
     private int feeMin;
 
@@ -50,16 +48,6 @@ public class UserConfigInfo implements BaseBean {
             e.printStackTrace();
         }
 
-        return null;
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
         return null;
     }
 }

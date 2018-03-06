@@ -3,7 +3,6 @@ package com.xue.http.impl;
 import android.text.TextUtils;
 
 import com.xue.http.HttpLogTool;
-import com.xue.http.hook.BaseBean;
 import com.xue.http.hook.BaseKVP;
 import com.xue.http.okhttp.OkHttpParameter;
 import com.xue.http.parse.BaseParser;
@@ -18,10 +17,10 @@ import okhttp3.RequestBody;
 /**
  * 动态请求参数类
  */
-public abstract class OkHttpDynamicParameter<PR extends BaseParser<? extends BaseBean, ?>> extends OkHttpParameter<PR> {
+public abstract class OkHttpDynamicParameter<B> extends OkHttpParameter<B> {
 
-    public OkHttpDynamicParameter(String baseUrl, List<BaseKVP> headers, List<BaseKVP> params, int type, PR parser, int updataId, String secretKey) {
-        super(baseUrl, headers, params, type, parser, updataId, secretKey);
+    public OkHttpDynamicParameter(String baseUrl, List<BaseKVP> headers, List<BaseKVP> params, int type, BaseParser<B, ?> parser, int updateId, String secretKey) {
+        super(baseUrl, headers, params, type, parser, updateId, secretKey);
     }
 
     @Override

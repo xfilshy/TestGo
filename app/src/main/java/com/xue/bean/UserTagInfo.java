@@ -2,11 +2,10 @@ package com.xue.bean;
 
 import android.text.TextUtils;
 
-import com.xue.http.hook.BaseBean;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class UserTagInfo extends ArrayList<UserTagInfo.Tag> implements BaseBean {
+public class UserTagInfo extends ArrayList<UserTagInfo.Tag> {
 
     public Tag findTagByName(String tagName) {
         for (Tag tag : this) {
@@ -28,17 +27,7 @@ public class UserTagInfo extends ArrayList<UserTagInfo.Tag> implements BaseBean 
         return ss;
     }
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
-
-    public static class Tag implements BaseBean {
+    public static class Tag implements Serializable{
 
         private String tagId;
 
@@ -60,14 +49,5 @@ public class UserTagInfo extends ArrayList<UserTagInfo.Tag> implements BaseBean 
             this.tagName = tagName;
         }
 
-        @Override
-        public void setDataKey(String dataKey) {
-
-        }
-
-        @Override
-        public String getDataKey() {
-            return null;
-        }
     }
 }

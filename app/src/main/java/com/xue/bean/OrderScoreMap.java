@@ -1,10 +1,8 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
 import java.util.HashMap;
 
-public class OrderScoreMap extends HashMap<String, Integer> implements BaseBean {
+public class OrderScoreMap extends HashMap<String, Integer> {
 
     private String avgScore;
 
@@ -24,15 +22,5 @@ public class OrderScoreMap extends HashMap<String, Integer> implements BaseBean 
 
     public void setTotal(int total) {
         this.total = total;
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

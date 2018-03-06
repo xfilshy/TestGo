@@ -1,8 +1,6 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
-public class OrderCommentInfo implements BaseBean {
+public class OrderCommentInfo {
 
     private OrderScoreMap orderScoreMap;
 
@@ -22,15 +20,5 @@ public class OrderCommentInfo implements BaseBean {
 
     public void setOrderCommentList(OrderCommentList orderCommentList) {
         this.orderCommentList = orderCommentList;
-    }
-
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
     }
 }

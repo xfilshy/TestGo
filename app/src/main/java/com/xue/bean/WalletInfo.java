@@ -1,8 +1,6 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
-public class WalletInfo implements BaseBean {
+public class WalletInfo {
 
     private String id;
 
@@ -94,13 +92,4 @@ public class WalletInfo implements BaseBean {
         this.money = money;
     }
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
 }

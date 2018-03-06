@@ -1,8 +1,6 @@
 package com.xue.bean;
 
-import com.xue.http.hook.BaseBean;
-
-public class UserFriendInfo implements BaseBean {
+public class UserFriendInfo {
 
     private int fansCount;
 
@@ -24,13 +22,4 @@ public class UserFriendInfo implements BaseBean {
         isFollow = follow;
     }
 
-    @Override
-    public void setDataKey(String dataKey) {
-
-    }
-
-    @Override
-    public String getDataKey() {
-        return null;
-    }
 }
