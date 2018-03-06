@@ -57,22 +57,22 @@ android {
             /**
              * 压缩安装包
              * */
-            zipAlignEnabled true
-
-            /**
-             * 移除无用的resource文件
-             * */
-            shrinkResources true
-
-            /**
-             * 是否进行混淆
-             * */
-            minifyEnabled true
-
-            /**
-             * 混淆文件的位置，前一部分是系统默认的混淆声明，后一部分是自定义的混淆声明
-             * */
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            zipAlignEnabled true
+//
+//            /**
+//             * 移除无用的resource文件
+//             * */
+//            shrinkResources true
+//
+//            /**
+//             * 是否进行混淆
+//             * */
+//            minifyEnabled true
+//
+//            /**
+//             * 混淆文件的位置，前一部分是系统默认的混淆声明，后一部分是自定义的混淆声明
+//             * */
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             /**
              * 签名配置
