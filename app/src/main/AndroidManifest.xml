@@ -146,8 +146,8 @@
         <activity
             android:name=".ui.activity.ChatActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/TransparentSwipeBackTheme"  />
+            android:theme="@style/TransparentSwipeBackTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!--我的页-->
         <!--<activity-->

@@ -1,5 +1,6 @@
 package com.xue.ui.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.xue.R;
 import com.xue.support.slideback.SwipeBackHelper;
+import com.xue.ui.views.SoftInputLinearLayout;
 
 /**
  * Created by xfilshy on 2018/1/17.
@@ -42,12 +44,11 @@ public abstract class SwipeBackBaseActivity extends BaseActivity implements Swip
         mSwipeBackHelper.executeForwardAnim();
     }
 
-    private void createRootView(LinearLayout linearLayout) {
-        if (linearLayout == null) {
-            linearLayout = new LinearLayout(this);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-        }
+    private void createRootView() {
+        SoftInputLinearLayout linearLayout = new SoftInputLinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setBackgroundResource(R.color.grey_50);
+        linearLayout.setFitsSystemWindows(true);
 
         Toolbar toolbar = null;
         if (actionBarStyle() == Style.Primary) {
@@ -55,8 +56,9 @@ public abstract class SwipeBackBaseActivity extends BaseActivity implements Swip
         } else if (actionBarStyle() == Style.White) {
             toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.actionbar_simple_white, null, false);
         }
+        toolbar.setPadding(0, getStatusBarHeight(this), 0, 0);
         initActionBar(toolbar, actionBarTitle(), actionBarRight());
-        linearLayout.addView(toolbar, 0);
+        linearLayout.addView(toolbar);
 
         mRootView = linearLayout;
     }
@@ -110,14 +112,8 @@ public abstract class SwipeBackBaseActivity extends BaseActivity implements Swip
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         if (hasActionBar()) {
-            if (view instanceof LinearLayout && ((LinearLayout) view).getOrientation() == LinearLayout.VERTICAL) {
-                createRootView((LinearLayout) view);
-            } else {
-                createRootView(null);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                mRootView.addView(view, layoutParams);
-            }
-            super.setContentView(mRootView);
+            createRootView();
+            super.setContentView(mRootView, params);
         } else {
             super.setContentView(view, params);
         }
@@ -126,13 +122,9 @@ public abstract class SwipeBackBaseActivity extends BaseActivity implements Swip
     @Override
     public void setContentView(View view) {
         if (hasActionBar()) {
-            if (view instanceof LinearLayout && ((LinearLayout) view).getOrientation() == LinearLayout.VERTICAL) {
-                createRootView((LinearLayout) view);
-            } else {
-                createRootView(null);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                mRootView.addView(view, layoutParams);
-            }
+            createRootView();
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mRootView.addView(view, layoutParams);
             super.setContentView(mRootView);
         } else {
             super.setContentView(view);
@@ -214,4 +206,25 @@ public abstract class SwipeBackBaseActivity extends BaseActivity implements Swip
         }
         mSwipeBackHelper.backward();
     }
+
+    //获取状态栏高度
+    private static int getStatusBarHeight(Context context) {
+        int statusBarHeight = dip2px(context, 25);
+        try {
+            Class<?> clazz = Class.forName("com.android.internal.R$dimen");
+            Object object = clazz.newInstance();
+            int height = Integer.parseInt(clazz.getField("status_bar_height").get(object).toString());
+            statusBarHeight = context.getResources().getDimensionPixelSize(height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statusBarHeight;
+    }
+
+    //根据手机的分辨率从 dp 的单位 转成为 px(像素)
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
 }
