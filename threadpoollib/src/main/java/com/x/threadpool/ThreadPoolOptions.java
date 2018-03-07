@@ -1,4 +1,4 @@
-package com.elianshang.threadpool;
+package com.x.threadpool;
 
 /**
  * 线程池配置类
@@ -31,11 +31,6 @@ public class ThreadPoolOptions {
      * 线程等待时间
      */
     private int waitPeriod = 5000;
-
-    /**
-     * 是否重新执行失败的任务
-     */
-    private boolean isReplayFailTask = false;
 
     /**
      * 执行顺序，FIFO先入先出，FILO先入后出
@@ -96,20 +91,6 @@ public class ThreadPoolOptions {
      */
     public void setWaitPeriod(int waitPeriod) {
         this.waitPeriod = waitPeriod;
-    }
-
-    /**
-     * 是否失败重试
-     */
-    public boolean isReplayFailTask() {
-        return isReplayFailTask;
-    }
-
-    /**
-     * 设置是否失败重试
-     */
-    public void setReplayFailTask(boolean isReplayFailTask) {
-        this.isReplayFailTask = isReplayFailTask;
     }
 
     /**

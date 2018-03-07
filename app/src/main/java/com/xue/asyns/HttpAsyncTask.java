@@ -74,7 +74,7 @@ public abstract class HttpAsyncTask<T> extends BaseTaskImpl implements HttpAsync
     }
 
     @Override
-    public final int run() {
+    public final void run() {
         final long start = System.currentTimeMillis();
         try {
             hasNet = NetWorkTool.isNetAvailable(context);
@@ -89,7 +89,7 @@ public abstract class HttpAsyncTask<T> extends BaseTaskImpl implements HttpAsync
                 });
                 // 无网
 //                UMengEventTool.onRequest(context, "无网络", "-1", "", (int) (System.currentTimeMillis() - start));
-                return SUCCESS;
+                return ;
             }
 
             if (!isCancel) {// 加载网络数据
@@ -230,8 +230,6 @@ public abstract class HttpAsyncTask<T> extends BaseTaskImpl implements HttpAsync
                 }
             });
         }
-
-        return SUCCESS;
     }
 
     @Override

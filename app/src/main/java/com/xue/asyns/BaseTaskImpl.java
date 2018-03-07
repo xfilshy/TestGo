@@ -1,10 +1,10 @@
 package com.xue.asyns;
 
 
-import com.elianshang.threadpool.BaseTask;
-import com.elianshang.threadpool.BaseThreadPool;
-import com.elianshang.threadpool.ThreadPoolFactory;
-import com.elianshang.threadpool.ThreadPoolOptions;
+import com.x.threadpool.BaseTask;
+import com.x.threadpool.BaseThreadPool;
+import com.x.threadpool.ThreadPoolFactory;
+import com.x.threadpool.ThreadPoolOptions;
 
 public abstract class BaseTaskImpl implements BaseTask {
 	
@@ -24,7 +24,6 @@ public abstract class BaseTaskImpl implements BaseTask {
 		options.setSize(10);
 		options.setKeep(1);
 		options.setWaitPeriod(1000);
-		options.setReplayFailTask(false);
 		options.setExecutionOrder(ThreadPoolOptions.ExecutionOrder.FIFO);
 		mThreadPool = ThreadPoolFactory.create(options);
 	}

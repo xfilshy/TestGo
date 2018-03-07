@@ -1,9 +1,9 @@
 package com.xue.oss;
 
-import com.elianshang.threadpool.BaseTask;
-import com.elianshang.threadpool.BaseThreadPool;
-import com.elianshang.threadpool.ThreadPoolFactory;
-import com.elianshang.threadpool.ThreadPoolOptions;
+import com.x.threadpool.BaseTask;
+import com.x.threadpool.BaseThreadPool;
+import com.x.threadpool.ThreadPoolFactory;
+import com.x.threadpool.ThreadPoolOptions;
 
 public abstract class BaseUploadTask implements BaseTask {
 
@@ -18,7 +18,6 @@ public abstract class BaseUploadTask implements BaseTask {
         options.setSize(1);
         options.setKeep(0);
         options.setWaitPeriod(1000);
-        options.setReplayFailTask(false);
         options.setExecutionOrder(ThreadPoolOptions.ExecutionOrder.FIFO);
         mThreadPool = ThreadPoolFactory.create(options);
     }

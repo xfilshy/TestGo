@@ -16,7 +16,7 @@ public abstract class SimpleAsyncTask<T> extends BaseTaskImpl implements SimpleA
     }
 
     @Override
-    public final int run() {
+    public final void run() {
         try {
             postUI(new WeakReferenceHandler.WeakReferenceHandlerRunnalbe<SimpleAsyncTask>() {
                 @Override
@@ -50,7 +50,7 @@ public abstract class SimpleAsyncTask<T> extends BaseTaskImpl implements SimpleA
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return SUCCESS;
+        return ;
     }
 
     @Override

@@ -119,7 +119,7 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
         }
 
         @Override
-        public int run() {
+        public void run() {
             if (callback != null) {
                 callback.onStarted();
             }
@@ -217,7 +217,6 @@ public class OssManager extends OSSCustomSignerCredentialProvider {
             }
 
             callback = null;
-            return SUCCESS;
         }
     }
 
