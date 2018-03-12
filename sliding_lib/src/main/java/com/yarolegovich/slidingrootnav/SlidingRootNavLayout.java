@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.view.MotionEvent;
@@ -61,8 +62,35 @@ public class SlidingRootNavLayout extends FrameLayout implements SlidingRootNav 
         isMenuHidden = true;
     }
 
+    private float mInitialMotionX;
+    private float mInitialMotionY;
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        final int action = MotionEventCompat.getActionMasked(ev);
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN: {
+                final float x = ev.getX();
+                final float y = ev.getY();
+                mInitialMotionX = x;
+                mInitialMotionY = y;
+
+                break;
+            }
+
+            case MotionEvent.ACTION_MOVE: {
+                final float x = ev.getX();
+                final float y = ev.getY();
+                final float adx = Math.abs(x - mInitialMotionX);
+                final float ady = Math.abs(y - mInitialMotionY);
+                final int slop = dragHelper.getTouchSlop();
+                if (adx > slop && ady > adx) {
+                    dragHelper.cancel();
+                    return false;
+                }
+            }
+        }
         return (!isMenuLocked
                 && dragHelper.shouldInterceptTouchEvent(ev))
                 || shouldBlockClick(ev);
